@@ -402,12 +402,12 @@ margin-left: 270PX;
 			<c:choose>
 				<c:when test="${wish.product_idx eq product.product_idx }">
 					<span class="wishBtn">
-						<img onclick="deleteWish()" id="afterHeart" src="/images/after_heart.png" id="btnWishAfterImage" style="width: 30px; height: 30px; cursor: pointer;"/>
+						<img onclick="deleteWish()" id="afterHeart" src="${path }/resources/images/after_heart.png" id="btnWishAfterImage" style="width: 30px; height: 30px; cursor: pointer;"/>
 					</span>
 				</c:when>
 				<c:otherwise>
 					<span class="wishBtn">
-						<img id="beforeHeart" onclick="addWish()" src="/images/before_heart.png" id="btnWishBeforImage" style="width: 30px; height: 30px; cursor: pointer;"/>&nbsp;
+						<img id="beforeHeart" onclick="addWish()" src="${path }/resources/images/after_heart.png" id="btnWishBeforImage" style="width: 30px; height: 30px; cursor: pointer;"/>&nbsp;
 					</span>
 				</c:otherwise>
 			</c:choose>
