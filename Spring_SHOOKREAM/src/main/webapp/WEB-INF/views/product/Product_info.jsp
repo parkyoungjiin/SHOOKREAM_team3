@@ -1,9 +1,10 @@
-<%@page import="vo.ReviewBean"%>
+<%@page import="com.itwillbs.shookream.vo.ReviewBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri ="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri ="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri ="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="path" value="${pageContext.request.contextPath }"/>
 <%
 pageContext.setAttribute("br", "<br/>");
 pageContext.setAttribute("cn", "\n");
@@ -253,14 +254,14 @@ margin-left: 270PX;
 		
 	function addWish() {
 		
-		var checkLogin = '<%=(String)session.getAttribute("sId")%>';
+<%-- 		var checkLogin = '<%=(String)session.getAttribute("sId")%>'; --%>
 // 		var checkLogin = ${sessionScope.member_idx};
 		
-		if( checkLogin == "null"){
-			alert("로그인 후 이용 가능합니다.");
-			location.href="LoginMember.me";
+// 		if( checkLogin == "null"){
+// 			alert("로그인 후 이용 가능합니다.");
+// 			location.href="LoginMember.me";
 			
-		} else {
+// 		} else {
 			
 			$.ajax({
 				type: "post", 
@@ -282,7 +283,7 @@ margin-left: 270PX;
 					alert("찜하기 실패"); 
 				}
 			});
-		}
+// 		}
 	}
 
 //찜하기 취소
@@ -401,12 +402,12 @@ margin-left: 270PX;
 			<c:choose>
 				<c:when test="${wish.product_idx eq product.product_idx }">
 					<span class="wishBtn">
-						<img onclick="deleteWish()" id="afterHeart" alt="" src="images/after_heart.png" id="btnWishAfterImage" style="width: 30px; height: 30px; cursor: pointer;"/>
+						<img onclick="deleteWish()" id="afterHeart" src="/images/after_heart.png" id="btnWishAfterImage" style="width: 30px; height: 30px; cursor: pointer;"/>
 					</span>
 				</c:when>
 				<c:otherwise>
 					<span class="wishBtn">
-						<img id="beforeHeart" onclick="addWish()" alt="" src="images/before_heart.png" id="btnWishBeforImage" style="width: 30px; height: 30px; cursor: pointer;"/>&nbsp;
+						<img id="beforeHeart" onclick="addWish()" src="/images/before_heart.png" id="btnWishBeforImage" style="width: 30px; height: 30px; cursor: pointer;"/>&nbsp;
 					</span>
 				</c:otherwise>
 			</c:choose>
