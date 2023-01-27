@@ -1,4 +1,4 @@
-<%@page import="vo.ReviewBean"%>
+<%-- <%@page import="vo.ReviewBean"%> --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri ="http://java.sun.com/jsp/jstl/core" %>
@@ -243,7 +243,7 @@ margin-left: 270PX;
 	//					$("#btnWishAfterImage").attr("src", "images/before_heart.png");
 					alert("찜한 상품에서 삭제되었습니다!");
 	//					$('#wishLoad').load(location.href+' #wishLoad')
-					$(".wishBtn").html('<img id="beforeHeart" alt="" src="images/before_heart.png" id="btnWishBeforImage" onclick="addWish()" style="width: 30px; height: 30px;"/>');
+					$(".wishBtn").html('<img id="beforeHeart" alt="" src="resources/images/before_heart.png" id="btnWishBeforImage" onclick="addWish()" style="width: 30px; height: 30px;"/>');
 			}, 
 			error: function(xhr, textStatus, errorThrown) {
 				alert("찜 삭제 실패"); 
@@ -276,7 +276,7 @@ margin-left: 270PX;
 		
 						alert("찜한 상품에 추가되었습니다!");
 						
-						$(".wishBtn").html('<img id="afterHeart" alt="" src="images/after_heart.png" id="btnWishAfterImage" onclick="deleteWish()" style="width: 30px; height: 30px; cursor: pointer;"/>');
+						$(".wishBtn").html('<img id="afterHeart" alt="" src="resources/images/after_heart.png" id="btnWishAfterImage" onclick="deleteWish()" style="width: 30px; height: 30px; cursor: pointer;"/>');
 				}, 
 				error: function(xhr, textStatus, errorThrown) {
 					alert("찜하기 실패"); 
@@ -401,12 +401,12 @@ margin-left: 270PX;
 			<c:choose>
 				<c:when test="${wish.product_idx eq product.product_idx }">
 					<span class="wishBtn">
-						<img onclick="deleteWish()" id="afterHeart" alt="" src="images/after_heart.png" id="btnWishAfterImage" style="width: 30px; height: 30px; cursor: pointer;"/>
+						<img onclick="deleteWish()" id="afterHeart" alt="" src="resources/images/after_heart.png" id="btnWishAfterImage" style="width: 30px; height: 30px; cursor: pointer;"/>
 					</span>
 				</c:when>
 				<c:otherwise>
 					<span class="wishBtn">
-						<img id="beforeHeart" onclick="addWish()" alt="" src="images/before_heart.png" id="btnWishBeforImage" style="width: 30px; height: 30px; cursor: pointer;"/>&nbsp;
+						<img id="beforeHeart" onclick="addWish()" alt="" src="resources/images/before_heart.png" id="btnWishBeforImage" style="width: 30px; height: 30px; cursor: pointer;"/>&nbsp;
 					</span>
 				</c:otherwise>
 			</c:choose>
@@ -571,7 +571,8 @@ function valueCheck(member){
 		return false;
 	}
 	
-	location.href="OrderDetailForm.po?member_idx=${sessionScope.member_idx}&product_idx=${param.product_idx}";
+// 	location.href="OrderDetailForm.po?member_idx=${sessionScope.member_idx}&product_idx=${param.product_idx}";
+	location.href="OrderDetailForm.po?product_idx=${param.product_idx}";
 	
 	
 }

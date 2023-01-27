@@ -151,7 +151,8 @@ footer {
 							<div class="w3-display-container">
 								<img src="./upload/${productBestList.product_img }" alt="..." style="width: 100%">
 								<div class="w3-display-middle w3-display-hover">
-									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productBestList.product_idx }&member_idx=${sessionScope.member_idx }'">
+<%-- 									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productBestList.product_idx }&member_idx=${sessionScope.member_idx }'"> --%>
+									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productBestList.product_idx }'">
 										Buy now <i class="fa fa-shopping-cart" ></i>
 									</button>
 								</div>

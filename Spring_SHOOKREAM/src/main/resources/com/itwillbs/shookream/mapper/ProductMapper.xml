@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itwillbs.shookream.mapper.ProductMapper">
+	
+	
+	<select id="selectMemberIdx" resultType="int">
+		SELECT member_idx
+			FROM member
+			WHERE member_id = #{sId}
+	</select>
+	
+	<select id="selectWish" resultType="com.itwillbs.shookream.vo.WishBean">
+		SELECT *
+			FROM wish
+			WHERE product_idx = #{product_idx}
+				AND member_idx = #{member_idx}
+	</select>
+	
+	<select id="selectProduct" resultType="com.itwillbs.shookream.vo.ProductBean">
+		SELECT *
+			FROM product
+			WHERE product_idx = #{product_idx} 
+	</select>
+	
+	<select id="selectImage" resultType="com.itwillbs.shookream.vo.imageBean">
+		SELECT image_main_file, image_real_file1, image_real_file2  
+			FROM image 
+			WHERE product_idx = #{product_idx} 
+	</select>
+		
+	<select id="selectCategoryList" resultType="String">
+		SELECT distinct(product_size)
+			FROM product
+			WHERE product_name = #{product.product_name}
+			ORDER BY product_size
+	</select>
+	
+	<select id="selectColorList" resultType="String">
+		SELECT distinct(product_color)
+			FROM product
+			WHERE product_name = #{product.product_name}
+	</select>
+	
+	<select id="selectImageList" resultType="com.itwillbs.shookream.vo.ProductBean">
+		SELECT i.image_main_file,i.image_real_file1,i.image_real_file2 
+			FROM image i join product p
+				ON i.product_idx = p.product_idx
+				WHERE p.product_name = #{product.product_name}
+	</select>
+	
+	<insert id="insertOrder">
+		<selectKey keyProperty="order_idx" resultType="int" order="BEFORE">
+			<!-- 가장 큰 글번호(board_num) 조회 -->
+			SELECT MAX(order_idx) FROM orderlist
+		</selectKey>
+	
+		INSERT
+			INTO orderlist 
+			VALUES (
+				#{order_idx} + 1
+				,now()
+				,#{order.order_product_price}
+				,#{order.order_category}
+				,#{order.order_progress}
+				,#{order.order_member_idx}
+				,#{order.order_product_idx}
+			)
+	</insert>
+</mapper>
