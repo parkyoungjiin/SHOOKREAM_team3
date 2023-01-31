@@ -1,5 +1,3 @@
-<%@page import="vo.BoardBean"%>
-<%@page import="dao.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri ="http://java.sun.com/jsp/jstl/core" %>
@@ -74,7 +72,10 @@ pageContext.setAttribute("cn", "\n");
 			Date:${board.notice_date } / View:${board.notice_readcount }
 			<hr>
 			<div id="no_content">${fn:replace(board.notice_content, cn, br) }</div><br><br>	
-			<button onclick="history.back()" class="btn btn-dark btn-sm">뒤로가기</button><br><br>
+			<button onclick="history.back()" class="btn btn-dark btn-sm">뒤로가기</button>
+			<button onclick="location.href='BoardModifyForm.bo?notice_idx=${board.notice_idx}&pageNum=${param.pageNum }'" class="btn btn-dark btn-sm">수정하기</button>
+			<button type="button" class="btn btn-sm btn-dark" onclick="location.href='FAQDeletePro.bo?notice_idx=${board.notice_idx}&pageNum=${param.pageNum }'">삭제하기</button>
+			<br><br>
 <%-- 			<a href="FAQList.bo?pageNum=${param.pageNum }"><button id="listBtn" class="btn btn-outline-secondary btn-sm">목록으로</button></a> <br><br> --%>
 
 <!-- 		<div class="w3-black w3-center w3-padding-24">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></div> -->

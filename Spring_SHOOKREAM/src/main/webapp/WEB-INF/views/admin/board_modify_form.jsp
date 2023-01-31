@@ -42,14 +42,14 @@
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
-			<%
-			String sId = (String)session.getAttribute("sId");
-			String id = request.getParameter("id");
-			if(sId == null || !sId.equals("admin")) { %>
-				alert("잘못된 접근입니다!")
-				location.href=history.back();
-			<% 
-			} 
+<%-- 			<% --%>
+// 			String sId = (String)session.getAttribute("sId");
+// 			String id = request.getParameter("id");
+<%-- 			if(sId == null || !sId.equals("admin")) { %> --%>
+// 				alert("잘못된 접근입니다!")
+// 				location.href=history.back();
+<%-- 			<%  --%>
+// 			} 
 			%>
 		</script>
 		<style type="text/css">
