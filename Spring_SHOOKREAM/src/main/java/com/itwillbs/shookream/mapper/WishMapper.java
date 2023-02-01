@@ -12,11 +12,6 @@ import com.itwillbs.shookream.vo.imageBean;
 
 @Mapper
 public interface WishMapper {
-
-	ProductBean getProduct(int product_idx);
-
-	imageBean getImage(int product_idx);
-
 	boolean InsertLike(
 			@Param("member_idx") int member_idx
 			,@Param("product_idx") int product_idx);

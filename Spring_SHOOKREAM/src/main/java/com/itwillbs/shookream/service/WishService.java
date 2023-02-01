@@ -16,16 +16,6 @@ public class WishService {
 	private WishMapper mapper;
 
 
-	public ProductBean getProduct(int product_idx) {
-		return mapper.getProduct(product_idx);
-	}
-
-
-	public imageBean getImage(int product_idx) {
-		return mapper.getImage(product_idx);
-	}
-
-
 	public boolean InsertLike(int member_idx, int product_idx) {
 		updateWishCount(product_idx);
 		return mapper.InsertLike(member_idx,product_idx);

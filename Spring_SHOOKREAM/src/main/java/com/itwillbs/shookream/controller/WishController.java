@@ -29,19 +29,6 @@ public class WishController {
 	@Autowired 
 	private WishService service;
 	
-	@GetMapping(value = "/ProductInfoForm.po")
-	public String product_info(@RequestParam(defaultValue = "1")int product_idx,
-								@RequestParam(defaultValue = "")String product_name,
-								Model model) {
-		
-		ProductBean product = service.getProduct(product_idx);
-		imageBean image = service.getImage(product_idx);
-		
-		model.addAttribute("product",product);
-		model.addAttribute("image",image);
-		
-		return "product/Product_info";
-	}
 	
 	@RequestMapping(value = "/LikeInsertPro.ca", method= {RequestMethod.GET, RequestMethod.POST})
 	public void likeInsert(@RequestParam(defaultValue = "1")int member_idx,
