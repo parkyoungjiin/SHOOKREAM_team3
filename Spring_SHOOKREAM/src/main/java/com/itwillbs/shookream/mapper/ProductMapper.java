@@ -11,6 +11,30 @@ import com.itwillbs.shookream.vo.imageBean;
 
 
 public interface ProductMapper {
+	
+	// 1. 상품 등록
+	// => 파라미터 : ProductVO 객체    리턴타입 : int
+	public int insertProduct(ProductBean product);
+
+	// 2. 상품 이미지 등록
+	// => 파라미터 : ImageVO 객체    리턴타입 : int
+	public int insertImage(@Param("image") imageBean image, 
+					@Param("product_idx")int product_idx);
+
+	// 3. 상품 수정
+	public int modifyProduct(
+			int product_idx, 
+			@Param("product") ProductBean product,
+			@Param("image") imageBean image);
+
+	// 4. 상품 삭제
+	public int removeProduct(int product_idx);
+	
+	// 5. 상품 목록 조회
+	public List<ProductBean> selectProductList();
+	
+	// 6. 이미지 조회
+	public imageBean selectImgList(int product_idx);
 
 	public int selectMemberIdx(String sId);
 

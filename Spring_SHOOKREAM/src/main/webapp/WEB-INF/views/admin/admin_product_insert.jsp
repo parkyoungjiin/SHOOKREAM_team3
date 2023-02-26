@@ -1,14 +1,11 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
-
-
+<c:set var="path" value="${pageContext.request.contextPath }"/>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
 <!--         <meta charset="utf-8" /> -->
 <!--         <meta http-equiv="X-UA-Compatible" content="IE=edge" /> -->
 <!--         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" /> -->
@@ -17,17 +14,19 @@
 <title>상품등록 페이지</title>
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 <link href="admin/css/styles.css" rel="stylesheet" />
+<link href="${path}/resources/css/styles.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
  <script type="text/javascript">
 	<%
-		String sId = (String)session.getAttribute("sId");
-		String id = request.getParameter("id");
-		if(sId == null || !sId.equals("admin")) { %>
-		alert("잘못된 접근입니다!")
-		location.href=history.back();
+// 		String sId = (String)session.getAttribute("sId");
+// 		String id = request.getParameter("id");
+// 		if(sId == null || !sId.equals("admin")) { 
+		%>
+// 		alert("잘못된 접근입니다!")
+// 		location.href=history.back();
 	<% 
-		} 
+// 		} 
 	%>
 </script>  
 <style type="text/css">
@@ -100,13 +99,14 @@ $(function() {
 				<table class="table">
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품명</td>
-						<td width="300px"><input class="w3-input w3-border"
-							type="text" placeholder="Product Name" name="name" required ></td>
+						<td width="300px">
+						<input class="w3-input w3-border"
+							type="text" placeholder="Product Name" name="product_name" id = "product_name" required ></td>
 					</tr>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품 브랜드</td>
 						<td width="300px">
-						<select name="brand" id ="product_brand">
+						<select name="product_brand" id ="product_brand">
 								<option value="" selected>브랜드를 선택하세요</option>
 								<option value="나이키">나이키</option>
 								<option value="뉴발란스">뉴발란스</option>
@@ -118,7 +118,7 @@ $(function() {
 					</tr>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품 가격</td>
-						<td><input type="text" id="testPrice" name ="price" placeholder="상품 가격을 입력하세요" ><span>&nbsp;원</span> 
+						<td><input type="text" id="testPrice" name ="product_price" placeholder="상품 가격을 입력하세요" ><span>&nbsp;원</span> 
 						</td>
 						
 					</tr>
@@ -134,7 +134,7 @@ $(function() {
 						<div class="form-check">
 							<input class="form-check-input" type="radio" name="saleRadio" id="saleRadio2" > 
 							<label class="form-check-label" for="flexRadioDefault1">할인 적용 
-							<input type="number" id="testRate" name ="discount" value = "0" size="1" min = "0" max ="100" style = "text-align:center;" readonly="readonly"> <!-- 할인율 입력칸 -->
+							<input type="number" id="testRate" name ="product_discount_price" value = "0" size="1" min = "0" max ="100" style = "text-align:center;" readonly="readonly"> <!-- 할인율 입력칸 -->
 							<span>%</span>
 							<button type="button" id="testCalBtn">&nbsp;계산하기&nbsp;</button>
 							</label>
@@ -147,7 +147,7 @@ $(function() {
 					<tr>
 						<td width="150px" align="left" class="table-secondary">할인율 적용가격</td>
 						
-						<td><p id = "testResultBox02"></p></td>
+						<td><p id = "testResultBox02" name="product_release_price"></p></td>
 						
 					</tr>
 	
@@ -155,7 +155,7 @@ $(function() {
 
 						<td width="100px" align="left" class="table-secondary">상품 사이즈</td>
 						<td width="300px">
-						<select name="size" id ="product_size">
+						<select name="product_size" id ="product_size">
 								<option value="" selected>사이즈를 선택해주세요.</option>
 								<option value="220">220</option>
 								<option value="230">230</option>
@@ -169,12 +169,12 @@ $(function() {
 						</select></td>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품 재고량</td>
-						<td width="300px"><input class="w3-input w3-border" type="number" min="0" max="100" placeholder="수량" name="amount" onkeyup="inputNumberFormat(this);" required></td>
+						<td width="300px"><input class="w3-input w3-border" type="number" min="0" max="100" placeholder="수량" name="product_amount" onkeyup="inputNumberFormat(this);" required></td>
 					</tr>
 
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품 색상</td>
-						<td width="300px"><select name="color" id ="product_color">
+						<td width="300px"><select name="product_color" id ="product_color">
 								<option value="" selected>색상을 선택해주세요.</option>
 								<option value="black">BLACK</option>
 								<option value="white">WHITE</option>
@@ -188,7 +188,7 @@ $(function() {
 					<tr>
 						<td width="100px" align="left" class="table-secondary">요약 설명</td>
 						<td><textarea class="w3-input w3-border" style="resize: none"
-								rows="5" cols="40" placeholder="Product summary" name="exp"
+								rows="5" cols="40" placeholder="Product summary" name="product_exp"
 								required="required"></textarea></td>
 						<!--           <td width="300px"><input class="w3-input w3-border" type="" placeholder="Product summary" name="Product summary" required></td> -->
 					</tr>
@@ -197,21 +197,21 @@ $(function() {
 						<td width="100px" align="left" class="table-secondary">상세 설명</td>
 						<td><textarea class="w3-input w3-border" style="resize: none"
 								rows="10" cols="150" placeholder="Product detail"
-								name="detail_exp" required="required"></textarea></td>
+								name="product_detail_exp" required="required"></textarea></td>
 					</tr>
 
 
 					<tr>
 						<td width="100px" align="left" class="table-secondary">메인 이미지</td>
-						<td><input type="file" name="file" required="required"></td>
+						<td><input type="file" name="files" required="required"></td>
 					</tr>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">제품 이미지1</td>
-						<td><input type="file" name="file2" required="required"></td>
+						<td><input type="file" name="files" required="required"></td>
 					</tr>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">제품 이미지2</td>
-						<td><input type="file" name="file3" required="required"></td>
+						<td><input type="file" name="files" required="required"></td>
 					</tr>
 
 					<tr>

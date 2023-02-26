@@ -9,8 +9,8 @@
 	<!-- SQL 로그를 위해 log4jdbc 라이브러리 관련 DBCP 관련 정보 변경(dirverClassname, jdbcUrl) -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
-		<property name="jdbcUrl" value="jdbc:log4jdbc:mysql://localhost:3306/shookream"></property>
-		<property name="username" value="root"></property>
+		<property name="jdbcUrl" value="jdbc:log4jdbc:mysql://db.itwillbs.dev:3306/class5_220823_team3"></property>
+		<property name="username" value="class5_220823_team3"></property>
 		<property name="password" value="1234"></property>
 	</bean>
 <!-- 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig"> -->
