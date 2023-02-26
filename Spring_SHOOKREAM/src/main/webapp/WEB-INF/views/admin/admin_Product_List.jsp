@@ -2,13 +2,15 @@
     pageEncoding="UTF-8"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
  <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+ <c:set var="path" value="${pageContext.request.contextPath }"/>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>상품 목록</title>
 <!-- 삭제 버튼에 confirm 추가 -->
-<script>	function deleteProduct(idx) {
+<script>
+	function deleteProduct(idx) {
 		var result = confirm("삭제하시겠습니까?");
 
 		if (result) {
@@ -27,19 +29,20 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-        <link href="admin/css/styles.css" rel="stylesheet" />
+        <link href="${path}/resources/css/styles.css" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
 			<%
-			String sId = (String)session.getAttribute("sId");
-			String id = request.getParameter("id");
-			if(sId == null || !sId.equals("admin")) { %>
-				alert("잘못된 접근입니다!")
-				location.href=history.back();
+// 			String sId = (String)session.getAttribute("sId");
+// 			String id = request.getParameter("id");
+// 			if(sId == null || !sId.equals("admin")) { 
+			%>
+// 				alert("잘못된 접근입니다!")
+// 				location.href=history.back();
 			<% 
-			} 
+// 			} 
 			%>
 		</script>
 		<style type="text/css">
@@ -90,22 +93,12 @@
                                             <th>수정</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
-                                        </tr>
-                                    </tfoot>
                                     <tbody>
                                       <c:forEach var="product" items="${productList }">
 										<tr>
-										<td >${product.product_idx }</td>
+										<td name="product_idx">${product.product_idx }</td>
 										<td>${product.product_name } <br>(색상 : ${product.product_color })</td>
-										<td><img src="./upload/${product.product_img }" class="img-thumbnail" alt="..." width="150" height="150"></td>
+										<td><img src="${path}/resources/upload/${product.image_main_file }" class="img-thumbnail" alt="..." width="150" height="150"></td>
 										<td>${product.product_brand }</td>
 										<td><fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber> </td>
 										<td><fmt:formatNumber value="${product.product_amount }" pattern="#개"></fmt:formatNumber></td>
@@ -113,7 +106,11 @@
 										<td>
 										
 										<button type="button" class="btn btn-light" onclick="location.href ='ProductModifyForm.po?product_idx=${product.product_idx}'">수정</button>
-										<button type="button" class="btn btn-light" onclick= "deleteProduct(${product.product_idx})">삭제</button>
+<%-- 										<button type="button" class="btn btn-light" onclick= "deleteProduct(${product.product_idx})">삭제</button> --%>
+										<form action="ProductDeletePro.po" method="post">
+											<input type="hidden" name="product_idx" value="${product.product_idx}">
+											<input type="submit" class="btn btn-light" value="삭제">
+										</form>
 										</td>
 										</tr> 
 										</c:forEach>  

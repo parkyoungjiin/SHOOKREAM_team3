@@ -3,7 +3,8 @@
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
+<c:set var="path" value="${pageContext.request.contextPath }"/>
 
 
 <html lang="en">
@@ -15,7 +16,7 @@
 <!--         <meta name="author" content="" /> -->
         <title>상품수정 페이지</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-        <link href="admin/css/styles.css" rel="stylesheet" />
+        <link href="${path}/resources/css/styles.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -24,13 +25,14 @@
 		<script src = "../js/jquery-3.6.3.js"></script>
         <script type="text/javascript">
 			<%
-			String sId = (String)session.getAttribute("sId");
-			String id = request.getParameter("id");
-			if(sId == null || !sId.equals("admin")) { %>
-				alert("잘못된 접근입니다!")
-				location.href=history.back();
+// 			String sId = (String)session.getAttribute("sId");
+// 			String id = request.getParameter("id");
+// 			if(sId == null || !sId.equals("admin")) { 
+			%>
+// 				alert("잘못된 접근입니다!")
+// 				location.href=history.back();
 			<% 
-			} 
+// 			} 
 			%>
 		</script>		
 		<style type="text/css">
@@ -223,7 +225,25 @@
 
 
 					<tr>
+					<td>
+						<c:set vat="arrRealFile" value="${fn:split(image.image_real_file1, '/') }"/>
+				        <a href="upload/${image.image_real_file1 }" download="${image.image_main_file }">
+				            ${image.image_main_file }
+				        </a>
+					</td>
+<%-- 							<c:set var="arrRealFile" value="${fn:split(image.board_real_file, '/') }"/> --%>
+<%-- 						 		<c:forEach var="realFile" items="${arrRealFile}"> --%>
+<%-- 						 			<c:set var="nameLength" value="${fn:length(realFile) }"/> --%>
+<%-- 						 			<c:set var="indexOf_" value="${fn:indexOf(realFile, '_') }"/> --%>
+<%-- 						 			<c:set var="fileName" value="${fn:substring(realFile, indexOf_ + 1, nameLength) }"/> --%>
+<%-- 									컨텍스트 경로/resources/upload 디렉토리 내의 파일 지정 --%>
+<%-- 									<a href="${pageContext.request.contextPath }/resources/upload/${realFile }"> --%>
+<%-- 										${fileName }<br> --%>
+<!-- 									</a> -->
+<%-- 						 	</c:forEach> --%>
+					
 						<td width="100px" align="left" class="table-secondary">메인 이미지</td>
+<%-- 						<td><input type="file" name="file" >기존 메인 파일: <input type="text" value="${image.image_main_file }" width="100" name ="origin_file" readonly></td> --%>
 						<td><input type="file" name="file" >기존 메인 파일: <input type="text" value="${image.image_main_file }" width="100" name ="origin_file" readonly></td>
 					</tr>
 					<tr>

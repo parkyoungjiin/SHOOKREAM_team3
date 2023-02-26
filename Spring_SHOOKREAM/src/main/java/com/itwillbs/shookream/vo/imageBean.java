@@ -1,5 +1,8 @@
 package com.itwillbs.shookream.vo;
 
+import java.util.Arrays;
+
+import org.springframework.web.multipart.MultipartFile;
 
 
 public class imageBean {
@@ -12,7 +15,8 @@ private String image_main_file; // 섬네일 이미지
 private String image_real_file1; // 상세 이미지1
 private String image_real_file2;// 상세 이미지2
 private int order_idx; // 주문번호
-
+//만약, 복수개의 파일 업로드 시 MultipartFile 타입 배열로 선언
+private MultipartFile[] files;
 
 //---------------getter, setter-------------
 public int getImage_idx() {
@@ -63,14 +67,33 @@ public int getOrder_idx() {
 public void setOrder_idx(int order_idx) {
 	this.order_idx = order_idx;
 }
-//------------toString--------------
 
+//-------파일 업로드--------------
+public MultipartFile[] getFiles() {
+	return files;
+}
+public void setFiles(MultipartFile[] files) {
+	this.files = files;
+}
+
+//------------toString--------------
 @Override
 public String toString() {
 	return "imageBean [image_idx=" + image_idx + ", product_idx=" + product_idx + ", review_idx=" + review_idx
 			+ ", member_idx=" + member_idx + ", image_main_file=" + image_main_file + ", image_real_file1="
-			+ image_real_file1 + ", image_real_file2=" + image_real_file2 + ", order_idx=" + order_idx + "]";
+			+ image_real_file1 + ", image_real_file2=" + image_real_file2 + ", order_idx=" + order_idx + ", files="
+			+ Arrays.toString(files) + "]";
 }
+
+//@Override
+//public String toString() {
+//	return "imageBean [image_idx=" + image_idx + ", product_idx=" + product_idx + ", review_idx=" + review_idx
+//			+ ", member_idx=" + member_idx + ", image_main_file=" + image_main_file + ", image_real_file1="
+//			+ image_real_file1 + ", image_real_file2=" + image_real_file2 + ", order_idx=" + order_idx + "]";
+//}
+
+
+
 
 
 
