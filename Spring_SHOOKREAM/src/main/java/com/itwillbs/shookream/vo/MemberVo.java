@@ -2,7 +2,7 @@ package com.itwillbs.shookream.vo;
 
 import java.sql.Date;
 
-public class MemberBean {
+public class MemberVo {
 private int member_idx; //회원번호
 private String member_id; // 회원아이디
 private String member_name; // 회원 이름

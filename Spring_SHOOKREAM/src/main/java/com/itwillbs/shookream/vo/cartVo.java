@@ -1,7 +1,7 @@
 package com.itwillbs.shookream.vo;
 
 
-public class cartBean {
+public class cartVo {
 	
 	private int member_idx; 
 	private int product_idx; 

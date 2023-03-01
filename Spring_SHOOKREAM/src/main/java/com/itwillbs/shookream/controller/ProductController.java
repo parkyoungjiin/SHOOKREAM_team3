@@ -21,11 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.shookream.service.MemberService;
 import com.itwillbs.shookream.service.ProductService;
-import com.itwillbs.shookream.vo.MemberBean;
-import com.itwillbs.shookream.vo.OrderBean;
-import com.itwillbs.shookream.vo.ProductBean;
-import com.itwillbs.shookream.vo.WishBean;
-import com.itwillbs.shookream.vo.imageBean;
+import com.itwillbs.shookream.vo.MemberVo;
+import com.itwillbs.shookream.vo.OrderVo;
+import com.itwillbs.shookream.vo.ProductVo;
+import com.itwillbs.shookream.vo.WishVo;
+import com.itwillbs.shookream.vo.imageVo;
 
 @Controller
 public class ProductController {
@@ -46,8 +46,8 @@ public class ProductController {
 		
 		// "/ProductInsertPro.po" 비즈니스 로직 - 파일 업로드 기능 추가
 		@PostMapping(value = "/ProductInsertPro.po")
-		public String insertPro(@ModelAttribute ProductBean product,
-								@ModelAttribute imageBean image,
+		public String insertPro(@ModelAttribute ProductVo product,
+								@ModelAttribute imageVo image,
 								Model model,
 								HttpSession session) {
 
@@ -139,12 +139,12 @@ public class ProductController {
 							, Model model) {
 			
 			// product idx 조회하기
-			ProductBean product = service.getProduct(product_idx);
+			ProductVo product = service.getProduct(product_idx);
 			// idx 일치하는 정보 가져오기
 			model.addAttribute("product", product);
 			
 			
-			imageBean image =service.getImage(product_idx);
+			imageVo image =service.getImage(product_idx);
 			model.addAttribute("image", image);
 			
 			return "admin/admin_Product_ModifyForm";
@@ -152,8 +152,8 @@ public class ProductController {
 		
 		// "/ProductModifyPro.po" 비즈니스 로직
 		@PostMapping(value = "/ProductModifyPro.po")
-		public String ModifyPro(@RequestParam int product_idx, @ModelAttribute ProductBean product, 
-							Model model, @ModelAttribute imageBean image) {
+		public String ModifyPro(@RequestParam int product_idx, @ModelAttribute ProductVo product, 
+							Model model, @ModelAttribute imageVo image) {
 			System.out.println(product_idx);
 			System.out.println(product);
 			System.out.println(image);
@@ -195,7 +195,7 @@ public class ProductController {
 //			System.out.println("product : " + product);
 //			System.out.println("image : " + image);
 //			
-			List<ProductBean> productList = service.getProductList();
+			List<ProductVo> productList = service.getProductList();
 			model.addAttribute("productList", productList);
 //			System.out.println("productList" + productList);
 			
@@ -209,7 +209,7 @@ public class ProductController {
 		
 		
 		@PostMapping(value = "/ProductList.po")
-		public String productList(@ModelAttribute ProductBean product, HttpSession session, Model model) {
+		public String productList(@ModelAttribute ProductVo product, HttpSession session, Model model) {
 			String id = (String)session.getAttribute("sId");
 			
 			if(id == null || id.equals("") || !id.equals("admin")) { 
@@ -218,7 +218,7 @@ public class ProductController {
 			} else {//admin일 경우
 				// Service 객체의 getProductList() 메서드를 호출하여 전체 회원 목록 조회
 				// => 파라미터 : 없음   리턴타입 : List<ProductVO>(productList)
-				List<ProductBean> productList = service.getProductList();
+				List<ProductVo> productList = service.getProductList();
 				
 				// Model 객체에 "productList" 속성명으로 조회된 회원 목록(List 객체) 저장
 				model.addAttribute("productList", productList);
@@ -233,9 +233,9 @@ public class ProductController {
 	
 	@GetMapping(value = "/ProductInfoForm.po")
 	public String productInfo(
-			@ModelAttribute ProductBean product, 
-			@ModelAttribute WishBean wish, 
-			@ModelAttribute imageBean image,
+			@ModelAttribute ProductVo product, 
+			@ModelAttribute WishVo wish, 
+			@ModelAttribute imageVo image,
 			@RequestParam(defaultValue = "0") int product_idx,
 //			@RequestParam int member_idx,
 			Model model, HttpSession session) {
@@ -286,7 +286,7 @@ public class ProductController {
 		List<String> colorlist = service.getColorList(product.getProduct_name());
 		
 		//이미지 리스트 출력
-		List<imageBean> imagelist = service.getImageList(product.getProduct_name());
+		List<imageVo> imagelist = service.getImageList(product.getProduct_name());
 		System.out.println(imagelist);
 		
 		model.addAttribute("categorylist", categorylist);
@@ -301,10 +301,10 @@ public class ProductController {
 	// 주문 상세 페이지
 	@GetMapping(value = "/OrderDetailForm.po")
 	public String orderDetail(
-			@ModelAttribute ProductBean product, 
-			@ModelAttribute WishBean wish, 
-			@ModelAttribute imageBean image, 
-			@ModelAttribute MemberBean member, 
+			@ModelAttribute ProductVo product, 
+			@ModelAttribute WishVo wish, 
+			@ModelAttribute imageVo image, 
+			@ModelAttribute MemberVo member, 
 //			@RequestParam(defaultValue = "0") int product_idx,
 			Model model, HttpSession session) {
 		
@@ -330,7 +330,7 @@ public class ProductController {
 	
 	// 주매 구문
 	@PostMapping(value = "/ProductOrderPro.po")
-	public String orderPro(@ModelAttribute OrderBean order, Model model, HttpSession session) {
+	public String orderPro(@ModelAttribute OrderVo order, Model model, HttpSession session) {
 		
 		// 임시 값 지정 (추후 수정 필요)
 		int member_idx = 1;

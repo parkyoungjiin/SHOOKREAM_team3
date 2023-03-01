@@ -3,7 +3,13 @@
 <!-- mapper 태그 내에 namespace 속성 지정 후 Mapper 인터페이스 위치 지정 -->
 <mapper namespace="com.itwillbs.shookream.mapper.MemberMapper">
   
-  	<select id="selectMemberInfo" resultType="com.itwillbs.shookream.vo.MemberBean">
+  	<select id="getSelectPass" resultType="com.itwillbs.shookream.vo.MemberVo">
+  		SELECT member_idx, member_pass
+			FROM member
+			WHERE member_id = #{id}
+  	</select>
+  	
+  	<select id="selectMemberInfo" resultType="com.itwillbs.shookream.vo.MemberVo">
   		SELECT *
 			FROM member
 			WHERE member_id = #{id}

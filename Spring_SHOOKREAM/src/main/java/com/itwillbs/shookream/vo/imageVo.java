@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.springframework.web.multipart.MultipartFile;
 
 
-public class imageBean {
+public class imageVo {
 //----------멤버변수-------------
 private int image_idx; //이미지 번호
 private int product_idx; //이미지 번호

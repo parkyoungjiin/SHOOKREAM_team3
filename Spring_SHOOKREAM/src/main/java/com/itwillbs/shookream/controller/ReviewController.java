@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.itwillbs.shookream.service.MainService;
 import com.itwillbs.shookream.service.ReviewService;
-import com.itwillbs.shookream.vo.ProductBean;
+import com.itwillbs.shookream.vo.ProductVo;
 
 /**
  * Handles requests for the application home page.

@@ -6,9 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.itwillbs.shookream.vo.ProductBean;
-import com.itwillbs.shookream.vo.WishBean;
-import com.itwillbs.shookream.vo.imageBean;
+import com.itwillbs.shookream.vo.ProductVo;
+import com.itwillbs.shookream.vo.WishVo;
+import com.itwillbs.shookream.vo.imageVo;
 
 @Mapper
 public interface WishMapper {
@@ -20,7 +20,7 @@ public interface WishMapper {
 			@Param("member_idx")int member_idx, 
 			@Param("product_idx")int product_idx);
 
-	List<ProductBean> getWishList(
+	List<ProductVo> getWishList(
 			@Param("member_idx")int member_idx,
 			@Param("startRow")int startRow, 
 			@Param("listLimit")int listLimit

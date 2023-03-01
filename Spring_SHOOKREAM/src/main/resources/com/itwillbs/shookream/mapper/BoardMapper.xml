@@ -20,7 +20,7 @@ VALUES(
 )
 </insert>
 
-<select id="selectBoardList" resultType="com.itwillbs.shookream.vo.BoardBean">
+<select id="selectBoardList" resultType="com.itwillbs.shookream.vo.BoardVo">
 SELECT * 
 FROM notice
 WHERE notice_type = #{notice_type} AND notice_subject
@@ -42,7 +42,7 @@ WHERE notice_idx=#{notice_idx}
 
 </update>
 
-<select id="selectBoard" resultType="com.itwillbs.shookream.vo.BoardBean">
+<select id="selectBoard" resultType="com.itwillbs.shookream.vo.BoardVo">
 SELECT *
 FROM notice 
 WHERE notice_idx = #{notice_idx}

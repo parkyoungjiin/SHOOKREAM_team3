@@ -3,7 +3,7 @@ package com.itwillbs.shookream.vo;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-public class OrderBean {
+public class OrderVo {
 private int order_idx;
 private Timestamp order_date;
 private String order_category;

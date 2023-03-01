@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.shookream.mapper.ProductMapper;
-import com.itwillbs.shookream.vo.OrderBean;
-import com.itwillbs.shookream.vo.ProductBean;
-import com.itwillbs.shookream.vo.WishBean;
-import com.itwillbs.shookream.vo.imageBean;
+import com.itwillbs.shookream.vo.OrderVo;
+import com.itwillbs.shookream.vo.ProductVo;
+import com.itwillbs.shookream.vo.WishVo;
+import com.itwillbs.shookream.vo.imageVo;
 
 @Service
 public class ProductService {
@@ -19,18 +19,18 @@ public class ProductService {
 	
 	// 상품 등록 insertProduct() 메서드
 	// => 파라미터 : BoardVO 객체    리턴타입 : int(insertCount)
-	public int insertProduct(ProductBean product) {
+	public int insertProduct(ProductVo product) {
 		return mapper.insertProduct(product);
 	}
 	
 	// 상품 이미지 등록 insertProduct() 메서드
 	// => 파라미터 : BoardVO 객체    리턴타입 : int(insertCount)
-	public int insertImg(imageBean image, int product_idx) {
+	public int insertImg(imageVo image, int product_idx) {
 		return mapper.insertImage(image, product_idx);
 	}
 	
 	// 상품 수정 updateProduct() 메서드
-	public int updateProduct(int product_idx, ProductBean product, imageBean image) {
+	public int updateProduct(int product_idx, ProductVo product, imageVo image) {
 		return mapper.modifyProduct(product_idx, product, image);
 	}
 
@@ -39,11 +39,11 @@ public class ProductService {
 		return mapper.removeProduct(product_idx);
 	}
 	// 상품 목록 조회 - getProductList()
-	public List<ProductBean> getProductList() {
+	public List<ProductVo> getProductList() {
 		return mapper.selectProductList();
 	}
 	// 이미지 목록 조회 
-	public imageBean getImgList(int product_idx) {
+	public imageVo getImgList(int product_idx) {
 		return mapper.selectImgList(product_idx);
 	}
 
@@ -51,16 +51,16 @@ public class ProductService {
 		return mapper.selectMemberIdx(sId);
 	}
 
-	public WishBean getWishInfo(int product_idx, int member_idx) {
+	public WishVo getWishInfo(int product_idx, int member_idx) {
 		return mapper.selectWish(product_idx, member_idx);
 		
 	}
 
-	public ProductBean getProduct(int product_idx) {
+	public ProductVo getProduct(int product_idx) {
 		return mapper.selectProduct(product_idx);
 	}
 
-	public imageBean getImage(int product_idx) {
+	public imageVo getImage(int product_idx) {
 		return mapper.selectImage(product_idx);
 	}
 
@@ -72,11 +72,11 @@ public class ProductService {
 		return mapper.selectColorList(product_name);
 	}
 
-	public List<imageBean> getImageList(String product_name) {
+	public List<imageVo> getImageList(String product_name) {
 		return mapper.selectImageList(product_name);
 	}
 
-	public boolean InsertOrder(OrderBean order) {
+	public boolean InsertOrder(OrderVo order) {
 		return mapper.insertOrder(order);
 	}
 
