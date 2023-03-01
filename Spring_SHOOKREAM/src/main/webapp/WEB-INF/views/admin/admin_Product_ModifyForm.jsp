@@ -226,7 +226,7 @@
 
 					<tr>
 					<td>
-						<c:set vat="arrRealFile" value="${fn:split(image.image_real_file1, '/') }"/>
+						<c:set var="arrRealFile" value="${fn:split(image.image_real_file1, '/') }"/>
 				        <a href="upload/${image.image_real_file1 }" download="${image.image_main_file }">
 				            ${image.image_main_file }
 				        </a>
