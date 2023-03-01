@@ -2,14 +2,14 @@ package com.itwillbs.shookream.vo;
 
 import java.sql.Date;
 
-public class MemberCouponBean {
+public class CouponVo {
 	private int coupon_idx;
-	private int member_idx;
 	private String coupon_name;
 	private int coupon_price;
 	private String coupon_content;
 	private String coupon_start;
 	private String coupon_end;
+	private Date coupon_date;
 	private int coupon_isUse;
 	
 	
@@ -37,7 +37,12 @@ public class MemberCouponBean {
 	public void setCoupon_price(int coupon_price) {
 		this.coupon_price = coupon_price;
 	}
-	
+	public String getCoupon_content() {
+		return coupon_content;
+	}
+	public void setCoupon_content(String coupon_content) {
+		this.coupon_content = coupon_content;
+	}
 	public String getCoupon_start() {
 		return coupon_start;
 	}
@@ -50,29 +55,18 @@ public class MemberCouponBean {
 	public void setCoupon_end(String coupon_end) {
 		this.coupon_end = coupon_end;
 	}
-	public int getMember_idx() {
-		return member_idx;
+	public Date getCoupon_date() {
+		return coupon_date;
 	}
-	public void setMember_idx(int member_idx) {
-		this.member_idx = member_idx;
-	}
-	public String getCoupon_content() {
-		return coupon_content;
-	}
-	public void setCoupon_content(String coupon_content) {
-		this.coupon_content = coupon_content;
+	public void setCoupon_date(Date coupon_date) {
+		this.coupon_date = coupon_date;
 	}
 	@Override
 	public String toString() {
-		return "MemberCouponBean [coupon_idx=" + coupon_idx + ", member_idx=" + member_idx + ", coupon_name="
-				+ coupon_name + ", coupon_price=" + coupon_price + ", coupon_content=" + coupon_content
-				+ ", coupon_start=" + coupon_start + ", coupon_end=" + coupon_end + ", coupon_isUse=" + coupon_isUse
+		return "CouponBean [coupon_idx=" + coupon_idx + ", coupon_name=" + coupon_name + ", coupon_price="
+				+ coupon_price + ", coupon_content=" + coupon_content + ", coupon_start=" + coupon_start
+				+ ", coupon_end=" + coupon_end + ", coupon_date=" + coupon_date + ", coupon_isUse=" + coupon_isUse
 				+ "]";
 	}
-	
-	
-	
-	
-	
 	
 }

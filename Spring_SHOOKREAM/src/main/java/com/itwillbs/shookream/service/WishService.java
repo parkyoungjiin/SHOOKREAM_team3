@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.itwillbs.shookream.mapper.WishMapper;
-import com.itwillbs.shookream.vo.ProductBean;
-import com.itwillbs.shookream.vo.WishBean;
-import com.itwillbs.shookream.vo.imageBean;
+import com.itwillbs.shookream.vo.ProductVo;
+import com.itwillbs.shookream.vo.WishVo;
+import com.itwillbs.shookream.vo.imageVo;
 
 @Service
 public class WishService {
@@ -27,7 +27,7 @@ public class WishService {
 		return mapper.DeleteWish(member_idx,product_idx);
 	}
 
-	public List<ProductBean> getWishList(int startRow, int listLimit, int member_idx) {
+	public List<ProductVo> getWishList(int startRow, int listLimit, int member_idx) {
 		return mapper.getWishList(startRow,listLimit,member_idx);
 	}
 	public int getWishListCount(int member_idx) {

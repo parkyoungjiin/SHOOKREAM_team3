@@ -2,7 +2,7 @@ package com.itwillbs.shookream.vo;
 
 import java.util.Objects;
 
-public class AuthBean {
+public class AuthVo {
 
 	private String auth_id;
 	private String auth_authCode;

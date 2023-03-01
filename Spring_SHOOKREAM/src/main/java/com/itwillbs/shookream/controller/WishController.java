@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.shookream.service.WishService;
 import com.itwillbs.shookream.vo.PageInfo;
-import com.itwillbs.shookream.vo.ProductBean;
-import com.itwillbs.shookream.vo.WishBean;
-import com.itwillbs.shookream.vo.imageBean;
+import com.itwillbs.shookream.vo.ProductVo;
+import com.itwillbs.shookream.vo.WishVo;
+import com.itwillbs.shookream.vo.imageVo;
 
 /**
  * Handles requests for the application home page.
@@ -101,7 +101,7 @@ public class WishController {
 		int listLimit = 10; // 한 페이지에서 표시할 게시물 목록을 10개로 제한
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행번호 계산
 
-		List<ProductBean> wishlist = service.getWishList(member_idx,startRow, listLimit);
+		List<ProductVo> wishlist = service.getWishList(member_idx,startRow, listLimit);
 		
 		int listCount = service.getWishListCount(member_idx);
 		int pageListLimit = 10; // 한 페이지에서 표시할 페이지 목록을 3개로 제한

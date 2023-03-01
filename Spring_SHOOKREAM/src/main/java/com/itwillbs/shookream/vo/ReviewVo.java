@@ -2,7 +2,7 @@ package com.itwillbs.shookream.vo;
 
 import java.sql.Date;
 
-public class ReviewBean {
+public class ReviewVo {
 	private int review_idx; //리뷰 번호
 	private int product_idx; // 리뷰가 작성되는 상품 번호
 	private int member_idx; // 리뷰작성하는 멤버

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.shookream.service.MainService;
 import com.itwillbs.shookream.vo.PageInfo;
-import com.itwillbs.shookream.vo.ProductBean;
+import com.itwillbs.shookream.vo.ProductVo;
 
 /**
  * Handles requests for the application home page.
@@ -27,7 +27,7 @@ public class MainController {
 	private MainService service;
 	//-----------------------메인 페이지--------------------------------
 	@RequestMapping(value = "/main.ma", method = RequestMethod.GET)
-	public String main(Model model, HttpServletRequest request, ProductBean product) {
+	public String main(Model model, HttpServletRequest request, ProductVo product) {
 		int listLimit = 16; // 한 페이지에서 표시할 게시물 목록을 10개로 제한
 		int pageNum = 1; // 현재 페이지 번호 설정(pageNum 파라미터 사용)
 		
@@ -38,11 +38,11 @@ public class MainController {
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행번호 계산
 		
 		// 베스트 상품 가져오기
-		List<ProductBean> productBestList = service.getProductBestList(startRow, listLimit);
+		List<ProductVo> productBestList = service.getProductBestList(startRow, listLimit);
 		model.addAttribute("productBestList", productBestList);
 		
 		// 최근 등록 상품 가져오기
-		List<ProductBean> productNewList = service.getProductNewList(startRow, listLimit);
+		List<ProductVo> productNewList = service.getProductNewList(startRow, listLimit);
 		model.addAttribute("productNewList", productNewList);
 		
 		return "main";
@@ -50,7 +50,7 @@ public class MainController {
 	
 	//---------------------Best 페이지--------------------------
 	@GetMapping(value = "Best.ma")
-	public String best(Model model, HttpServletRequest request, ProductBean product) {
+	public String best(Model model, HttpServletRequest request, ProductVo product) {
 		// 페이징 처리를 위한 변수 선언
 		int listLimit = 16; // 한 페이지에서 표시할 게시물 목록을 10개로 제한
 		int pageNum = 1; // 현재 페이지 번호 설정(pageNum 파라미터 사용)
@@ -61,7 +61,7 @@ public class MainController {
 
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행번호 계산
 		
-		List<ProductBean> productBestList = service.getProductBestList(startRow, listLimit);
+		List<ProductVo> productBestList = service.getProductBestList(startRow, listLimit);
 		model.addAttribute("productBestList", productBestList);
 		
 		// ------------------페이징 처리----------------------
@@ -98,7 +98,7 @@ public class MainController {
 	
 //------------------------------New(최근 상품) 페이지--------------------------------------
 	@GetMapping(value = "New.ma")
-	public String New(Model model, HttpServletRequest request, ProductBean product) {
+	public String New(Model model, HttpServletRequest request, ProductVo product) {
 		// 페이징 처리를 위한 변수 선언
 				int listLimit = 16; // 한 페이지에서 표시할 게시물 목록을 10개로 제한
 				int pageNum = 1; // 현재 페이지 번호 설정(pageNum 파라미터 사용)
@@ -109,7 +109,7 @@ public class MainController {
 			
 				int startRow = (pageNum - 1) * listLimit; // 조회 시작 행번호 계산
 				
-				List<ProductBean> productNewList = service.getProductNewList(startRow, listLimit);
+				List<ProductVo> productNewList = service.getProductNewList(startRow, listLimit);
 				model.addAttribute("productNewList", productNewList);
 				
 				// ------------------페이징 처리----------------------
@@ -146,7 +146,7 @@ public class MainController {
 	
 //------------------------------Sale 페이지--------------------------------------
 	@GetMapping(value = "Sale.ma")
-	public String sale(Model model, HttpServletRequest request, ProductBean product) {
+	public String sale(Model model, HttpServletRequest request, ProductVo product) {
 		// 페이징 처리를 위한 변수 선언
 		int listLimit = 16; // 한 페이지에서 표시할 게시물 목록을 10개로 제한
 		int pageNum = 1; // 현재 페이지 번호 설정(pageNum 파라미터 사용)
@@ -157,7 +157,7 @@ public class MainController {
 	
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행번호 계산
 		
-		List<ProductBean> productSaleList = service.getProductSaleList(startRow, listLimit);
+		List<ProductVo> productSaleList = service.getProductSaleList(startRow, listLimit);
 		model.addAttribute("productSaleList", productSaleList);
 		
 		// ------------------페이징 처리----------------------
@@ -207,7 +207,7 @@ public class MainController {
 
 			if (cg != null) { // 브랜드별 카테고리 이동
 
-				List<ProductBean> productList = service.getProductCGList(cg, startRow, listLimit);
+				List<ProductVo> productList = service.getProductCGList(cg, startRow, listLimit);
 				model.addAttribute("productList", productList);
 				
 				int listCount = service.getProductCgListCount(cg);
@@ -233,7 +233,7 @@ public class MainController {
 			
 	//----------------------------------검색창(Keyword)----------------------------------------
 	@GetMapping(value = "keyword.ma")
-	public String search(@RequestParam("keyword") String keyword, Model model, HttpServletRequest request, ProductBean product) {
+	public String search(@RequestParam("keyword") String keyword, Model model, HttpServletRequest request, ProductVo product) {
 		
 		
 		
@@ -247,7 +247,7 @@ public class MainController {
 	
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행번호 계산
 		
-		List<ProductBean> productList = service.getProductSearchList(keyword, startRow, listLimit);
+		List<ProductVo> productList = service.getProductSearchList(keyword, startRow, listLimit);
 		model.addAttribute("productList", productList);
 		
 		// ------------------페이징 처리----------------------

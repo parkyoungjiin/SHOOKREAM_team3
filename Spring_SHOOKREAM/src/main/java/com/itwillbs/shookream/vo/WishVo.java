@@ -1,6 +1,6 @@
 package com.itwillbs.shookream.vo;
 
-public class WishBean {
+public class WishVo {
 	private int wish_idx;
 	private int member_idx;
 	private int product_idx;

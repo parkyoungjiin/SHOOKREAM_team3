@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.shookream.service.BoardService;
-import com.itwillbs.shookream.vo.BoardBean;
+import com.itwillbs.shookream.vo.BoardVo;
 import com.itwillbs.shookream.vo.PageInfo;
 
 
@@ -37,7 +37,7 @@ public class BoardController {
 	}
 	//---------------------게시판 등록 작업-------------------------
 	@PostMapping("/BoardWritePro.bo")
-	public String writePro(@ModelAttribute BoardBean board, Model model, HttpSession session ,@RequestParam String notice_type) {
+	public String writePro(@ModelAttribute BoardVo board, Model model, HttpSession session ,@RequestParam String notice_type) {
 		int isWriteSuccess = service.insertCount(board);
 		System.out.println(board);
 		
@@ -51,7 +51,7 @@ public class BoardController {
 	}// 게시판 등록 작업 끝
 	//-------------공지 목록 -----------
 	@GetMapping("/BoardList.bo")
-	public String list(@ModelAttribute BoardBean board,@RequestParam(defaultValue = "1") int pageNum, String keyword, Model model ) {
+	public String list(@ModelAttribute BoardVo board,@RequestParam(defaultValue = "1") int pageNum, String keyword, Model model ) {
 		
 		int listLimit = 10;
 		int startRow = (pageNum - 1) * listLimit;
@@ -60,7 +60,7 @@ public class BoardController {
 		if(keyword ==null) {
 			keyword="";
 		}
-		List<BoardBean> boardList= service.getBoardList(keyword, startRow, listLimit, notice_type);
+		List<BoardVo> boardList= service.getBoardList(keyword, startRow, listLimit, notice_type);
 		int listCount = service.getBoardListCount(keyword,notice_type);
 		System.out.println(boardList);
 		
@@ -85,7 +85,7 @@ public class BoardController {
 	//공지 목록 끝
 	//--------------공지 상세정보 --------------
 	@GetMapping("/BoardInfo.bo")
-	public String info(@ModelAttribute BoardBean board, @RequestParam(defaultValue="1") int notice_idx, boolean isUpdateReadCount, Model model) {
+	public String info(@ModelAttribute BoardVo board, @RequestParam(defaultValue="1") int notice_idx, boolean isUpdateReadCount, Model model) {
 		
 		 board = service.getBoard(notice_idx,true);
 		if(board != null && isUpdateReadCount) {
@@ -100,7 +100,7 @@ public class BoardController {
 	
 	//--------공지 정보 수정----------
 	@GetMapping("/BoardModifyForm.bo")
-	public String modifyform(@ModelAttribute BoardBean board, @RequestParam(defaultValue = "1") int notice_idx,@RequestParam(defaultValue = "1") int board_num,Model model) {
+	public String modifyform(@ModelAttribute BoardVo board, @RequestParam(defaultValue = "1") int notice_idx,@RequestParam(defaultValue = "1") int board_num,Model model) {
 		board= service.getBoard(notice_idx,false);
 //		System.out.println(board);
 		
@@ -109,7 +109,7 @@ public class BoardController {
 	}// 공지 정보수정폼
 	
 	@PostMapping("/BoardModifyPro.bo")
-	public String modifyPro(@ModelAttribute BoardBean board, Model model, int pageNum) {
+	public String modifyPro(@ModelAttribute BoardVo board, Model model, int pageNum) {
 		System.out.println(board);
 		int updatecount = service.modifyBoard(board);
 		
@@ -131,7 +131,7 @@ public class BoardController {
 	
 	
 	@GetMapping("/BoardDeletePro.bo")
-	public String deletePro(@ModelAttribute BoardBean board, Model model,
+	public String deletePro(@ModelAttribute BoardVo board, Model model,
 						@RequestParam(defaultValue="1") String notice_type, 
 						@RequestParam(defaultValue="1") int notice_idx, 
 						@RequestParam(defaultValue="1") int pageNum) {
@@ -148,7 +148,7 @@ public class BoardController {
 	}
 	
 	@GetMapping("/FAQList.bo")
-	public String FAQList(@ModelAttribute BoardBean board , @RequestParam(defaultValue = "1") int pageNum , String keyword, Model model) {
+	public String FAQList(@ModelAttribute BoardVo board , @RequestParam(defaultValue = "1") int pageNum , String keyword, Model model) {
 		int listLimit =10;
 		pageNum =1;
 		int startRow = (pageNum -1) * listLimit;
@@ -157,7 +157,7 @@ public class BoardController {
 			keyword ="";
 		}
 		String type ="FAQ";
-		List<BoardBean> boardList = service.getBoardList(keyword, startRow, listLimit, type);
+		List<BoardVo> boardList = service.getBoardList(keyword, startRow, listLimit, type);
 		int listCount = service.getBoardListCount(keyword, type);
 
 		int pageListLimit =3;
@@ -179,7 +179,7 @@ public class BoardController {
 	}
 	
 	@GetMapping("/FAQInfo.bo")
-	public String FAQInfo(@ModelAttribute BoardBean board, Model model, @RequestParam(defaultValue = "1") int notice_idx , boolean isUpdateReadCount) {
+	public String FAQInfo(@ModelAttribute BoardVo board, Model model, @RequestParam(defaultValue = "1") int notice_idx , boolean isUpdateReadCount) {
 		board = service.getBoard(notice_idx, true);
 		if(board != null && isUpdateReadCount) {
 			int updateCount = service.updateReadcount(notice_idx);
@@ -193,7 +193,7 @@ public class BoardController {
 	}
 	
 	@GetMapping("/FAQModifyForm.bo")
-	public String FAQmodify(@ModelAttribute BoardBean board, @RequestParam(defaultValue = "1") int notice_idx,@RequestParam(defaultValue = "1") int board_num,Model model) {
+	public String FAQmodify(@ModelAttribute BoardVo board, @RequestParam(defaultValue = "1") int notice_idx,@RequestParam(defaultValue = "1") int board_num,Model model) {
 		board= service.getBoard(notice_idx,false);
 //		System.out.println(board);
 		
@@ -202,7 +202,7 @@ public class BoardController {
 	}
 	
 	@PostMapping("/FAQModifyPro.bo")
-	public String FAQmodifyPro(@ModelAttribute BoardBean board, Model model, int pageNum) {
+	public String FAQmodifyPro(@ModelAttribute BoardVo board, Model model, int pageNum) {
 		System.out.println(board);
 		int updatecount = service.modifyBoard(board);
 		
@@ -221,7 +221,7 @@ public class BoardController {
 	}
 	
 	@GetMapping("/FAQDeletePro.bo")
-	public String FAQDeletePro(@ModelAttribute BoardBean board, Model model,
+	public String FAQDeletePro(@ModelAttribute BoardVo board, Model model,
 						@RequestParam(defaultValue="1") String notice_type, 
 						@RequestParam(defaultValue="1") int notice_idx, 
 						@RequestParam(defaultValue="1") int pageNum) {

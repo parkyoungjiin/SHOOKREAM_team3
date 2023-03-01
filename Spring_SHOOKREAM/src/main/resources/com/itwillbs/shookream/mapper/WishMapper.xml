@@ -21,7 +21,7 @@
 			WHERE member_idx=#{member_idx} AND product_idx=#{product_idx}
 	</delete>
 	
-	<select id="getWishList" resultType="com.itwillbs.shookream.vo.ProductBean">
+	<select id="getWishList" resultType="com.itwillbs.shookream.vo.ProductVo">
 		SELECT w.wish_idx, i.image_main_file,m.member_id,p.product_price,p.product_name,
 					p.product_brand,p.product_size,p.product_color,p.product_idx 
 					FROM wish w JOIN product p JOIN member m JOIN image i

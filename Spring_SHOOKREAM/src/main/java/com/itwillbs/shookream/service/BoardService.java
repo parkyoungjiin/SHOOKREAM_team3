@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.shookream.mapper.BoardMapper;
-import com.itwillbs.shookream.vo.BoardBean;
+import com.itwillbs.shookream.vo.BoardVo;
 
 @Service
 public class BoardService {
@@ -15,12 +15,12 @@ public class BoardService {
 	private BoardMapper mapper;
 
 
-	public int insertCount(BoardBean board) {
+	public int insertCount(BoardVo board) {
 		return mapper.insertBoard(board);
 	}
 
 
-	public List<BoardBean> getBoardList(String keyword, int startRow, int listLimit , String type) {
+	public List<BoardVo> getBoardList(String keyword, int startRow, int listLimit , String type) {
 		return mapper.selectBoardList(keyword, startRow, listLimit, type);
 	}
 
@@ -31,7 +31,7 @@ public class BoardService {
 	}
 
 
-	public BoardBean getBoard(int notice_idx, boolean isUpdateReadCount) {
+	public BoardVo getBoard(int notice_idx, boolean isUpdateReadCount) {
 		int updateCount = mapper.updateReadcount(notice_idx);
 		
 		if(updateCount > 0) { 
@@ -46,7 +46,7 @@ public class BoardService {
 	}
 
 
-	public int modifyBoard(BoardBean board) {
+	public int modifyBoard(BoardVo board) {
 		
 		return mapper.updateBoard(board);
 	}

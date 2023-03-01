@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 
 import org.springframework.web.multipart.MultipartFile;
-public class ProductBean {
+public class ProductVo {
 //----------멤버변수-------------
 private int product_idx; //상품번호
 private String product_name; // 상품 이름

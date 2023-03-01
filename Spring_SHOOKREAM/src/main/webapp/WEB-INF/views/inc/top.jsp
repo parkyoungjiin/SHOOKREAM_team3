@@ -10,6 +10,18 @@ font-size: 70%;
 }
 </style>
 <script src="https://kit.fontawesome.com/ca93809e69.js" crossorigin="anonymous"></script>
+<script>
+	function logout() {
+		let isLogout = confirm("로그아웃 하시겠습니까?");
+		
+		if(isLogout) {
+			location.href = "EmpLogout.em";
+		}else{
+			
+		}
+	}
+</script>
+
 </head>
 
 
@@ -42,12 +54,12 @@ font-size: 70%;
 		 <div class="w3-dropdown-click" id="logintvar">
 		 <i class="fa-solid fa-user fa-sm" onmouseover="myFunction()" onclick="location.href='MemberMyPage.me?id=${sessionScope.sId }&member_idx=${member_idx }'" style="margin: 10px;"></i>
 		  <div id="Demo" class="w3-dropdown-content w3-bar-block w3-border">
-		    <a href="MemberLogout.me"  class="w3-bar-item w3-button">로그아웃</a>
+		    <button type="button" class="w3-bar-item w3-button" onclick="logout()">로그아웃</button>
 		    <a href="BoardList.bo" class="w3-bar-item w3-button">고객센터</a>
 		    
 		    <c:choose>
 		    	<c:when test="${sessionScope.sId eq 'admin' }">
-		    		<a href="Admin.ad?id=${sessionScope.sId }" class="w3-bar-item w3-button">관리자 페이지</a>
+		    		<a href="admin.ad" class="w3-bar-item w3-button">관리자 페이지</a>
 		    	</c:when>
 		    </c:choose>
 		    </div>

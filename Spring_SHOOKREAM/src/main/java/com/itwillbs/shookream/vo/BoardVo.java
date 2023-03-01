@@ -2,7 +2,7 @@ package com.itwillbs.shookream.vo;
 
 import java.sql.Date;
 
-public class BoardBean {
+public class BoardVo {
 
 	private int notice_idx;
 	private String notice_category;

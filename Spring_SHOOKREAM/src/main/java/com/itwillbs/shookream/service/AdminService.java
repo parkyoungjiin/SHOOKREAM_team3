@@ -1,15 +1,12 @@
 package com.itwillbs.shookream.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.itwillbs.shookream.mapper.MainMapper;
-import com.itwillbs.shookream.vo.ProductVo;
+import com.itwillbs.shookream.mapper.AdminMapper;
 
 @Service
-public class ReviewService {
-	
-	
+public class AdminService {
+	@Autowired
+	private AdminMapper maper;
 }
