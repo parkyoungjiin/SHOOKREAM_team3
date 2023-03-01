@@ -15,7 +15,7 @@ font-size: 70%;
 		let isLogout = confirm("로그아웃 하시겠습니까?");
 		
 		if(isLogout) {
-			location.href = "EmpLogout.em";
+			location.href = "MemberLogout.me";
 		}else{
 			
 		}
