@@ -108,6 +108,7 @@ public class BoardController {
 		return"admin/board_modify_form";
 	}// 공지 정보수정폼
 	
+
 	@PostMapping("/BoardModifyPro.bo")
 	public String modifyPro(@ModelAttribute BoardVo board, Model model, int pageNum) {
 		System.out.println(board);
@@ -129,7 +130,7 @@ public class BoardController {
 		
 	}
 	
-	
+	//-------공지 삭제 -------
 	@GetMapping("/BoardDeletePro.bo")
 	public String deletePro(@ModelAttribute BoardVo board, Model model,
 						@RequestParam(defaultValue="1") String notice_type, 
@@ -145,8 +146,9 @@ public class BoardController {
 		}
 		
 			return "admin/admin_FAQ_manage";
-	}
+	} //삭제 끝
 	
+	//------자주묻는 질문 ------
 	@GetMapping("/FAQList.bo")
 	public String FAQList(@ModelAttribute BoardVo board , @RequestParam(defaultValue = "1") int pageNum , String keyword, Model model) {
 		int listLimit =10;
@@ -176,8 +178,9 @@ public class BoardController {
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("page", page);
 		return "board/FAQ_list";
-	}
+	} //자주묻는질문 끝
 	
+	//------- 자주묻는질문 상세 -------
 	@GetMapping("/FAQInfo.bo")
 	public String FAQInfo(@ModelAttribute BoardVo board, Model model, @RequestParam(defaultValue = "1") int notice_idx , boolean isUpdateReadCount) {
 		board = service.getBoard(notice_idx, true);
@@ -190,8 +193,9 @@ public class BoardController {
 		model.addAttribute("board",board);
 		return "board/FAQ_detail";
 		
-	}
+	} //자주 묻는 질문 상세 끝
 	
+	//------ 게시판 수정 ------
 	@GetMapping("/FAQModifyForm.bo")
 	public String FAQmodify(@ModelAttribute BoardVo board, @RequestParam(defaultValue = "1") int notice_idx,@RequestParam(defaultValue = "1") int board_num,Model model) {
 		board= service.getBoard(notice_idx,false);
@@ -219,7 +223,9 @@ public class BoardController {
 		}
 		return "redirect:/FAQ_list";
 	}
+	//게시판 수정 끝 
 	
+	//-----자주묻는질문 삭제 ------
 	@GetMapping("/FAQDeletePro.bo")
 	public String FAQDeletePro(@ModelAttribute BoardVo board, Model model,
 						@RequestParam(defaultValue="1") String notice_type, 
@@ -236,6 +242,7 @@ public class BoardController {
 		
 			return "board/FAQ_list";
 	}
+	//자주묻는질문 삭제 끝
 }
 		
 	
