@@ -21,9 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.shookream.service.MemberService;
 import com.itwillbs.shookream.service.ProductService;
+import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.OrderVo;
 import com.itwillbs.shookream.vo.ProductVo;
+import com.itwillbs.shookream.vo.ReviewVo;
 import com.itwillbs.shookream.vo.WishVo;
 import com.itwillbs.shookream.vo.imageVo;
 
@@ -37,6 +39,7 @@ public class ProductController {
 	private MemberService service_member;
 	
 	
+	// 상품 상세 정보
 	@GetMapping(value = "/ProductInfoForm.po")
 	public String productInfo(
 			@ModelAttribute ProductVo product, 
@@ -51,7 +54,6 @@ public class ProductController {
 //		int product_idx = 2;
 		
 		// ================= wish 정보 조회 ====================
-		// 임시 값 지정 (추후 수정 필요)
 		String sId = (String)session.getAttribute("sId");
 //		String sId = "admin";
 		
@@ -100,6 +102,12 @@ public class ProductController {
 		model.addAttribute("imagelist", imagelist);
 		// ======================================================
 		
+		// ================= 리뷰 조회 =====================
+		List<ReviewVo> reviewList = service.getReviewList(product.getProduct_idx());
+		
+		model.addAttribute("reviewList", reviewList);
+		// ======================================================
+		
 		
 		return "product/Product_info";
 	}
@@ -111,15 +119,15 @@ public class ProductController {
 			@ModelAttribute WishVo wish, 
 			@ModelAttribute imageVo image, 
 			@ModelAttribute MemberVo member, 
-//			@RequestParam(defaultValue = "0") int product_idx,
+			@RequestParam(defaultValue = "0") int product_idx,
 			Model model, HttpSession session) {
 		
 		// 임시 값 지정 (추후 수정 필요)
-		int product_idx = 2;
-		int member_idx = 1;
-		String sId = "admin";
+//		int product_idx = 2;
+//		int member_idx = 1;
+//		String sId = "admin";
 		
-//		String sId = (String)session.getAttribute("sId");		
+		String sId = (String)session.getAttribute("sId");		
 //		// 로그인 후 session 에 member_idx 저장할 시 불필요한 과정
 //		int member_idx = service.getMemberIdx(sId);
 		
@@ -135,23 +143,74 @@ public class ProductController {
 	}
 	
 	// 주매 구문
-	@PostMapping(value = "/ProductOrderPro.po")
-	public String orderPro(@ModelAttribute OrderVo order, Model model, HttpSession session) {
+	@GetMapping(value = "/ProductOrderPro.po")
+	public String orderPro(@ModelAttribute OrderVo order, Model model, 
+			@RequestParam(defaultValue = "0") int coupon_idx,
+			@RequestParam(defaultValue = "0") int product_idx,
+			@RequestParam(defaultValue = "0") int product_price,
+			HttpSession session) {
 		
-		// 임시 값 지정 (추후 수정 필요)
-		int member_idx = 1;
+		String sId = (String)session.getAttribute("sId");		
+		int member_idx = service.getMemberIdx(sId);
 		order.setOrder_member_idx(member_idx);
+		order.setOrder_product_idx(product_idx);
+		order.setOrder_product_price(product_price);
 		
-		// 임시 값 지정 (추후 수정 필요)
+		// 쿠폰 임시 값 지정 (추후 수정 필요)
 		if(model.getAttribute("coupon_idx") != "") {
-			order.setOrder_coupon_idx(1);
+			order.setOrder_coupon_idx(coupon_idx);
 		}
 		
-		boolean result = service.InsertOrder(order);
+		System.out.println("구매 order : " + order);
 		
+		int insertOrder = service.InsertOrder(order);
 		
+		if(insertOrder > 0) {
+			int insertOrder2 = service.InsertOrderDetail(order);
+			 
+			if(insertOrder2 > 0) {
+				service.updatePro(order);
+				service.updateMem(order);
+			}
+			
+			return "redirect:/ProductOrderList.po?member_idx"+member_idx;
+			
+		} else {
+			
+			model.addAttribute("msg", "일시적 오류로 구매에 실패했습니다.");
+			return "fail_back";
+		}
 		
-		return "redirect:/ProductOrderList.po";
 	}
 	
+	
+	// 회원별 쿠폰 리스트
+	@GetMapping(value = "/CouponListForm.po")
+	public String CouponList(Model model, HttpSession session) {
+		
+		String sId = (String)session.getAttribute("sId");		
+		int member_idx = service.getMemberIdx(sId);
+		
+		List<CouponVo> couponList = service.getCouponList(member_idx);
+		
+		model.addAttribute("couponList", couponList);
+		
+		return "product/Product_couponlist";
+	}
+	
+	
+	// 회원 주문 목록
+	@GetMapping(value = "/ProductOrderList.po")
+	public String OrderList(Model model, HttpSession session) {
+		
+		String sId = (String)session.getAttribute("sId");		
+		int member_idx = service.getMemberIdx(sId);
+		
+		List<OrderVo> orderList = service.getOrderList(member_idx);
+		
+		model.addAttribute("orderList", orderList);
+		
+		return "product/Product_orderlist";
+	}
+			
 }
