@@ -127,18 +127,18 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
     </tr>
   </thead>
   <tbody id="tableList">
-    <c:forEach var="order" items="${orderlist }">
+    <c:forEach var="order" items="${orderList }">
     <tr>
       <td>${order.order_idx }</td>
-      <td><img src="upload/${order.order_main_image }"  alt="없음!" class="img-thumbnail" width="150" height="150"></td>
-      <td>${order.order_product_name }</td>
-      <td>${order.order_product_size }</td>
-      <td>${order.order_product_color }</td>
-      <td>${order.order_product_price }</td>
+      <td><img src="upload/${order.image_main_file }"  alt="없음!" class="img-thumbnail" width="150" height="150"></td>
+      <td>${order.product_name }</td>
+      <td>${order.product_size }</td>
+      <td>${order.product_color }</td>
+      <td>${order.order_price }</td>
       <td>${order.order_category }</td>
 <%--       <td>${order.order_member_id }</td> --%>
       <td><fmt:formatDate value="${order.order_date }" pattern="yyyy-MM-DD"/></td>
-	  <td><input type="button" value="리뷰 작성하기" class="btn btn-dark" onclick="reviewForm(${order.order_product_idx },'${order.order_product_size }','${order.order_product_color }','${order.order_product_name }')">
+	  <td><input type="button" value="리뷰 작성하기" class="btn btn-dark" onclick="reviewForm(${order.product_idx },'${order.product_size }','${order.product_color }','${order.product_name }')">
 <%--       <button type="button" class="btn btn-dark" onclick="deleteOrder(${order.order_idx})">삭제</button></td> --%>
     </tr>
     </c:forEach>

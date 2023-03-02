@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.shookream.mapper.ProductMapper;
+import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.OrderVo;
 import com.itwillbs.shookream.vo.ProductVo;
+import com.itwillbs.shookream.vo.ReviewVo;
 import com.itwillbs.shookream.vo.WishVo;
 import com.itwillbs.shookream.vo.imageVo;
 
@@ -16,13 +18,15 @@ public class ProductService {
 	@Autowired
 	private ProductMapper mapper;
 	
+	
+	// ====================== 채휘 ===========================
 	public int getMemberIdx(String sId) {
 		return mapper.selectMemberIdx(sId);
 	}
 
+	// 상품 상세 조회
 	public WishVo getWishInfo(int product_idx, int member_idx) {
 		return mapper.selectWish(product_idx, member_idx);
-		
 	}
 
 	public ProductVo getProduct(int product_idx) {
@@ -44,9 +48,41 @@ public class ProductService {
 	public List<imageVo> getImageList(String product_name) {
 		return mapper.selectImageList(product_name);
 	}
+	
+	public List<ReviewVo> getReviewList(int product_idx) {
+		return mapper.selectReviewList(product_idx);
+	}
+	// 상품 상세 조회 끝
 
-	public boolean InsertOrder(OrderVo order) {
+	
+	// 구매
+	public int InsertOrder(OrderVo order) {
 		return mapper.insertOrder(order);
 	}
 
+	public int InsertOrderDetail(OrderVo order) {
+		return mapper.insertOrderDetail(order);
+	}
+
+	public void updatePro(OrderVo order) {
+		mapper.updaetProduct(order);
+	}
+
+	public void updateMem(OrderVo order) {
+		mapper.updateMember(order);
+	}
+
+	// 구매 끝 
+	
+	// 쿠폰 목록 조회
+	public List<CouponVo> getCouponList(int member_idx) {
+		return mapper.selectCoupontList(member_idx);
+	}
+
+	// 주문 내역 조회
+	public List<OrderVo> getOrderList(int member_idx) {
+		return mapper.selectOrderList(member_idx);
+	}
+
+	// ================== 채휘 끝 ====================
 }
