@@ -14,6 +14,7 @@ import com.itwillbs.shookream.vo.imageVo;
 
 public interface ProductMapper {
 	
+	// =========================== 채휘 ===============================
 	public int selectMemberIdx(String sId);
 
 	public WishVo selectWish(@Param("product_idx") int product_idx, 
@@ -42,5 +43,7 @@ public interface ProductMapper {
 	public List<CouponVo> selectCoupontList(int member_idx);
 
 	public List<OrderVo> selectOrderList(int member_idx);
+	
+	// ====================채휘 끝 =======================================
 
 }
