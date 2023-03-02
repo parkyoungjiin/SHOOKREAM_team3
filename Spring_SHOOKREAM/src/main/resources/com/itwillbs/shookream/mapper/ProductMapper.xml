@@ -47,6 +47,14 @@
 				WHERE p.product_name = #{product.product_name}
 	</select>
 	
+	<!-- 상품 상세 정보 - 리뷰 -->
+	<select id="selectReviewList" resultType="com.itwillbs.shookream.vo.ReviewVo">
+		SELECT *
+			FROM review 
+			WHERE product_idx = #{product_idx}
+			ORDER BY review_idx
+	</select>
+	
 	<insert id="insertOrder">
 		<selectKey keyProperty="order_idx" resultType="int" order="BEFORE">
 			<!-- 가장 큰 글번호(board_num) 조회 -->
@@ -58,11 +66,54 @@
 			VALUES (
 				#{order_idx} + 1
 				,now()
-				,#{order.order_product_price}
-				,#{order.order_category}
-				,#{order.order_progress}
-				,#{order.order_member_idx}
-				,#{order.order_product_idx}
+				,#{order_product_price}
+				,#{order_category}
+				,#{order_progress}
+				,#{order_member_idx}
+				,#{order_product_idx}
 			)
 	</insert>
+	
+	<insert id="insertOrderDetail">
+		<selectKey keyProperty="order_idx" resultType="int" order="BEFORE">
+			SELECT MAX(order_idx) FROM orderlist
+		</selectKey>
+		
+		INSERT
+			INTO order_detail
+			VALUES(
+				#{order_idx}
+				,#{order_member_idx}
+				,#{order_product_idx}
+			)
+	</insert>
+	
+	<update id="updaetProduct">
+		UPDATE product
+			SET
+				product_amount = #{order_product_amount} - 1
+				, product_sell_count = #{order_product_sell_count} + 1
+			WHERE product_idx = #{order_product_idx} 
+	</update>
+	
+	<update id="updateMember">
+		UPDATE member_coupon 
+			SET 
+				isUse = #{order_isUse} + 1
+			WHERE coupon_idx = #{order_coupon_idx} 	
+	</update>
+	
+	<select id="selectCoupontList" resultType="com.itwillbs.shookream.vo.CouponVo">
+		SELECT * FROM member_coupon
+			WHERE member_idx = #{member_idx}
+	</select>
+	
+	<select id="selectOrderList" resultType="com.itwillbs.shookream.vo.OrderVo">
+		SELECT 
+			i.image_main_file,m.member_id,o.order_price,o.order_category,o.order_progress,o.order_date,p.product_idx,p.product_size,p.product_color,o.order_idx,p.product_name
+			FROM orderlist o join product p join member m join image i
+				ON o.product_idx = p.product_idx and o.member_idx = m.member_idx and o.product_idx = i.product_idx
+			WHERE m.member_idx = #{member_idx}
+	</select>
+	
 </mapper>

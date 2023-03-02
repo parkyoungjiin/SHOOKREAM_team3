@@ -22,8 +22,61 @@ private int order_isUse;
 private String order_product_name;
 
 
+// join 을 위한 변수
+private String product_name;
+private String product_size; // 상품 사이즈
+private String image_main_file; // 메인 사진
+private String product_color; // 상품 색상 카테고리
+private int order_price;
+private int product_idx;
 
 
+
+
+
+
+public String getImage_main_file() {
+	return image_main_file;
+}
+public void setImage_main_file(String image_main_file) {
+	this.image_main_file = image_main_file;
+}
+public int getProduct_idx() {
+	return product_idx;
+}
+public void setProduct_idx(int product_idx) {
+	this.product_idx = product_idx;
+}
+public int getOrder_price() {
+	return order_price;
+}
+public void setOrder_price(int order_price) {
+	this.order_price = order_price;
+}
+public String getProduct_name() {
+	return product_name;
+}
+public void setProduct_name(String product_name) {
+	this.product_name = product_name;
+}
+public String getProduct_size() {
+	return product_size;
+}
+public void setProduct_size(String product_size) {
+	this.product_size = product_size;
+}
+public String getProduct_img() {
+	return product_img;
+}
+public void setProduct_img(String product_img) {
+	this.product_img = product_img;
+}
+public String getProduct_color() {
+	return product_color;
+}
+public void setProduct_color(String product_color) {
+	this.product_color = product_color;
+}
 public String getOrder_product_name() {
 	return order_product_name;
 }

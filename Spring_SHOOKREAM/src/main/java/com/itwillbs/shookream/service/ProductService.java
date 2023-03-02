@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.shookream.mapper.ProductMapper;
+import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.OrderVo;
 import com.itwillbs.shookream.vo.ProductVo;
+import com.itwillbs.shookream.vo.ReviewVo;
 import com.itwillbs.shookream.vo.WishVo;
 import com.itwillbs.shookream.vo.imageVo;
 
@@ -45,8 +47,32 @@ public class ProductService {
 		return mapper.selectImageList(product_name);
 	}
 
-	public boolean InsertOrder(OrderVo order) {
+	public int InsertOrder(OrderVo order) {
 		return mapper.insertOrder(order);
+	}
+
+	public List<ReviewVo> getReviewList(int product_idx) {
+		return mapper.selectReviewList(product_idx);
+	}
+
+	public int InsertOrderDetail(OrderVo order) {
+		return mapper.insertOrderDetail(order);
+	}
+
+	public void updatePro(OrderVo order) {
+		mapper.updaetProduct(order);
+	}
+
+	public void updateMem(OrderVo order) {
+		mapper.updateMember(order);
+	}
+
+	public List<CouponVo> getCouponList(int member_idx) {
+		return mapper.selectCoupontList(member_idx);
+	}
+
+	public List<OrderVo> getOrderList(int member_idx) {
+		return mapper.selectOrderList(member_idx);
 	}
 
 }
