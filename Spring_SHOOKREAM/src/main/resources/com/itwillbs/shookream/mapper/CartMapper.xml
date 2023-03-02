@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- mapper 태그 내에 namespace 속성 지정 후 Mapper 인터페이스 위치 지정 -->
+<mapper namespace="com.itwillbs.shookream.mapper.CartMapper">
+  <!--장바구니 목록 -->
+	<select id="getCartlist" resultType="com.itwillbs.shookream.vo.cartVo">
+	SELECT * 
+		FROM cartlist_view	
+			 WHERE member_idx=#{member_idx} AND cart_order_price > 0
+			 	LIMIT #{startRow},#{listLimit}
+	</select>
+	
+	<select id="getProduct" resultType="com.itwillbs.shookream.vo.ProductVo">
+	SELECT *
+		FROM product
+			WHERE product_idx = #{product_idx}
+	
+	</select>
+	<!-- 상세페이지에서 장바구니 추가 -->
+	<insert id="getInsertCart">
+		<selectKey keyProperty="cart_idx" order="BEFORE" resultType="int">
+			SELECT MAX(cart_idx) FROM cart
+		</selectKey>
+		
+		INSERT INTO cart
+			VALUES(
+			#{cart_idx} + 1,
+			#{member_idx},
+			#{product_idx},
+			now(),
+			#{product.getProduct_price()}
+			#{product.getProduct_discount_price()}
+			#{product.getProduct_release_price()}
+			#{cart_count}
+			#{product.getProduct_size()}
+			#{product.getProduct_color()}
+			#{product.getProduct_name()}
+			#{product.getProduct_image()}
+			);
+	</insert>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
