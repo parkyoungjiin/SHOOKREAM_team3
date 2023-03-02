@@ -110,7 +110,10 @@ public class ProductController {
 		
 		
 		return "product/Product_info";
-	}
+	} // 상세 정보 끝
+	
+	
+	
 	
 	// 주문 상세 페이지
 	@GetMapping(value = "/OrderDetailForm.po")
@@ -140,7 +143,10 @@ public class ProductController {
 		model.addAttribute("image", image);
 		
 		return "product/order_form";
-	}
+	} // 주문 상세 페이지 끝
+	
+	
+	
 	
 	// 주매 구문
 	@GetMapping(value = "/ProductOrderPro.po")
@@ -181,7 +187,9 @@ public class ProductController {
 			return "fail_back";
 		}
 		
-	}
+	} // 주문 구매 끝
+	
+	
 	
 	
 	// 회원별 쿠폰 리스트
@@ -196,7 +204,9 @@ public class ProductController {
 		model.addAttribute("couponList", couponList);
 		
 		return "product/Product_couponlist";
-	}
+	}// 회원별 쿠폰 리스트 끝
+	
+	
 	
 	
 	// 회원 주문 목록
@@ -211,6 +221,6 @@ public class ProductController {
 		model.addAttribute("orderList", orderList);
 		
 		return "product/Product_orderlist";
-	}
+	}// 회원 주문 목록 끝
 			
 }

@@ -65,12 +65,7 @@ public String getProduct_size() {
 public void setProduct_size(String product_size) {
 	this.product_size = product_size;
 }
-public String getProduct_img() {
-	return product_img;
-}
-public void setProduct_img(String product_img) {
-	this.product_img = product_img;
-}
+
 public String getProduct_color() {
 	return product_color;
 }

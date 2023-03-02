@@ -2,12 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.itwillbs.shookream.mapper.ProductMapper">
 	
+	
+	<!-- 회원 idx 조회 -->
 	<select id="selectMemberIdx" resultType="int">
 		SELECT member_idx
 			FROM member
 			WHERE member_id = #{sId}
 	</select>
 	
+	
+	<!-- 상품 상세 - 회원 별 위시 조회 -->
 	<select id="selectWish" resultType="com.itwillbs.shookream.vo.WishVo">
 		SELECT *
 			FROM wish
@@ -15,18 +19,24 @@
 				AND member_idx = #{member_idx}
 	</select>
 	
+	
+	<!-- 상품 상세 - 상품 idx 조회 -->
 	<select id="selectProduct" resultType="com.itwillbs.shookream.vo.ProductVo">
 		SELECT *
 			FROM product
 			WHERE product_idx = #{product_idx} 
 	</select>
 	
+	
+	<!-- 상품 상세 - 상품 이미지 조회 -->
 	<select id="selectImage" resultType="com.itwillbs.shookream.vo.imageVo">
 		SELECT image_main_file, image_real_file1, image_real_file2  
 			FROM image 
 			WHERE product_idx = #{product_idx} 
 	</select>
-		
+	
+	
+	<!-- 상품 상세 - 상품 사이즈 조회 -->	
 	<select id="selectCategoryList" resultType="String">
 		SELECT distinct(product_size)
 			FROM product
@@ -34,12 +44,16 @@
 			ORDER BY product_size
 	</select>
 	
+	
+	<!-- 상품 상세 - 상품 색상 조회 -->	
 	<select id="selectColorList" resultType="String">
 		SELECT distinct(product_color)
 			FROM product
 			WHERE product_name = #{product.product_name}
 	</select>
 	
+	
+	<!-- 상품 상세 - 상품 이미지 조회 2-->	
 	<select id="selectImageList" resultType="com.itwillbs.shookream.vo.imageVo">
 		SELECT i.image_main_file,i.image_real_file1,i.image_real_file2 
 			FROM image i join product p
@@ -47,7 +61,7 @@
 				WHERE p.product_name = #{product.product_name}
 	</select>
 	
-	<!-- 상품 상세 정보 - 리뷰 -->
+	<!-- 상품 상세 - 리뷰 조회 -->
 	<select id="selectReviewList" resultType="com.itwillbs.shookream.vo.ReviewVo">
 		SELECT *
 			FROM review 
@@ -55,9 +69,10 @@
 			ORDER BY review_idx
 	</select>
 	
+	
+	<!-- =============== 구매 ==================  -->	
 	<insert id="insertOrder">
 		<selectKey keyProperty="order_idx" resultType="int" order="BEFORE">
-			<!-- 가장 큰 글번호(board_num) 조회 -->
 			SELECT MAX(order_idx) FROM orderlist
 		</selectKey>
 	
@@ -102,12 +117,17 @@
 				isUse = #{order_isUse} + 1
 			WHERE coupon_idx = #{order_coupon_idx} 	
 	</update>
+	<!-- =============== 구매 ==================  -->	
 	
+	
+	<!-- 구매 - 회원 별 쿠폰 조회  -->	
 	<select id="selectCoupontList" resultType="com.itwillbs.shookream.vo.CouponVo">
 		SELECT * FROM member_coupon
 			WHERE member_idx = #{member_idx}
 	</select>
 	
+	
+	<!-- 회원 주문 내역 조회 -->
 	<select id="selectOrderList" resultType="com.itwillbs.shookream.vo.OrderVo">
 		SELECT 
 			i.image_main_file,m.member_id,o.order_price,o.order_category,o.order_progress,o.order_date,p.product_idx,p.product_size,p.product_color,o.order_idx,p.product_name
