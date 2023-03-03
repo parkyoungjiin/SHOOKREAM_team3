@@ -72,7 +72,8 @@ public class MemberController {
 		return "redirect:/";
 	}//logout 끝
 	
-	//--------- 회원가입 폼 -------------------
+	// <<=======================================회원가입 관련 코드=======================================>>
+	//--------------- 회원가입 폼 -------------------
 	@GetMapping("MemberJoinForm.me")
 	public String joinForm() {
 		return "member/member_join_form";
@@ -105,23 +106,69 @@ public class MemberController {
 		}
 	} // joinPro 끝
 	
-	// ------------------- 회원정보수정 확인창 -----------------------------
-	@PostMapping("MemberModifyCheck.me")
+	// ------------------- 회원가입 id 중복체크 폼 ------------------------------
+	@GetMapping("dbCheckId.me")
+	public String chkForm() {
+		return "member/member_checkId";
+	}
+	
+	// --------------------	회원가입 id 중복체크 비즈니스 로직 -----------------------
+	
+	// -------------------- 이메일 인증1 : 메일 전송 ------------------------------------
+	@GetMapping("CheckEmailAddress.me")
+	public String authEmail() {
+		return "forward:/";
+	} // authEmail 
+	
+	// -------------------- 이메일 인증2 : 전송코드 일치여부 확인 ----------------------------------
+	@GetMapping("CompareEmailAddress.me")
+	public String authCodeChk() {
+		return "forward:/";
+	} // authCodeChk 끝
+	//<<===================================== 회원가입 끝=================================================>>
+	
+	// ------------------- 회원 정보수정 확인 폼 -----------------------------
+	@GetMapping("MemberModifyCheck.me")
 	public String modifyCheck(HttpSession session) {
 		return "member/member_password_modify_form";
-	}
+	} // modifyCheck
 	
 	// ------------------- 회원 정보수정 폼 ----------------------------
 	@PostMapping("MemberModifyForm.me")
 	public String modifyForm(HttpSession session) {
 		return "member/member_modify_form.jsp";
-	}
+	} // modifyForm
 	
-	// --------------------- 회원 정보 수정 비즈니스 로직-----------------------------
+	// ------------------ 회원 정보수정 비즈니스 로직-------------------------
 	@PostMapping("MemberModifyPro.me")
 	public String modifyPro() {
 		return null;
-	}
+	} // modifyPro
 	
+	// ------------------- 회원 탈퇴 확인 폼 ---------------------------
+	@GetMapping("MemberDeleteForm.me")
+	public String deleteForm(HttpSession session, @ModelAttribute MemberVo member, Model model) {
+		String sId = (String)session.getAttribute("sId");
+		// 세션아이디 권한 판별
+		if(member.getMember_id() != null && !member.getMember_id().equals("") && !member.getMember_id().equals(sId)) {
+			model.addAttribute("msg","권한이 없습니다");
+			return "fail_back";
+		} else if (member.getMember_id().equals("")) {
+			model.addAttribute("msg","잘못된 접근입니다!");
+			return "fail_back";
+		} else {
+			return "member/member_delete_form";
+		}
+	} // deleteForm 
+	
+	//-------------------- 회원 탈퇴 비즈니스 로직----------------------------
+	@PostMapping("MemberDeletePro.me")
+	public String deletePro(HttpSession session, @ModelAttribute MemberVo member, Model model) {
+		String sId = (String)session.getAttribute("sId");
+		BCryptPasswordEncoder passwdEncoder = new BCryptPasswordEncoder();
+		member = service.getSelectPass(member.getMember_id());
+		session.invalidate();
+		return "redirect:/";
+	} // deletePro
 	
 }//Controller 끝
