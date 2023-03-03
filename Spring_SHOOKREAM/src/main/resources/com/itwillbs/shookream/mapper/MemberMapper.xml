@@ -15,6 +15,21 @@
 			WHERE member_id = #{id}
   	</select>
   	
+  	<!-- 회원가입 -->
+  	<insert id="insertMember">
+  		INSERT INTO member
+  			VALUES (
+  				#{member_idx}
+  				,#{member_id}
+  				,#{member_name}
+  				,#{member_pass}
+  				,#{member_email}
+  				,#{member_phone}
+  				,0
+  				,#{member_address})
+  			
+  	</insert>
+  	
 </mapper>
 
 

@@ -25,6 +25,12 @@ public class MemberService {
 		return mapper.selectMemberInfo(id);
 	}
 
+	// 회원가
+	public boolean joinMember(MemberVo member) {
+		return mapper.insertMember(member);
+	}
+
+	// 회원가입 
 }
 
 

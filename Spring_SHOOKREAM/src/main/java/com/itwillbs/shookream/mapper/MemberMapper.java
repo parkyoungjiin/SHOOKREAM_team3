@@ -10,6 +10,9 @@ public interface MemberMapper {
 	public MemberVo getSelectPass(String id);
 	// 회원 상세 정보 조회 작업 - getMemberInfo()
 	public MemberVo selectMemberInfo(String id);
+	
+	// 회원가입 비즈니스
+	public boolean insertMember(MemberVo member);
 
 
 }
