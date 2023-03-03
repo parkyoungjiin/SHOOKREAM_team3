@@ -2,6 +2,7 @@ package com.itwillbs.shookream.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.UUID;
 
@@ -99,27 +100,96 @@ public class CartController {
 	//	상세페이지에서 장바구니 추가
 	@ResponseBody
 	@PostMapping(value = "CartInsertPro.ca")
-	public String CartInsert(
+	public void CartInsert(
 			@RequestParam("product_idx") int product_idx,
 			@RequestParam("cart_count") int cart_count,
 			Model model,
-			HttpSession session){
+			HttpSession session,
+			HttpServletResponse response
+			){
 		//세션 아이디와 Member_idx 변수 선언
 		String sId = (String)session.getAttribute("sId");
 		int member_idx = (int)session.getAttribute("member_idx");
 		//product_idx 에 맞는 상품을 조회하여 productVo에 저장
 		ProductVo product = service.getProduct(product_idx);
 		System.out.println("확인용 " + product);
-		//장바구니 담기
-		int insertCount = service.getInsertCart(product_idx, member_idx, cart_count, product);
-		if(insertCount > 0) {
-			model.addAttribute("msg", "장바구니 담기에 성공했습니다.");
+		//동일한 상품일 경우 수량을 증가
+		cartVo cart = service.getCartSelect(product_idx, member_idx);
+		//null 이 아닐 경우 -> 이미 담긴 상품이 있는 경우 수량만 추가
+		if(cart != null) {
+			int updateCount = service.getUpdateCart(product_idx, member_idx, cart_count);
+			try {
+				if(updateCount > 0) {
+					response.setContentType("text/html; charset=UTF-8");
+					PrintWriter out = response.getWriter();
+					
+					out.println("이미 담긴상품");
+//					out.println("alert('이미 담은 상품이 있어 추가되었습니다.");
+//					out.println("</script>");
+					
+				} else {
+					response.setContentType("text/html; charset=UTF-8");
+					PrintWriter out = response.getWriter();
+					
+					out.println("<script>");
+					out.println("alert('장바구니 추가에 실패되었습니다.')");
+					out.println("</script>");
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		//null일 경우 ->담긴 상품이 없기에 새로운 cart를 추가
+		}else {
+			//장바구니 담기
+			int insertCount = service.getInsertCart(product_idx, member_idx, cart_count, product);
+			try {
+				if(insertCount > 0) {
+					response.setContentType("text/html; charset=UTF-8");
+					PrintWriter out = response.getWriter();
+					
+					out.println("<script>");
+					out.println("alert('장바구니에 등록되었습니다.')");
+					out.println("</script>");
+					
+				} else {
+					response.setContentType("text/html; charset=UTF-8");
+					PrintWriter out = response.getWriter();
+					
+					out.println("<script>");
+					out.println("alert('장바구니 등록에 실패되었습니다.')");
+					out.println("</script>");
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+			
+	}//CartInsert 끝 
+	
+	
+	//------장바구니 삭제-------
+	@GetMapping(value = "CartDeletePro.ca")
+	public String cartDelete(
+			@RequestParam("cart_idx") int cart_idx,
+			HttpSession session,
+			Model model) {
+		int member_idx = (int)session.getAttribute("member_idx");
+		
+		int deleteCount = service.getCartDelete(cart_idx, member_idx);
+		if(deleteCount > 0) {
+			//작업 성공 후 reload_cart.jsp로 이동하여 msg, url 값에 맞게 alert창 출력 후 url에 저장된 주소로 location.href을 통해 이동
+			model.addAttribute("msg", "장바구니에서 삭제되었습니다.");
+			model.addAttribute("url", "CartList.ca?pageNum=1");
 			return "reload_cart";
 		}else {
-			model.addAttribute("msg", "장바구니 담기에 실패했습니다.");
+			//작업 실패 시 reload_cart.jsp로 이동하여 msg, url 값에 맞게 alert창 출력 후 url에 저장된 주소로 location.href을 통해 이동
+			model.addAttribute("msg", "장바구니 삭제 실패.");
+			model.addAttribute("url", "CartList.ca?pageNum=1");
 			return "reload_cart";
+			
 		}
-	}//CartInsert 끝 
+	}
 
 }//CartController 끝
 		

@@ -32,8 +32,21 @@ public class CartService {
 	public int getInsertCart(int product_idx, int member_idx, int cart_count, ProductVo product) {
 		return mapper.getInsertCart(product_idx, member_idx, cart_count, product);
 	}
+	//장바구니 등록 전 확인
+	public cartVo getCartSelect(int product_idx, int member_idx) {
+		return mapper.getCartSelect(product_idx,member_idx);
+	}
 	//product_idx 에 맞는 상품을 조회하여 productVo에 저장
 	public ProductVo getProduct(int product_idx) {
 		return mapper.getProduct(product_idx);
 	}
+	//장바구니 삭제
+	public int getCartDelete(int cart_idx, int member_idx) {
+		return mapper.getCartDelete(cart_idx, member_idx);
+	}
+	//이미 담긴 상품이 있는 경우 CART_count 만큼의 수량을 증가
+	public int getUpdateCart(int product_idx, int member_idx, int cart_count) {
+		return mapper.getUpdateCart(product_idx, member_idx, cart_count);
+	}
+
 }

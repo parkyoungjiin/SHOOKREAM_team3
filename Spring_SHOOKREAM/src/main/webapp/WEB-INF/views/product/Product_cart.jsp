@@ -20,6 +20,19 @@
 <!-- 구글 아이디 로그인 -->
 <meta name="google-signin-client_id" content="1047574308186-h6ehte2k4901kjn1u3g5vnonbf2g56on.apps.googleusercontent.com">
 <script src="https://kit.fontawesome.com/ca93809e69.js" crossorigin="anonymous"></script> <!-- 폰트어썸 스크립트 -->
+<script type="text/javascript">
+//-------장바구니에서 상품 삭제 버튼 클릭 시 확인창을 띄운 후 삭제하는 함수--------
+function deleteCart(cb) {
+	var idx = cb.id.replace("cart_delete_btn", "");
+	//cart_idx 변수 선언
+	var cart_idx_value = $("#cart_idx_hidden"+idx).val();
+// 	alert(cart_idx_value);-
+	var confirmDelete = confirm("해당 상품을 장바구니에서 삭제 하시겠습니까? ")
+	if(confirmDelete){
+		location.href='CartDeletePro.ca?cart_idx=' + cart_idx_value
+	}
+}
+</script>
 <style type="text/css">
 #sform {
           display: inline-block;
@@ -193,27 +206,25 @@ font-size: 70%;
 	</c:if>
 	<!-- 카트 리스트가 있을 때 처리 -->
 	<c:if test="${cartlist ne null and not empty cartlist}">
+	<!-- 카트 목록(foreach로 처리) -->
     <c:forEach var="cart" items="${cartlist }" varStatus="status">
-    <tr>
-	<!-- 구매페이지로 가기 위해 member_idx hidden 처리 -->
-
-	  	
-      <!-- 체크박스 -->
-	  <td class ="td_cart"><input type="checkbox" class ="cartCheckBox" id="cartCheckBox${status.index }" name ="cartCheckBox" checked="checked" value="${cart.cart_idx }" onclick="removeCheck(this)"></td> 
-      <td><a href="ProductInfoForm.po?product_idx=${cart.product_idx }"><img src="upload/${cart.cart_product_image }"  alt="없음!" class="img-thumbnail" width="150" height="150" ></a></td>
-      <td class ="td_cart">${cart.cart_product_name }<br>색상 : ${cart.cart_color }</td>
-	  <td class ="td_cart" id="cart_price"><fmt:formatNumber value="${cart.cart_price }" pattern="#,###원"></fmt:formatNumber></td>
-      <td class ="td_cart" id="cart_discount_price"><fmt:formatNumber value="${cart.cart_price * (cart.cart_discount / 100)}" pattern="#,###원"></fmt:formatNumber></td>
-      <td class ="td_cart" id="cart_order_price" ><fmt:formatNumber value="${cart.cart_order_price}" pattern="#,###원"></fmt:formatNumber></td> 
-<%--       <td class ="td_cart">${status.end }</td> --%>
-      <td class ="td_cart">
-      <input type="number" value="${cart.cart_count }" style="width: 35px" readonly="readonly">
-      </td>
-      <td class ="td_cart">무료배송</td>
-      <td class ="td_cart">
-      <button type="button" class="btn btn-dark" onclick="location.href='CartDeletePro.ca?cart_idx=${cart.cart_idx }&member_idx=${cart.member_idx }'">삭제</button>
-      </td>
-    </tr>
+	    <tr>
+	      <!-- 체크박스 -->
+	      <input type="hidden" id="cart_idx_hidden${status.index }" value="${cart.cart_idx }">
+		  <td class ="td_cart"><input type="checkbox" class ="cartCheckBox" id="cartCheckBox${status.index }" name ="cartCheckBox" checked="checked" value="${cart.cart_idx }" onclick="removeCheck(this)"></td> 
+	      <td><a href="ProductInfoForm.po?product_idx=${cart.product_idx }"><img src="upload/${cart.cart_product_image }"  alt="없음!" class="img-thumbnail" width="150" height="150" ></a></td>
+	      <td class ="td_cart">${cart.cart_product_name }<br>색상 : ${cart.cart_color }</td>
+		  <td class ="td_cart" id="cart_price"><fmt:formatNumber value="${cart.cart_price }" pattern="#,###원"></fmt:formatNumber></td>
+	      <td class ="td_cart" id="cart_discount_price"><fmt:formatNumber value="${cart.cart_price * (cart.cart_discount / 100)}" pattern="#,###원"></fmt:formatNumber></td>
+	      <td class ="td_cart" id="cart_order_price" ><fmt:formatNumber value="${cart.cart_order_price}" pattern="#,###원"></fmt:formatNumber></td> 
+	      <td class ="td_cart">
+	      <input type="number" value="${cart.cart_count }" style="width: 35px" readonly="readonly">
+	      </td>
+	      <td class ="td_cart">무료배송</td>
+	      <td class ="td_cart">
+	      <button type="button" id="cart_delete_btn${status.index }" class="btn btn-dark" onclick="deleteCart(this)">삭제</button>
+	      </td>
+	    </tr>
     </c:forEach>
     </c:if>
   </tbody>

@@ -86,11 +86,12 @@ align-content: center;
 
 #detail{
 border:1px;
-font-family: "Montserrat", sans-serif;
+font-family: "Montserrat","sans-serif", "Helvetica Neue";
 font-size:15px;
 float: right;
 margin-right: 450px;
 text-align: left;
+width: 300px;
 }   
 .prod_name{
 font-size: 25px;
@@ -100,24 +101,7 @@ font-weight: 900px;
 .prod_title{
 font-size: 20px;
 font-weight: bold;
-
-}
-#discountResult{
-font-size: 20px;
-font-style: italic;
-white-space : nowrap
-}
-
-#product_price{
-font-size: 20px;
-font-style: italic;
-}
-
-#detail_table{
-border:1px;
-display: inline-block;
-text-align: center;
-margin-left: 270PX;
+display: block;
 }
 
 
@@ -222,7 +206,7 @@ margin-left: 270PX;
 	 	var cart_count = $("#cart_count_id").val();
 	 	var product_idx = $("#product_idx").val()
 	 	var member_idx = '<%=session.getAttribute("member_idx")%>';
-// 	 	색상 선택 여부 판별
+	 //	색상 선택 여부 판별
 	 	if(color_val==""){
 	 		alert("색상을 선택 해주세요.");
 	 		return false;
@@ -231,6 +215,9 @@ margin-left: 270PX;
 	 		alert("사이즈를 선택 해주세요.");
 	 		return false;
 	 	//로그인 여부 판별
+	 	}else if(cart_count == null ){
+	 		alert("구매하실 수량을 입력하세요");
+	 		return false;
 	 	}else if(member_idx == null){
 	 		alert("로그인 필수 입니다.");
 	 		return false;
@@ -244,66 +231,55 @@ margin-left: 270PX;
 					product_idx: product_idx,
 					cart_count : cart_count
 					
-				},	
+				},
+				dataType: "html", 
+				success: function(data) { 
+					if(data = "이미 담긴상품"){
+						var confirm_value = confirm("이미 담은 상품이 있어 추가되었습니다.\n장바구니로 이동하시겠습니까?");
+// 						alert(confirm_value)
+						if(confirm_value){
+							location.href = "CartList.ca?pageNum=1"
+						}
+						
+					}else{
+						var confirm_value = confirm("상품을 장바구니에 담았습니다.\n장바구니로 이동하시겠습니까?");
+// 						alert(confirm_value)
+						if(confirm_value){
+							location.href = "CartList.ca?pageNum=1"
+						}
+					}
+					
+				}, 
+				error: function(xhr, textStatus, errorThrown) {
+					alert("장바구니 담기 실패"); 
+				}
 				
 			});
-	 	
 	 	
 	 	}
 	 	
 	}
 
+	//---------상세 페이지에서 수량 +, - 버튼에 딸느 수량 변동 작업 --------
+	function amount_adjust(type) {
+	 	var cart_count = parseInt($("#cart_count_id").val());
+		if(type =="plus"){
+			// 최대 개수 미설정(재고 수량을 가져와서 재고수량보다 적게 + 되도록 설정 필요)
+			cart_count = cart_count + 1;
+			$("#cart_count_id").val(cart_count);
+		}else if(type ="minus"){
+			// 개수가 1미만이 되지 않도록 설정
+			if(cart_count > 1){
+				cart_count = cart_count - 1;
+				$("#cart_count_id").val(cart_count);
+			}
+		}
+	 	
+	}
 </script>
 </head>
 <body class="w3-content" style="max-width:95%">
-<script type="text/javascript">
 
-//-------구매하기 버튼 클릭 시 작동되는 함수---------
-// function valueCheckPurchase() {
-// 	alert("클릭 ");
-// 	var color = $("#cart_color_id").value;
-// 	var size = $("#cart_size_id").value;
-// 	//색상 선택 여부 판별
-// 	if(color==""){
-// 		alert("색상을 선택 해주세요.");
-// 		return false;
-// 	//사이즈 선택 여부 판별  
-// 	}else if(size == ""){
-// 		alert("사이즈를 선택 해주세요.");
-// 		return false;
-// 	//로그인 여부 판별
-// 	}else if(member == null){
-// 		alert("로그인 필수 입니다.");
-// 		return false;
-// 	}
-	
-// 	location.href="OrderDetailForm.po?product_idx=${param.product_idx}";
-	
-// //-------장바구니 버튼 클릭 시 작동되는 함수---------
-// function valueCheckCart() {
-
-// 	alert("클릭 ")	
-
-// 	var color = $("#cart_color_id").value;
-// 	var size = $("#cart_size_id").value;
-// 	//색상 선택 여부 판별
-// 	if(color==""){
-// 		alert("색상을 선택 해주세요.");
-// 		return false;
-// 	//사이즈 선택 여부 판별  
-// 	}else if(size == ""){
-// 		alert("사이즈를 선택 해주세요.");
-// 		return false;
-// 	//로그인 여부 판별
-// 	}else if(member == null){
-// 		alert("로그인 필수 입니다.");
-// 		return false;
-// 	}
-	
-// 	location.href="CartInsertPro.ca";
-	
-// }
-</script>
 <!-- Sidebar/menu -->
 <jsp:include page="../inc/side.jsp"/>
 
@@ -366,31 +342,34 @@ margin-left: 270PX;
 			<hr>	
 		</div>
 
-	
-		<div id="detail1">
+		<div id="price_block" style="display: inline-block; width: 300px">
+		
 			<p class="prod_title">상품금액</p>
-			<p id ="product_price"><fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber></p>
-			<!-- 할인가격 표시 -->
-			<p class ="prod_title">판매가 (${product.product_discount_price}% 할인적용)</p> 
-			<p id ="discountResult"></p>
-			<p id ="nodiscountResult"></p>
-			
-			<hr>
+			<div id ="price_div" style="color: red; font-size: 30px; font-weight: bold; float: left; margin-right: 15px">${product.product_discount_price}%</div>
+			<div id ="price_div" style="float: left; font-weight: bold; font-size: 30px; margin-right: 5px"><fmt:formatNumber value="${product.product_release_price }" pattern="#,###원"></fmt:formatNumber></div> 
+			<div id ="price_div" style="float: left; font-size: 17px; vertical-align: bottom; text-decoration: line-through; height: 45px;"><fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber></div> 
+		</div>
+<!-- 		<div id="detail1" style="display: inline-block; width: 300px"> -->
+<!-- 			<p class="prod_title">상품금액</p> -->
+<%-- 			<div id ="price_div" style="color: red; font-size: 30px; font-weight: bold; float: left; margin-right: 15px">${product.product_discount_price}%</div> --%>
+<%-- 			<div id ="price_div" style="float: left; font-weight: bold; font-size: 30px;"><fmt:formatNumber value="${product.product_release_price }" pattern="#,###원"></fmt:formatNumber></div>  --%>
+<%-- 			<div id ="price_div" style="float: left; font-size: 17px; text-decoration: line-through; height: 45px; bottom: 0"><fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber></div>  --%>
+<!-- 		</div> -->
+		<hr>	
 		<!-- 색상 -->
 			<p class="prod_title">색상</p>
-			<select id="cart_color_id" name="cart_color" required="required">
+			<select id="cart_color_id" name="cart_color" required="required" class="form-select" >
 				<option value="" selected>색상을 선택해주세요.</option>
 				<c:forEach var="color" items="${colorlist}">
 				<option >${color }</option>
 				</c:forEach>
 			</select>
 			<hr>
-		</div>
 		
 		<div id="detail2" >
 		<!-- 사이즈 -->
 			<p class ="prod_title">사이즈</p>
-			<select id="cart_size_id" name="cart_size" required="required">
+			<select id="cart_size_id" name="cart_size" required="required" class="form-select">
 				<option value="" selected>사이즈를 선택해주세요.</option>
 				<c:forEach var="category" items="${categorylist}">
 				<option value="${category}">${category}</option>
@@ -399,10 +378,13 @@ margin-left: 270PX;
 			<hr>
 		<!-- 개수 -->
 			<p class ="prod_title">개수</p>
-			<span>
-				<span><input type="number" id="cart_count_id" name="cart_count" value="1" max="${product.product_amount+1 }" required="required" style="width: 50px" readonly="readonly"></span>
-			</span>
+		
+				<button class="btn btn-outline-dark btn-sm" onclick="amount_adjust('minus')">-</button>
+				<input type="text" class="form-control" id="cart_count_id" name="cart_count" value="1" max="${product.product_amount+1 }" required="required" readonly="readonly" style="width: 50px; text-align: center; display: inline-block;">
+				<button class="btn btn-outline-dark btn-sm" onclick="amount_adjust('plus')">+</button>
 			
+			<hr>
+			<div>가격 표시 할 예정</div>
 			<hr>
 		<span id="wishLoad">
 			<c:choose>
@@ -420,8 +402,8 @@ margin-left: 270PX;
 			<!-- 재고에 따른 처리 -->
 			<c:choose>
 				<c:when test="${product.product_amount gt 0}">
-					<button type="button" onclick="valueCheckCart()" class="btn btn-dark btn-sm">장바구니</button>
-					<button type="button" onclick="valueCheckPurchase()" class="btn btn-dark btn-sm">구매하기</button>
+					<button type="button" onclick="valueCheckCart()" class="btn btn-dark btn">장바구니</button>
+					<button type="button" onclick="valueCheckPurchase()" class="btn btn-dark btn">구매하기</button>
 				</c:when>
 
 				<c:when test="${product.product_amount le 0}">
