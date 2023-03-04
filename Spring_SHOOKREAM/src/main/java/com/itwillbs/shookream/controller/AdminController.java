@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,7 +55,7 @@ public class AdminController {
 									@ModelAttribute imageVo image,
 									Model model,
 									HttpSession session) {
-
+				
 				String uploadDir = "/resources/upload";
 				String saveDir = session.getServletContext().getRealPath(uploadDir);
 				System.out.println("실제 업로드 경로 : " + saveDir);
@@ -70,13 +71,21 @@ public class AdminController {
 				//----------------------------------------
 				
 				MultipartFile[] mFiles = image.getFiles();
+				 
+				String originalFileNames = ""; // 복수개의 파일을 하나의 이름으로 묶어서 다룰 경우에 사용할 변수 선언
+				String realFileNames = ""; // 1개의 파일명을 저장할 변수 선언
 				
-				String originalFileNames = "";
-				String realFileNames = "";
+				// 파일 이동 처리에 사용할 파일명 저장 List 객체 생성
+				List<String> realFileNameList = new ArrayList<String>();
 				
 				// 복수개의 파일에 접근하기 위한 반복문
 				for(MultipartFile mFile : mFiles) {
 					String originalFileName = mFile.getOriginalFilename();
+					
+					// 1개의 파일명을 저장할 변수 선언
+					String realFileName = "";
+					
+					// 가져온 파일이 있을 경우에만 중복 방지 대책 수행하기
 					if(!originalFileName.equals("")) {
 					// 파일명 중복 방지 대책
 						String uuid = UUID.randomUUID().toString();
@@ -86,9 +95,17 @@ public class AdminController {
 						originalFileNames += originalFileName + "/";
 						realFileNames += uuid + "_" + originalFileName + "/";
 					} else {
+						
+						
+						// 업로드될 파일명에 1개 파일명을 결합
+						realFileNames += realFileName;
+						// 각 파일명을 List 객체에도 추가
+						// => MultipartFile 객체를 통해 실제 폴더로 이동 시킬 때 사용
+						realFileNameList.add(realFileName);
+						
 						// 파일이 존재하지 않을 경우 널스트링으로 대체(뒤에 슬래시 포함)
-						originalFileNames += "/";
-						realFileNames += "/";
+//						originalFileNames += "/";
+//						realFileNames += "/";
 					}
 				}
 				// productVO 객체에 원본 파일명과 업로드 될 파일명 저장
@@ -128,11 +145,11 @@ public class AdminController {
 					
 					// 메인페이지로 리다이렉트
 					model.addAttribute("msg", "상품 등록이 완료되었습니다.");
-					return "admin/admin_product_insert";
+					return "redirect:/ProductList.po";
 				} else { // 실패
 					// 등록 폼으로 다시 이동
 					model.addAttribute("msg", "상품 등록에 실패했습니다.");
-					return "admin/admin_product_insert";
+					return "fail_back";
 				}
 				
 			}		
@@ -193,7 +210,7 @@ public class AdminController {
 			}
 			
 			
-			// 상품 목록 조회
+//			 상품 목록 조회
 			@GetMapping(value="/ProductListForm.po")
 			public String getProductList(Model model) {
 //				System.out.println("product : " + product);
@@ -201,9 +218,9 @@ public class AdminController {
 //				
 				List<ProductVo> productList = service.getProductList();
 				model.addAttribute("productList", productList);
-//				System.out.println("productList" + productList);
+				System.out.println("productList" + productList);
 				
-//				imageBean imgList = service.getImgList(product.getProduct_idx());
+//				imageVo imgList = service.getImgList(product.getProduct_idx());
 //				model.addAttribute("image", image);
 //				model.addAttribute("imgList", imgList);
 //				System.out.println("imgList" + imgList);
@@ -212,13 +229,13 @@ public class AdminController {
 			}
 			
 			
-			@PostMapping(value = "/ProductList.po")
+			@GetMapping(value = "/ProductList.po")
 			public String productList(@ModelAttribute ProductVo product, HttpSession session, Model model) {
 				String id = (String)session.getAttribute("sId");
 				
 				if(id == null || id.equals("") || !id.equals("admin")) { 
 					model.addAttribute("msg", "잘못된 접근입니다!");
-					return "redirect:/ProductList.po";
+					return "redirect:/Admin.ad";
 				} else {//admin일 경우
 					// Service 객체의 getProductList() 메서드를 호출하여 전체 회원 목록 조회
 					// => 파라미터 : 없음   리턴타입 : List<ProductVO>(productList)
@@ -227,7 +244,7 @@ public class AdminController {
 					// Model 객체에 "productList" 속성명으로 조회된 회원 목록(List 객체) 저장
 					model.addAttribute("productList", productList);
 					
-					// 관리자 메인페이지(임시로 member_list.jsp) 로 포워딩
+					// admin_Product_List.jsp로 포워딩
 					return "admin/admin_Product_List";
 				}
 			}

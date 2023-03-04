@@ -13,7 +13,7 @@
 <!--         <meta name="author" content="" /> -->
 <title>상품등록 페이지</title>
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-<link href="admin/css/styles.css" rel="stylesheet" />
+<%-- <link href="${path}/admin/css/styles.css" rel="stylesheet" /> --%>
 <link href="${path}/resources/css/styles.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
