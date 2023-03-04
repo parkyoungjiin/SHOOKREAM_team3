@@ -6,6 +6,7 @@
 	
 	.footerArea {
 		font-family: "Noto Sans KR", sans-sef;
+		
 	}
 	
 	.footerContent {
@@ -18,8 +19,17 @@
 	
 	footer {
 		background-color: #FBFBFB;
-		height: 250px;
+		height: 300px;
+		width: 100%;
+		position: relative;
+/*  	 	transform : translateY(-100%); */
+		}
+	html, body {
+    height: 100%
 	}
+
+	
+
 
 </style>
 
@@ -28,7 +38,7 @@
       <div class="footerContent">
         <h4 style="font-family: 'Bebas Neue';">SHOOKREAM</h4><br>
         <p><i class="fa fa-fw fa-map-marker"></i>부산광역시 부산진구 부전동 동천로 109 삼한골드게이트 7층</p>
-        <p><i class="fa fa-fw fa-phone"></i>0518030909</p>
+        <p><i class="fa fa-fw fa-phone"></i>051-803-0909</p>
         <p><i class="fa fa-fw fa-envelope"></i>shookream@shookream.com</p>
         <p>대표자명: &nbsp; <p>사업자등록번호: 111-11-11111&nbsp; |  &nbsp;통신판매업신고: 부산 00001호</p>
         <i class="fa fa-facebook-official w3-hover-opacity w3-large"></i>

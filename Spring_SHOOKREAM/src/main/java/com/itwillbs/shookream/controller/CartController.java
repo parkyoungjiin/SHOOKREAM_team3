@@ -42,7 +42,14 @@ public class CartController {
 			@RequestParam() int pageNum,
 			HttpServletResponse response,
 			HttpServletRequest request,
-			HttpSession session) {
+			HttpSession session,
+			Model model) {
+		//세션이 없을 경우 로그인 페이지로 이동
+		if(session.getAttribute("sId") == null || session.getAttribute("member_idx") == null ) {
+			model.addAttribute("msg", "로그인이 필요한 페이지입니다.");
+			model.addAttribute("url", "LoginMember.me");
+			return "reload_cart";
+		}
 		//세션 아이디와 Member_idx 변수 선언
 		String sId = (String)session.getAttribute("sId");
 		int member_idx = (int)session.getAttribute("member_idx");
@@ -107,6 +114,7 @@ public class CartController {
 			HttpSession session,
 			HttpServletResponse response
 			){
+		
 		//세션 아이디와 Member_idx 변수 선언
 		String sId = (String)session.getAttribute("sId");
 		int member_idx = (int)session.getAttribute("member_idx");
