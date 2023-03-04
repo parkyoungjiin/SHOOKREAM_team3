@@ -24,10 +24,10 @@ pageContext.setAttribute("cn", "\n");
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
 <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
 <style>
 .w3-sidebar a {font-family: "Noto Sans KR", sans-serif}
-body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
+body,h1,h2,h3,h4,h5,h6,.w3-wide,span {font-family: "Noto Sans KR", sans-serif;}
 </style>
 <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script> 
@@ -86,11 +86,12 @@ align-content: center;
 
 #detail{
 border:1px;
-font-family: "Montserrat", sans-serif;
+font-family: "Montserrat","sans-serif", "Helvetica Neue";
 font-size:15px;
 float: right;
 margin-right: 450px;
 text-align: left;
+width: 300px;
 }   
 .prod_name{
 font-size: 25px;
@@ -100,24 +101,7 @@ font-weight: 900px;
 .prod_title{
 font-size: 20px;
 font-weight: bold;
-
-}
-#discountResult{
-font-size: 20px;
-font-style: italic;
-white-space : nowrap
-}
-
-#product_price{
-font-size: 20px;
-font-style: italic;
-}
-
-#detail_table{
-border:1px;
-display: inline-block;
-text-align: center;
-margin-left: 270PX;
+display: block;
 }
 
 
@@ -158,76 +142,6 @@ margin-left: 270PX;
 
 <script type="text/javascript">
 
-// function btnWishFn() {
-<%-- 	var checkLogin = '<%=(String)session.getAttribute("sId")%>'; --%>
-	
-// 	if(checkLogin == "null"){
-// 		alert("로그인 후 이용 가능합니다.");
-// 		location.href="LoginMember.me";
-// 	} 
-// }
-
-
-
-// 찜하기
-// $(function() {
-// 	$("#beforeHeart").on("click", function() {
-		
-// // 		alert("btnBeforWish");
-<%-- 		var checkLogin = '<%=(String)session.getAttribute("sId")%>'; --%>
-		
-// 		if(checkLogin == "null"){
-// 			alert("로그인 후 이용 가능합니다.");
-// 			location.href="LoginMember.me";
-// 		}
-// 	});	
-// 			$.ajax({
-// 				type: "post", 
-// 				url: "LikeInsertPro.ca", 
-// 				data: { 
-// 					member_idx: ${sessionScope.member_idx},
-// 					product_idx: $("#product_idx").val()
-// 				},	
-// 				dataType: "html", 
-// 				success: function(data) { 
-// // 						$("#btnWishBeforImage").attr("src", "images/after_heart.png");
-// // 						$('#wishLoad').load(location.href+' #wishLoad')
-		
-// 						alert("찜한 상품에 추가되었습니다!");
-						
-// 						$(".wishBtn").html('<img id="afterHeart" alt="" src="images/after_heart.png" id="btnWishAfterImage" style="width: 30px; height: 30px;"/>');
-// 				}, 
-// 				error: function(xhr, textStatus, errorThrown) {
-// 					alert("찜하기 실패"); 
-// 				}
-// 			});
-// 		});
-			
-// 	$("#afterHeart").on("click", function() {
-// 		alert("btnAfterWish");
-// 			$.ajax({
-// 				type: "post", 
-// 				url: "LikeDeletePro.ca", 
-// 				data: { 
-// 					member_idx: ${sessionScope.member_idx},
-// 					product_idx: $("#product_idx").val()
-// 				},	
-// 				dataType: "html", 
-// 				success: function(data) { 
-// // 						$("#btnWishAfterImage").attr("src", "images/before_heart.png");
-// 						alert("찜한 상품에서 삭제했습니다!");
-// // 						$('#wishLoad').load(location.href+' #wishLoad')
-// 						$(".wishBtn").html('<img id="beforeHeart" alt="" src="images/before_heart.png" id="btnWishBeforImage" style="width: 30px; height: 30px;"/>');
-// 				}, 
-// 				error: function(xhr, textStatus, errorThrown) {
-// 					alert("찜 삭제 실패"); 
-// 				}
-// 			});
-// 	});
-	
-	
-			
-// });
 
 	
 	function deleteWish() {
@@ -254,9 +168,8 @@ margin-left: 270PX;
 	function addWish() {
 		
 		var checkLogin = '<%=(String)session.getAttribute("sId")%>';
-// 		var checkLogin = ${sessionScope.member_idx};
 		
-		if( checkLogin == "null"){
+		if(checkLogin == "null"){
 			alert("로그인 후 이용 가능합니다.");
 			location.href="LoginMember.me";
 			
@@ -285,9 +198,118 @@ margin-left: 270PX;
 		}
 	}
 
-//찜하기 취소
+	//
+	function valueCheckCart() {
+	 	var color_val = $("#cart_color_id").val();
+	 	var size_val = $("#cart_size_id").val();
+	 	var cart_count = $("#cart_count_id").val();
+	 	var product_idx = $("#product_idx").val()
+	 	var member_idx = '<%=session.getAttribute("member_idx")%>';
+	 //	색상 선택 여부 판별
+	 	if(color_val==""){
+	 		alert("색상을 선택 해주세요.");
+	 		return false;
+	 	//사이즈 선택 여부 판별  
+	 	}else if(size_val == ""){
+	 		alert("사이즈를 선택 해주세요.");
+	 		return false;
+	 	//로그인 여부 판별
+	 	}else if(member_idx == "null"){
+	 		alert("로그인이 필요한 서비스입니다.");
+	 		location.href = "LoginMember.me";
+	 		return false;
+	 	}else{
+	 		//문제가 없을 경우 해당 페이지의 상품을 장바구니에 담음.
+			$.ajax({
+				type: "post", 
+				url: "CartInsertPro.ca", 
+				data: { 
+					product_idx: product_idx,
+					cart_count : cart_count
+					
+				},
+				dataType: "html", 
+				success: function(data) { 
+					if(data = "이미 담긴상품"){
+						var confirm_value = confirm("이미 담은 상품이 있어 추가되었습니다.\n장바구니로 이동하시겠습니까?");
+						if(confirm_value){
+							location.href = "CartList.ca?pageNum=1"
+						}
+						
+					}else{
+						var confirm_value = confirm("상품을 장바구니에 담았습니다.\n장바구니로 이동하시겠습니까?");
+						if(confirm_value){
+							location.href = "CartList.ca?pageNum=1"
+						}
+					}
+					
+				}, 
+				error: function(xhr, textStatus, errorThrown) {
+					alert("장바구니 담기 실패"); 
+				}
+				
+			});
+	 	
+	 	}//else
+	 	
+	}//valueCheckCart 끝
+	
 
 
+	
+	//사이즈 색상 모두 선택 시 개수 밑에 선택한 옵션 + 가격 표시하기
+	function changeCheck() {
+		var cart_size_val = $("#cart_size_id").val();
+		var cart_color_val = ($("#cart_color_id").val()).toUpperCase();
+		var cart_prod_name = $("#cart_product_name_id").val();
+		var cart_product_release_price = parseInt($("#cart_product_release_price").val());
+// 		var cart_count = parseInt($("#cart_count_id").val());
+		var comma_price = cart_product_release_price.toLocaleString("en-US");
+	  	const element = document.getElementById('price_result_area');
+
+// 		alert(cart_prod_name);
+// 		alert(cart_color_val);
+		
+		if(cart_size_val != "" && cart_color_val != ""){
+			element.innerHTML += 
+// 			'<span style="font-weight: bold; font-size: 20px">'+ cart_prod_name + '</span><br>' 
+			'<div style="margin-bottom: 12px"><span style="font-weight: bold; font-size: 19px;">사이즈 : ' + cart_size_val + ' / 색상 : ' + cart_color_val + '</span></div>'
+			+ '<span style="margin-right: 20px">' 
+			+ '<button class="btn btn-outline-dark btn-sm" onclick="amount_adjust(' + "'minus'" + ')" style ="width: 30px; height: 35px; font-size: 15px;">-</button>'
+			+ '<input type="text" class="form-control" id="cart_count_id" name="cart_count" value="1" required="required" readonly="readonly" style="width: 50px; text-align: center; display: inline-block;">'
+			+ '<button class="btn btn-outline-dark btn-sm" onclick="amount_adjust(' + "'plus'" + ')" style ="width: 30px; height: 35px; font-size: 15px;">+</button>'
+			+ '</span>'
+			+ '<span id ="total_price_area" style="font-weight: bold; font-size: 20px;">' + '총 금액 : ' + '</span>' 
+			+ '<span id ="total_price_areas" style="font-weight: bold; font-size: 20px; color:red;">' + comma_price + '</span>'
+			+ '<span style="font-weight: bold; font-size: 20px;">원</span>'
+			
+			+ '<hr>';
+		}
+	}//changeCheck 끝
+	
+	//---------상세 페이지에서 수량 +, - 버튼에 따른 수량 변동 작업 --------
+	function amount_adjust(type) {
+// 		alert("클릭");
+	 	var cart_count = parseInt($("#cart_count_id").val());
+		var cart_product_release_price = parseInt($("#cart_product_release_price").val());
+
+		if(type =="plus"){
+			// 최대 개수 미설정(재고 수량을 가져와서 재고수량보다 적게 + 되도록 설정 필요)
+			cart_count = cart_count + 1;
+			total_comma_price = (cart_product_release_price * cart_count).toLocaleString("en-US");
+			$("#cart_count_id").val(cart_count);
+			$("#total_price_areas").text(total_comma_price);
+		}else if(type ="minus"){
+			// 개수가 1미만이 되지 않도록 설정
+			if(cart_count > 1){
+				cart_count = cart_count - 1;
+				total_comma_price = (cart_product_release_price * cart_count).toLocaleString("en-US");
+				$("#cart_count_id").val(cart_count);
+				$("#total_price_areas").text(total_comma_price);
+			}
+		}
+	 	
+	}//amount_adjust 끝
 </script>
 </head>
 <body class="w3-content" style="max-width:95%">
@@ -313,10 +335,6 @@ margin-left: 270PX;
   <!-- Top header -->
   <jsp:include page="../inc/top.jsp"/>
 	
-	
-<%
-
-%>
   <!-- 섬네일 이미지 -->
   <div id="product_content">
   <div id = "sform">
@@ -332,7 +350,6 @@ margin-left: 270PX;
 		<div><img src="upload/${image.image_real_file1 }"  class="mySlides" width="600px" height="650px"onclick="location.href=''"></div>
 		<div><img src="upload/${image.image_real_file2 }"  class="mySlides" width="600px" height="650px"onclick="location.href=''"></div>
 	</c:forEach>
-
 		  	<button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
   			<button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
 	</div>
@@ -341,89 +358,89 @@ margin-left: 270PX;
 	<!-- 상품 사진 옆 -->
 	
 	<section id="detail" >
-	<form action="CartInsertPro.ca?product_idx=${param.product_idx }&member_idx=${member_idx}" name="fr" method="post">
 	<!-- 장바구니에 담을 때 필요한 파라미터들 : 상품idx, 멤버idx, 상품가격, 할인율, 주문가격(할인된가격), 상품이름, 섬네일용 사진 -->
 		<input type="hidden" id="product_idx" value="${param.product_idx }">
 		<input type="hidden" id="member_idx" value="${member_idx }">
-		<input type="hidden" name ="cart_price" value="${product.product_price }">
-		<input type="hidden" name ="cart_discount" value="${product.product_discount_price }">
-   		<input type="hidden" id = "cart_order_price" name ="cart_order_price" value="">		
-      	<input type="hidden" name ="cart_product_name" value="${product.product_name }">
+		<input type="hidden" id = "cart_product_price" name ="cart_price" value="${product.product_price }">
+		<input type="hidden" id = "cart_product_discount_price" name ="cart_discount" value="${product.product_discount_price }">
+		<input type="hidden" id = "cart_product_release_price" name ="cart_discount" value="${product.product_release_price }">
+      	<input type="hidden" id ="cart_product_name_id" name ="cart_product_name" value="${product.product_name }">
 		<input type="hidden" name ="cart_product_image" value="${image.image_main_file }">
 	
 		<!-- 상품 브랜드, 이름, 번호 -->
-		<div class="text" > 
+		<div class="text"> 
 			<p>${product.product_brand}</p>
-			<p class ="prod_name">${product.product_name }</p>
+			<p class ="prod_name" id ="prod_name_id">${product.product_name }</p>
 <%-- 			<p>상품번호 : ${product.product_idx }</p>		 --%>
 			<hr>	
 		</div>
 
-	
-		<div id="detail1">
+		<div id="price_block" style="display: inline-block; width: 300px; ">
+		
 			<p class="prod_title">상품금액</p>
-			<p id ="product_price"><fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber></p>
-			<!-- 할인가격 표시 -->
-			<p class ="prod_title">판매가 (${product.product_discount_price}% 할인적용)</p> 
-			<p id ="discountResult"></p>
-			<p id ="nodiscountResult"></p>
-			
-			<hr>
+			<div id ="price_div" style="color: red; font-size: 30px; font-weight: bold; float: left; margin-right: 15px">${product.product_discount_price}%</div>
+			<div id ="price_div" style="float: left; font-weight: bold; font-size: 30px; margin-right: 5px"><fmt:formatNumber value="${product.product_release_price }" pattern="#,###원"></fmt:formatNumber></div> 
+			<div id ="price_div" style="float: left; font-size: 17px; vertical-align: bottom; text-decoration: line-through; height: 45px;"><fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber></div> 
+		</div>
+<!-- 		<div id="detail1" style="display: inline-block; width: 300px"> -->
+<!-- 			<p class="prod_title">상품금액</p> -->
+<%-- 			<div id ="price_div" style="color: red; font-size: 30px; font-weight: bold; float: left; margin-right: 15px">${product.product_discount_price}%</div> --%>
+<%-- 			<div id ="price_div" style="float: left; font-weight: bold; font-size: 30px;"><fmt:formatNumber value="${product.product_release_price }" pattern="#,###원"></fmt:formatNumber></div>  --%>
+<%-- 			<div id ="price_div" style="float: left; font-size: 17px; text-decoration: line-through; height: 45px; bottom: 0"><fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber></div>  --%>
+<!-- 		</div> -->
+		<hr>	
 		<!-- 색상 -->
 			<p class="prod_title">색상</p>
-			<select name="cart_color" required="required">
+			<select id="cart_color_id" name="cart_color" required="required" class="form-select" onchange="changeCheck()" style="font-size: 18px ">
 				<option value="" selected>색상을 선택해주세요.</option>
 				<c:forEach var="color" items="${colorlist}">
 				<option >${color }</option>
 				</c:forEach>
 			</select>
 			<hr>
-		</div>
-		
 		<div id="detail2" >
 		<!-- 사이즈 -->
 			<p class ="prod_title">사이즈</p>
-			<select name="cart_size" required="required">
+			<select id="cart_size_id" name="cart_size" required="required" class="form-select" onchange="changeCheck()" style="font-size: 18px; ">
 				<option value="" selected>사이즈를 선택해주세요.</option>
 				<c:forEach var="category" items="${categorylist}">
 				<option value="${category}">${category}</option>
 				</c:forEach>
 			</select>
+<!-- 			<button class="btn btn-outline-dark btn-sm" onclick="amount_adjust('minus')">-</button> -->
 			<hr>
 		<!-- 개수 -->
-			<p class ="prod_title">개수</p>
-			<span>
-				<span><input type="number" name="cart_count" value="1" max="${product.product_amount+1 }" required="required" style="width: 50px" readonly="readonly"></span>
-			</span>
-			
-			<hr>
-		<span id="wishLoad">
-			<c:choose>
-				<c:when test="${wish.product_idx eq product.product_idx }">
-					<span class="wishBtn">
-						<img onclick="deleteWish()" id="afterHeart" alt="" src="resources/images/after_heart.png" id="btnWishAfterImage" style="width: 30px; height: 30px; cursor: pointer;"/>
-					</span>
-				</c:when>
-				<c:otherwise>
-					<span class="wishBtn">
-						<img id="beforeHeart" onclick="addWish()" alt="" src="resources/images/before_heart.png" id="btnWishBeforImage" style="width: 30px; height: 30px; cursor: pointer;"/>&nbsp;
-					</span>
-				</c:otherwise>
-			</c:choose>
-			<!-- 재고에 따른 처리 -->
-			<c:choose>
-				<c:when test="${product.product_amount gt 0}">
-					<input type="submit" value="장바구니" class="btn btn-dark btn-sm">
-					<input type="button" onclick="valueCheck(${sessionScope.member_idx})" value="구매하기" class="btn btn-dark btn-sm">
-				</c:when>
 
-				<c:when test="${product.product_amount le 0}">
-					현재 재고가 없는 제품입니다.
-				</c:when>
-			</c:choose>
-		</span>	
+			<div id="price_result_area"></div>
+			<div style="margin-top: 20px">
+				<span id="wishLoad" >
+					<c:choose>
+						<c:when test="${wish.product_idx eq product.product_idx }">
+							<span class="wishBtn">
+								<img onclick="deleteWish()" id="afterHeart" alt="" src="resources/images/after_heart.png" id="btnWishAfterImage" style="width: 30px; height: 30px; cursor: pointer;"/>
+							</span>
+						</c:when>
+						<c:otherwise>
+							<span class="wishBtn">
+								<img id="beforeHeart" onclick="addWish()" alt="" src="resources/images/before_heart.png" id="btnWishBeforImage" style="width: 30px; height: 30px; cursor: pointer;"/>&nbsp;
+							</span>
+						</c:otherwise>
+					</c:choose>
+					<!-- 재고에 따른 처리 -->
+					<c:choose>
+						<c:when test="${product.product_amount gt 0}">
+							<button type="button" onclick="valueCheckCart()" class="btn btn-dark btn">장바구니</button>
+							<button type="button" onclick="valueCheckPurchase()" class="btn btn-dark btn">구매하기</button>
+						</c:when>
+		
+						<c:when test="${product.product_amount le 0}">
+							현재 재고가 없는 제품입니다.<br>
+							<a href="./">다른 상품 보러가기</a>
+						</c:when>
+					</c:choose>
+				</span>	
+			</div>
 		</div>
-		</form>
 		
 	</section>
  </div>
@@ -556,28 +573,6 @@ margin-left: 270PX;
 <!--   </div> -->
 <!-- </div> -->
 <script>
-function valueCheck(member){
-	var color = document.fr.cart_color.value;
-	var size = document.fr.cart_size.value;
-	
-	if(color==""){
-		alert("색상을 선택 해주세여");
-		return false;
-	}else if(size == ""){
-		alert("사이즈를 선택 해주세요");
-		return false;
-	}else if(member == null){
-		alert("로그인 필수 입니다");
-		return false;
-	}
-	
-// 	location.href="OrderDetailForm.po?member_idx=${sessionScope.member_idx}&product_idx=${param.product_idx}";
-	location.href="OrderDetailForm.po?product_idx=${param.product_idx}";
-	
-	
-}
-
-
 var slideIndex = 1;
 showDivs(slideIndex);
 
@@ -632,94 +627,7 @@ function w3_close() {
   document.getElementById("myOverlay").style.display = "none";
 }
 </script>
-<!-- Channel Plugin Scripts -->
-<script>
-  (function() {
-    var w = window;
-    if (w.ChannelIO) {
-      return (window.console.error || window.console.log || function(){})('ChannelIO script included twice.');
-    }
-    var ch = function() {
-      ch.c(arguments);
-    };
-    ch.q = [];
-    ch.c = function(args) {
-      ch.q.push(args);
-    };
-    w.ChannelIO = ch;
-    function l() {
-      if (w.ChannelIOInitialized) {
-        return;
-      }
-      w.ChannelIOInitialized = true;
-      var s = document.createElement('script');
-      s.type = 'text/javascript';
-      s.async = true;
-      s.src = 'https://cdn.channel.io/plugin/ch-plugin-web.js';
-      s.charset = 'UTF-8';
-      var x = document.getElementsByTagName('script')[0];
-      x.parentNode.insertBefore(s, x);
-    }
-    if (document.readyState === 'complete') {
-      l();
-    } else if (window.attachEvent) {
-      window.attachEvent('onload', l);
-    } else {
-      window.addEventListener('DOMContentLoaded', l, false);
-      window.addEventListener('load', l, false);
-    }
-  })();
-  ChannelIO('boot', {
-    "pluginKey": "552ea0bb-d4a5-4c70-8ba7-463b7682c434"
-  });
-</script>
 
-<!-- 로그인 드롭다운 기능! -->
-<script>
-	function myFunction() {
-	  var x = document.getElementById("Demo");
-	  if (x.className.indexOf("w3-show") == -1) { 
-	    x.className += " w3-show";
-	  } else {
-	    x.className = x.className.replace(" w3-show", "");
-	  }
-	}
-</script>
-<!-- 주문하기 -->
-<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
-<script type="text/javascript">
-function iamport(){
-		//가맹점 식별코드
-		IMP.init('imp77718215');
-		IMP.request_pay({
-		    pg : 'kakaopay',
-		    pay_method : 'card',
-		    merchant_uid : 'merchant_' + new Date().getTime(),
-		    name : '${product.product_name}' , //결제창에서 보여질 이름
-		    amount : '${product.product_price }', //실제 결제되는 가격
-		    buyer_name : '${sessionScope.sId}',
-		}, function(rsp) {
-			console.log(rsp);
-		    if ( rsp.success ) {
-		    	var msg = '결제가 완료되었습니다.';
-		        msg += '고유ID : ' + rsp.imp_uid;
-		        msg += '상점 거래ID : ' + rsp.merchant_uid;
-		        msg += '결제 금액 : ' + rsp.paid_amount;
-		        msg += '카드 승인번호 : ' + rsp.apply_num;
-		        location.href="ProductOrderPro.po?order_category=주문완료&order_progress=배송완료&member_idx=${member_idx}&product_idx=${product.product_idx}&product_amount=${product.product_amount}&product_sell_count=${product.product_sell_count} ";
-		    } else {
-		    	 var msg = '결제에 실패하였습니다.';
-		         msg += '에러내용 : ' + rsp.error_msg;
-		         window.history.back();
-		    }
-		    alert(msg);
-		    
-		});
-	}
-	
-	
-</script>
 <script type="text/javascript">
 	$(document).ready(function(){
 	//상품가격의 값 가져오기.
@@ -743,19 +651,8 @@ function iamport(){
 
 
 </script>
-<script type="text/javascript">
-// function () {
-// 	var originPrice = ${product.product_price}
-// 	var discountRate = ${product.product_discount_price}
-//     var discounted = Math.round(originPrice * (discountRate / 100));	// 정수로 출력하기 위해 소수점 아래 반올림 처리
-//     var releasePrice = originPrice - discounted;
-// 	$('input[name=cart_order_price]').attr('value',releasePrice);
-// }
-</script>
 
-<script type="text/javascript">
-      $.noConflict();
-</script>
+
 
 <script type="text/javascript">
 document.getElementById("button1").style.backgroundColor ="";
@@ -789,6 +686,5 @@ document.getElementById("button4").onclick = function(){
             document.getElementById("button1").style.backgroundColor ="";
         };
 </script>
-<!-- End Channel Plugin -->
 </body>
 </html>
