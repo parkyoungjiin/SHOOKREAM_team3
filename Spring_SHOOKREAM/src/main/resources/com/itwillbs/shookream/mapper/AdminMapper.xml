@@ -6,7 +6,7 @@
   	<!-- ============================ 상품 등록 ========================== -->
 	<insert id="insertProduct">
 	<!-- 상품 등록 작업 전 idx 작업 -->
-	<selectKey  keyProperty="product_idx" resultType="int" order="BEFORE">
+	<selectKey keyProperty="product_idx" resultType="int" order="BEFORE">
 		SELECT MAX(product_idx) FROM product
 	</selectKey>
 		INSERT 
@@ -52,18 +52,20 @@
 	<update id="modifyProduct">
 		UPDATE product
   			SET
-  				name = #{product.product_name}
-  				, brand = #{product.product_brand}
-  				, price = #{product.product_price}
-  				, discount = #{product.product_discount_price}
-  				, release_price = #{product.product_release_price}
-  				, size = #{product.product_size}
-  				, amount = #{product.product_amount}
-  				, color = #{product.product_color}
-  				, exp = #{product.product_exp}
-  				, detail_exp = #{product.product_detail_exp}
-  			WHERE 
-  				product_idx = #{product.product_idx}
+  			<if test="product_name != null">
+  				product_name = #{product_name}
+  			</if>
+	  		 product_brand = #{product.product_brand}
+	        , product_price = #{product.product_price}
+	        , product_discount_price = #{product.product_discount_price}
+	        , product_release_price = #{product.product_release_price}
+	        , product_size = #{product.product_size}
+	        , product_amount = #{product.product_amount}
+	        , product_color = #{product.product_color}
+	        , product_exp = #{product.product_exp}
+	        , product_detail_exp = #{product.product_detail_exp}
+	    WHERE 
+	        product_idx = #{product.product_idx}
 	</update>
 	
 	<!-- 상품 삭제 -->

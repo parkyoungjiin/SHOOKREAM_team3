@@ -127,12 +127,12 @@ footer {
 
   <!-- ./images header -->
   <div class ="post-wrapper" style="margin-top: 18px;">
-  	<div><img src="images/banner(nike).jpg" height="600" width="100%" onclick="location.href='BrandCG.MAIN?cg=나이키'" style="cursor: pointer;"></div>
+  	<div><img src="${path}/resources/images/banner(nike).jpg" height="600" width="100%" onclick="location.href='BrandCG.MAIN?cg=나이키'" style="cursor: pointer;"></div>
 <!--   	<div><a href="CouponMainList.po?coupon_content=banner_1"><img src="images/banner_1.jpg" height="700" width="900"></a></div> -->
-  	<div><img src="images/banner(newbalance).png" height="600" width="100%" onclick="location.href='BrandCG.MAIN?cg=뉴발란스'" style="cursor: pointer;"></div>
-  	<div><img src="images/banner(adidas).png" height="600" width="100%" onclick="location.href='BrandCG.MAIN?cg=아디다스'" style="cursor: pointer;"></div>
-  	<div><img id="banner_1" src="images/banner_1.jpg"  height="600" width="100%" style="cursor: pointer;" onclick="couponDown(this.id)"></div>
-  	<div><img id="banner_2" src="images/banner_2-001 (4).jpg" height="600" width="100%" style="cursor: pointer;" onclick="couponDown(this.id)"></div>
+  	<div><img src="${path}/resources/images/banner(newbalance).png" height="600" width="100%" onclick="location.href='BrandCG.MAIN?cg=뉴발란스'" style="cursor: pointer;"></div>
+  	<div><img src="${path}/resources/images/banner(adidas).png" height="600" width="100%" onclick="location.href='BrandCG.MAIN?cg=아디다스'" style="cursor: pointer;"></div>
+  	<div><img id="banner_1" src="${path}/resources/images/banner_1.jpg"  height="600" width="100%" style="cursor: pointer;" onclick="couponDown(this.id)"></div>
+  	<div><img id="banner_2" src="${path}/resources/images/banner_2-001 (4).jpg" height="600" width="100%" style="cursor: pointer;" onclick="couponDown(this.id)"></div>
   </div>
 <!--   <div class="w3-container w3-text-grey" id="jeans"> -->
 <!--     <p>BEST</p> -->
@@ -149,7 +149,7 @@ footer {
 			<div class="w3-col l3 s6">
 				<div class="w3-container">
 							<div class="w3-display-container">
-								<img src="./upload/${productBestList.product_img }" alt="..." style="width: 100%">
+								<img src="${path}/resources/upload/${productBestList.product_img }" alt="..." style="width: 100%">
 								<div class="w3-display-middle w3-display-hover">
 <%-- 									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productBestList.product_idx }&member_idx=${sessionScope.member_idx }'"> --%>
 									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productBestList.product_idx }'">
@@ -203,7 +203,7 @@ footer {
    <div class="w3-col l3 s6" style="z-index:1;">
       <div class="w3-container">
         <div class="w3-display-container">
-          <img src="./upload/${productNewList.product_img }"  alt="..." style="width:100%">
+          <img src="${path}/resources/upload/${productNewList.product_img }"  alt="..." style="width:100%">
           <div class="w3-display-middle w3-display-hover">
 									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productNewList.product_idx }&member_idx=${sessionScope.member_idx }'">
 										Buy now <i class="fa fa-shopping-cart" ></i>
