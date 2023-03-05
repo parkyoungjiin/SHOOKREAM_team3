@@ -25,24 +25,29 @@
 	<!-- 이미 담긴 상품이 있는 경우 cart_count 만큼의 수량을 증가 -->
 	<update id="getUpdateCart" >
 		UPDATE cart
-			SET cart_count = cart_count + #{cart_count}
+			SET cart_count = cart_count + #{cart_count},
+				cart_price = cart_price + (cart_price * #{cart_count}),
+				cart_order_price = cart_order_price + (cart_order_price * #{cart_count})
+				
 				WHERE product_idx = #{product_idx} AND member_idx = #{member_idx}
 	</update>
 	<!-- 상세페이지에서 장바구니 추가 -->
 	<insert id="getInsertCart">
-		<selectKey keyProperty="cart_idx" order="BEFORE" resultType="int">
-			SELECT MAX(cart_idx) FROM cart
-		</selectKey>
+<!-- 		<selectKey keyProperty="cart_idx" order="BEFORE" resultType="int"> -->
+<!-- 			SELECT MAX(cart_idx) FROM cart -->
+<!-- 		</selectKey> -->
 		
 		INSERT INTO cart
 			VALUES(
-			#{cart_idx} + 1,
+			0,
 			#{member_idx},
 			#{product_idx},
 			now(),
 			(#{product.product_price} * #{cart_count}),
 			#{product.product_discount_price},
 			(#{product.product_release_price} * #{cart_count}),
+			#{product.product_price},
+			#{product.product_release_price},
 			#{cart_count},
 			#{product.product_size},
 			#{product.product_color},

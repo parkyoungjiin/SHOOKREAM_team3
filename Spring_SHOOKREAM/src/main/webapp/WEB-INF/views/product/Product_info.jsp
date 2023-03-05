@@ -229,14 +229,19 @@ display: block;
 					
 				},
 				dataType: "html", 
-				success: function(data) { 
-					if(data = "이미 담긴상품"){
+				success: function(data) {
+// 					console.log(data);
+// 					console.log(typeof(data));
+// 					alert(data)
+// 					alert('확인')
+// 					alert(data == "이미 담긴상품");
+					if(data == '이미 담긴상품'){
 						var confirm_value = confirm("이미 담은 상품이 있어 추가되었습니다.\n장바구니로 이동하시겠습니까?");
 						if(confirm_value){
 							location.href = "CartList.ca?pageNum=1"
 						}
-						
-					}else{
+					
+					}else if(data == '새상품'){
 						var confirm_value = confirm("상품을 장바구니에 담았습니다.\n장바구니로 이동하시겠습니까?");
 						if(confirm_value){
 							location.href = "CartList.ca?pageNum=1"
