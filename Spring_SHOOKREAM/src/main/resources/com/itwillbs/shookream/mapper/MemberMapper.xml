@@ -27,21 +27,53 @@
   				,#{member_phone}
   				,0
   				,#{member_address})
-  			
   	</insert>
   	
+  	<!-- 회원가입 : id 중복체크 -->
+  	<select id="selectAllId" resultType="int">
+  		SELECT COUNT(member_id) 
+  			FROM member
+  			WHERE member_id = #{id}
+  	</select>
+  	
+  	<!-- 회원가입 : 이메일 인증 1  -->
+  	<select id="selectAuth" resultType="boolean">
+  		SELECT COUNT(*)
+  			FROM auth
+  			WHERE auth_id=#{auth_id}
+  	</select>
+  	
+  	<!-- 이메일인증1 : 존재하는 회원 -->
+  	<update id="updateAuth">
+  		UPDATE auth
+  			SET auth_authCode=#{auth.auth_authCode}
+  			WHERE auth_id=#{auth.auth_id}
+  	</update>
+  	
+  	<!-- 이메일인증1 : 신규회원 -->
+  	<insert id="insertAuth">
+  		INSERT INTO auth
+  			VALUES (
+  				#{auth_id}
+  				,#{auth_authCode})
+  	</insert>
+  	
+  	<!-- 회원정보 수정  -->
+  	<update id="updateMember">
+  		UPDATE member
+  			SET
+  				<if test='newpass1 neq null and newpass1 neq ""'>
+  					member_pass = #{newpass1},
+  				</if>
+  				member_address = CONCAT(#{member.address}, '', #{member.address_detail}),
+  				member_phone = #{member.phone} 
+  			WHERE member_id = #{id}
+  	</update>
+  	
+  	<!-- 회원 탈퇴 -->
+  	<delete id="deleteMember">
+  		DELETE 
+  			FROM member
+  			WHERE id = #{member_id}
+  	</delete>
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-

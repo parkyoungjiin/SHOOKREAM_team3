@@ -237,7 +237,7 @@ function fn_modify() {
 						<td>
 						<div>${member.member_address }</div><br>
 						<input type="text" name="address" id="address_kakao2"  size="30px" placeholder="변경시에만 입력" style="margin-bottom: 10px;line-height: 30px"> &nbsp;
-						<button id="address_kakao" class="btn btn-dark">주소찾기</button><br>
+						<button type="button" id="address_kakao" class="btn btn-dark">주소찾기</button><br>
 						<input type="text" name="address_detail"  size="30px" style="line-height: 30px"  ><br>
 						</td>
 					</tr>

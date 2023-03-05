@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.shookream.mapper.MemberMapper;
+import com.itwillbs.shookream.vo.AuthVo;
 import com.itwillbs.shookream.vo.MemberVo;
 
 @Service
@@ -25,12 +26,42 @@ public class MemberService {
 		return mapper.selectMemberInfo(id);
 	}
 
-	// 회원가
+	// 회원가입
 	public boolean joinMember(MemberVo member) {
 		return mapper.insertMember(member);
 	}
 
-	// 회원가입 
+	// 회원가입 : id 중복체크
+	public int idCheck(String id) {
+		return mapper.selectAllId(id);
+	}
+
+	// 회원가입 : 이메일 인증1 - 이메일 전
+	public boolean isAuthUser(AuthVo auth) {
+		return mapper.selectAuth(auth);
+	}
+
+	// 이메일 인증1 - 가입한 회원
+	public String isMember(AuthVo auth) {
+		return mapper.updateAuth(auth);
+	}
+
+	//이메일 인증1 - 새로운 회원
+	public String isNewMem(AuthVo auth) {
+		return mapper.insertAuth(auth);
+	}
+
+	// 회원 정보 수정 
+	public int modifyMember(MemberVo member, String newpass1, String id) {
+		return mapper.updateMember(member,newpass1, id);
+	}
+
+	// 회원 탈퇴
+	public int removeMember(MemberVo member) {
+		return mapper.deleteMember(member);
+	}
+	
+
 }
 
 
