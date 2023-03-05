@@ -89,12 +89,12 @@
 	</div>
 	<form action="ReviewWrite.me" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="member_idx" value="${param.member_idx }">
-		<input type="hidden" name="prodcut_idx" value="${param.product_idx }">
-		<input type="hidden" name="product_size" value="${param.product_size }">
-		<input type="hidden" name="product_color" value="${param.product_color }">
-		<input type="hidden" name="product_name" value="${param.product_name }">
+		<input type="hidden" name="product_idx" value="${param.product_idx }">
+<%-- 		<input type="hidden" name="product_size" value="${param.product_size }"> --%>
+<%-- 		<input type="hidden" name="product_color" value="${param.product_color }"> --%>
+		<input type="hidden" name="re_product_name" value="${param.product_name }">
 		
-		<input type="file" id="fileInsert" name="review_img" accept=".png, .jpeg, .jpg, .gif" onchange="readURL(this);"><br>
+		<input type="file" id="fileInsert" name="files" accept=".png, .jpeg, .jpg, .gif" onchange="readURL(this);"><br>
 		<img id="preview"></img>
 		<hr>
 		<div >
@@ -102,7 +102,7 @@
 			사이즈 : <input type="text" value="${param.product_size }" name="product_size">
 			색상 : <input type="text" value="${param.product_color }" name="product_color">
 		</div>
-		<textarea placeholder="욕설 및 관련없는 내용은 관리자에 의해 삭제될 수 있습니다." name="content"></textarea><br>
+		<textarea placeholder="욕설 및 관련없는 내용은 관리자에 의해 삭제될 수 있습니다." name="review_content"></textarea><br>
 		<div id="reviewBtn">
 			<input type="submit" class="btn btn-dark btn-sm" id="register" value="글 등록하기">
 			<input type="button" class="btn btn-dark btn-sm" value="닫기" onclick="closeReview()">
