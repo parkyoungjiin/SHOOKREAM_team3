@@ -21,9 +21,17 @@ public interface AdminMapper {
 
 	// 3. 상품 수정
 	public int modifyProduct(
-			int product_idx, 
-			@Param("product") ProductVo product,
-			@Param("image") imageVo image);
+			@Param("product_idx")int product_idx, 
+//			@Param("product_name") String product_name,
+//			@Param("product_brand") String product_brand,
+//			@Param("product_size") String product_size,
+			ProductVo product);
+	
+	// 3-1. 상품 수정 시 이미지 수정
+	public int modifyImage(
+			@Param("product_idx") int product_idx,
+			ProductVo product,
+			imageVo image);
 
 	// 4. 상품 삭제
 	public int removeProduct(int product_idx);
@@ -32,11 +40,14 @@ public interface AdminMapper {
 	public List<ProductVo> selectProductList();
 	
 	// 6. 이미지 조회
-	public imageVo selectImgList(int product_idx);
+	public List<imageVo> selectImgList(int product_idx);
+//	public List<imageVo> selectImgList();
 	
 	public ProductVo selectProduct(int product_idx);
 
 	public imageVo selectImage(int product_idx);
+
+	
 
 	
 }

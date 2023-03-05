@@ -52,21 +52,35 @@
 	<update id="modifyProduct">
 		UPDATE product
   			SET
-  			<if test="product_name != null">
-  				product_name = #{product_name}
-  			</if>
-	  		 product_brand = #{product.product_brand}
-	        , product_price = #{product.product_price}
-	        , product_discount_price = #{product.product_discount_price}
-	        , product_release_price = #{product.product_release_price}
-	        , product_size = #{product.product_size}
-	        , product_amount = #{product.product_amount}
-	        , product_color = #{product.product_color}
-	        , product_exp = #{product.product_exp}
-	        , product_detail_exp = #{product.product_detail_exp}
+  			<if test="product_name == null"> 
+ 				product_name = #{product.product_name}
+ 			</if>
+  			,product_brand = #{product_brand}
+	        , product_price = #{product_price}
+	        , product_discount_price = #{product_discount_price}
+	        , product_release_price = #{product_release_price}
+       		, product_size = #{product_size}
+	        , product_amount = #{product_amount}
+	        , product_color = #{product_color}
+	        , product_exp = #{product_exp}
+	        , product_detail_exp = #{product_detail_exp}
 	    WHERE 
-	        product_idx = #{product.product_idx}
+	        product_idx = #{product_idx}
 	</update>
+	
+	<!-- 상품 수정 시 이미지 수정 -->
+	<update id="modifyImage">
+		UPDATE image
+  			SET
+  			<if test="image_main_file != null"> 
+ 				image_main_file = #{image_main_file}
+ 				, image_real_file1 = #{image_real_file1}
+ 			</if>
+	    WHERE 
+	        product_idx = #{product_idx}
+	</update>
+	
+
 	
 	<!-- 상품 삭제 -->
 	<delete id="removeProduct">
@@ -94,12 +108,12 @@
 	
 	
 	<!-- 이미지 목록 조회 -->
-<!-- 	<select id="selectImgList" resultType="com.itwillbs.shookream.vo.imageVo"> -->
-<!-- 		SELECT  -->
-<!-- 			image_main_file -->
-<!-- 			FROM image -->
-<!-- 			WHERE product_idx=#{product_idx} -->
-<!-- 	</select> -->
+	<select id="selectImgList" resultType="com.itwillbs.shookream.vo.imageVo">
+		SELECT 
+			*
+			FROM image
+			WHERE product_idx=#{product_idx}
+	</select>
 <!-- ======================================================== -->
 	
 	<select id="selectProduct" resultType="com.itwillbs.shookream.vo.ProductVo">

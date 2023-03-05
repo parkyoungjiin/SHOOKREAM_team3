@@ -27,8 +27,16 @@ public class AdminService {
 		}
 		
 		// 상품 수정 updateProduct() 메서드
-		public int updateProduct(int product_idx, ProductVo product, imageVo image) {
-			return mapper.modifyProduct(product_idx, product, image);
+//		public int updateProduct(int product_idx, String product_name,String product_brand,String product_size, ProductVo product, imageVo image) {
+//			return mapper.modifyProduct(product_idx, product_name,product_brand,product_size, product, image);
+//		}
+		public int updateProduct(int product_idx, ProductVo product) {
+			return mapper.modifyProduct(product_idx, product);
+		}
+		
+		// 상품 수정 - 이미지 수정 updateImage() 메서드
+		public int updateImage(int product_idx, ProductVo product, imageVo image) {
+			return mapper.modifyImage(product_idx, product, image);
 		}
 
 		// 상품 삭제 deleteProduct() 메서드
@@ -40,9 +48,12 @@ public class AdminService {
 			return mapper.selectProductList();
 		}
 		// 이미지 목록 조회 
-		public imageVo getImgList(int product_idx) {
+		public List<imageVo> getImgList(int product_idx) {
 			return mapper.selectImgList(product_idx);
 		}
+//		public List<imageVo> getImgList() {
+//			return mapper.selectImgList();
+//		}
 		
 		public ProductVo getProduct(int product_idx) {
 			return mapper.selectProduct(product_idx);

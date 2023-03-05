@@ -19,14 +19,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
  <script type="text/javascript">
 	<%
-// 		String sId = (String)session.getAttribute("sId");
-// 		String id = request.getParameter("id");
-// 		if(sId == null || !sId.equals("admin")) { 
+		String sId = (String)session.getAttribute("sId");
+		String id = request.getParameter("id");
+		if(sId == null || !sId.equals("admin")) { 
 		%>
-// 		alert("잘못된 접근입니다!")
-// 		location.href=history.back();
+		alert("잘못된 접근입니다!")
+		location.href=history.back();
 	<% 
-// 		} 
+		} 
 	%>
 </script>  
 <style type="text/css">
