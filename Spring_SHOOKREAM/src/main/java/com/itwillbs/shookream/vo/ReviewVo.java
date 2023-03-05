@@ -1,6 +1,9 @@
 package com.itwillbs.shookream.vo;
 
 import java.sql.Date;
+import java.util.Arrays;
+
+import org.springframework.web.multipart.MultipartFile;
 
 public class ReviewVo {
 	private int review_idx; //리뷰 번호
@@ -11,11 +14,16 @@ public class ReviewVo {
 	private String review_real_img; // 리뷰 실제 이미지 파일
 	private Date review_date; // 리뷰 작성일
 	private String re_order_detail; // 리뷰 - 구매 상세(사이즈, 색상)
-	private String re_product_name;
-	// 이미지??? && 작성일
+	private String re_product_name;// 이미지??? && 작성일
+	private MultipartFile[] files;
 	
 	
-	
+	public MultipartFile[] getFiles() {
+		return files;
+	}
+	public void setFiles(MultipartFile[] files) {
+		this.files = files;
+	}
 	public int getReview_idx() {
 		return review_idx;
 	}
@@ -72,11 +80,9 @@ public class ReviewVo {
 	}
 	@Override
 	public String toString() {
-		return "ReviewBean [review_idx=" + review_idx + ", product_idx=" + product_idx + ", member_idx=" + member_idx
+		return "ReviewVo [review_idx=" + review_idx + ", product_idx=" + product_idx + ", member_idx=" + member_idx
 				+ ", review_content=" + review_content + ", review_img=" + review_img + ", review_real_img="
 				+ review_real_img + ", review_date=" + review_date + ", re_order_detail=" + re_order_detail
-				+ ", re_product_name=" + re_product_name + "]";
+				+ ", re_product_name=" + re_product_name + ", files=" + Arrays.toString(files) + "]";
 	}
-	
-	
 }
