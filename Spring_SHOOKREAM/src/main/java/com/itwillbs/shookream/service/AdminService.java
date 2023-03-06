@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.shookream.mapper.AdminMapper;
+import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.imageVo;
 
@@ -61,6 +62,11 @@ public class AdminService {
 
 		public imageVo getImage(int product_idx) {
 			return mapper.selectImage(product_idx);
+		}
+		
+		//회원목록
+		public List<MemberVo> getMemberInfo() {
+			return mapper.selectMember();
 		}
 	
 }

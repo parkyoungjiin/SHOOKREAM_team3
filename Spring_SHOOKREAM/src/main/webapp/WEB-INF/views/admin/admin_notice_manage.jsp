@@ -38,7 +38,7 @@
        <jsp:include page="./inc2/top.jsp"></jsp:include>
           
     <!-- SIDE --> 
-       <jsp:include page="./inc2/side.jsp"></jsp:include>             
+<%--        <jsp:include page="./inc2/side.jsp"></jsp:include>              --%>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">

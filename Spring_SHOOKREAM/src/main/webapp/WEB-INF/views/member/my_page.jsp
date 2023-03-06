@@ -152,14 +152,7 @@
 			<li></li>
 			<li>0</li>
 			<li></li>
-			<c:choose>
-				<c:when test="${not empty order.order_progress}">
-					<li>1</li>
-				</c:when>	
-				<c:otherwise>
-					<li>0</li>
-				</c:otherwise>
-			</c:choose>
+			<li>${orderCount }</li>
 		</ul>
 	</nav>
 

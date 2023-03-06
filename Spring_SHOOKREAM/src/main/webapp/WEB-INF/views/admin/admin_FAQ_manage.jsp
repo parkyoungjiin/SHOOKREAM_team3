@@ -38,7 +38,7 @@
        <jsp:include page="./inc2/top.jsp"></jsp:include>
           
     <!-- SIDE --> 
-       <jsp:include page="./inc2/side.jsp"></jsp:include>             
+<%--        <jsp:include page="./inc2/side.jsp"></jsp:include>              --%>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -59,8 +59,7 @@
 									</c:choose>
                                     <thead>
                                         <tr>
-                                            <th>분류</th>
-                                            <th>글 번호</th>
+                                            <th>글 번호</th> 
                                             <th>카테고리</th>
                                             <th>글 제목</th>
                                             <th>게시 날짜</th>
@@ -69,7 +68,6 @@
                                     </thead>
                                     <c:forEach var="board" items="${boardList }">
                                         <tr>
-                                            <th>${board.notice_type }</th>
                                             <th>${board.notice_idx }</th>
                                             <th>${board.notice_category }</th>
                                             <th>${board.notice_subject }</th>

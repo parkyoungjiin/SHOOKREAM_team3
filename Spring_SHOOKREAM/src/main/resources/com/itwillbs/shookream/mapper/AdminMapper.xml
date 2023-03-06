@@ -52,6 +52,7 @@
 	<update id="modifyProduct">
 		UPDATE product
   			SET
+
   			<if test="product_name == null"> 
  				product_name = #{product.product_name}
  			</if>
@@ -66,6 +67,7 @@
 	        , product_detail_exp = #{product_detail_exp}
 	    WHERE 
 	        product_idx = #{product_idx}
+
 	</update>
 	
 	<!-- 상품 수정 시 이미지 수정 -->
@@ -128,6 +130,11 @@
 			WHERE product_idx = #{product_idx} 
 	</select>
   	
+  	<!-- 관리자의 회원목록 조회 -->
+  	<select id="selectMember" resultType="com.itwillbs.shookream.vo.MemberVo">
+  		SELECT *
+  			FROM member
+  	</select>
 </mapper>
 
 

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.shookream.service.AdminService;
+
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.imageVo;
 
@@ -29,6 +30,8 @@ import com.itwillbs.shookream.vo.imageVo;
 public class AdminController {
 	@Autowired
 	private AdminService service;
+	@Autowired
+	private BoardService service1;
 	//관리자 페이지 이동
 	@GetMapping(value = "admin.ad")
 	public String adminMain() {
@@ -40,6 +43,69 @@ public class AdminController {
 		public String adminProd() {
 			return "admin/admin_product";
 	}
+	
+	//게시판 관리(공지사항) 페이지로 포워딩 
+	@GetMapping(value ="AdminBoard.ad")
+		public String adminboard(@ModelAttribute BoardVo board,@RequestParam(defaultValue = "1") int pageNum, String keyword, Model model) {
+		int listLimit = 10;
+		int startRow = (pageNum - 1) * listLimit;
+		String notice_type = "Notice";
+		
+		if(keyword ==null) {
+			keyword="";
+		}
+		List<BoardVo> boardList= service1.getBoardList(keyword, startRow, listLimit, notice_type);
+		int listCount = service1.getBoardListCount(keyword,notice_type);
+		System.out.println(boardList);
+		
+		int pageListLimit =3;
+		int maxPage = listCount / listLimit 
+				+ (listCount % listLimit == 0 ? 0 : 1); 
+
+
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+
+		int endPage = startPage + pageListLimit - 1;
+
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		PageInfo page = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("page", page);
+		return "admin/admin_notice_manage";
+	}
+	// 게시판관리(자주묻는질문) 페이지로 포워딩 
+	@GetMapping(value ="AdminFAQ.ad")
+	public String adminfaq(@ModelAttribute BoardVo board,@RequestParam(defaultValue = "1") int pageNum, String keyword, Model model) {
+		int listLimit =10;
+		pageNum =1;
+		int startRow = (pageNum -1) * listLimit;
+		
+		if(keyword ==null) {
+			keyword ="";
+		}
+		String type ="FAQ";
+		List<BoardVo> boardList = service1.getBoardList(keyword, startRow, listLimit, type);
+		int listCount = service1.getBoardListCount(keyword, type);
+
+		int pageListLimit =3;
+		int maxPage = listCount / listLimit 
+				+ (listCount % listLimit == 0 ? 0 : 1); 
+
+
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+
+		int endPage = startPage + pageListLimit - 1;
+
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		PageInfo page = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("page", page);
+	return "admin/admin_FAQ_manage";
+}
 	
 	//================== 현진 =============================
 	//============================ 상품 등록 ============================
@@ -69,7 +135,7 @@ public class AdminController {
 				e1.printStackTrace();
 			}
 			//----------------------------------------
-			
+
 			MultipartFile[] mFiles = image.getFiles();
 			 
 			String originalFileNames = ""; // 복수개의 파일을 하나의 이름으로 묶어서 다룰 경우에 사용할 변수 선언
@@ -106,6 +172,7 @@ public class AdminController {
 					// 파일이 존재하지 않을 경우 널스트링으로 대체(뒤에 슬래시 포함)
 //							originalFileNames += "/";
 //							realFileNames += "/";
+
 				}
 			}
 			// productVO 객체에 원본 파일명과 업로드 될 파일명 저장
@@ -140,6 +207,7 @@ public class AdminController {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
+
 				}
 				
 				// 메인페이지로 리다이렉트
@@ -336,12 +404,33 @@ public class AdminController {
 			}
 	//============================= 상품 삭제 끝 =============================
 			
-	//============================= 상품 목록 ================================
+
+			
+//			 상품 목록 조회
+			@GetMapping(value="/ProductListForm.po")
+			public String getProductList(Model model) {
+//				System.out.println("product : " + product);
+//				System.out.println("image : " + image);
+//				
+				List<ProductVo> productList = service.getProductList();
+				model.addAttribute("productList", productList);
+				System.out.println("productList" + productList);
+				
+//				imageVo imgList = service.getImgList(product.getProduct_idx());
+//				model.addAttribute("image", image);
+//				model.addAttribute("imgList", imgList);
+//				System.out.println("imgList" + imgList);
+				
+				return "admin/admin_Product_List";
+			}
+			
+      //============================= 상품 목록 ================================
 			@GetMapping(value = "/ProductList.po")
 			public String productList(@ModelAttribute ProductVo product,
 //									  @ModelAttribute imageVo img,
 									  @RequestParam(defaultValue = "0") int product_idx,
 									  HttpSession session, Model model) {
+
 				String id = (String)session.getAttribute("sId");
 				
 				if(id == null || id.equals("") || !id.equals("admin")) { 
@@ -368,7 +457,7 @@ public class AdminController {
 					
 					// Model 객체에 "productList" 속성명으로 조회된 회원 목록(List 객체) 저장
 					model.addAttribute("productList", productList);
-					System.out.println("productList" +  productList);
+
 					// admin_Product_List.jsp로 포워딩
 					return "admin/admin_Product_List";
 				}
@@ -376,8 +465,38 @@ public class AdminController {
 
 		//============================= 상품 목록 ================================
 
+
+//================== 끝 =============================
 			
-}//AdminController 끝
+	//---------관리자 회원 & 쿠폰관리 메인--------
+	@GetMapping("AdminMemberCoupon.ad")	
+	public String adMember() {
+		return "admin/admin_coupon_and_member";
+	}
+	
+	//--------- 회원목록------------------
+	@GetMapping("MemberList.me")
+	public String adMemberList(Model model) {
+		List<MemberVo> member = service.getMemberInfo();
+		model.addAttribute("member",member);
+		return "admin/admin_member_list";
+	}
+	
+	//----------- 쿠폰 등록 ----------------------
+	@GetMapping("CouponInsertForm.po") 
+	public String insertCouponForm() {
+		return "admin/admin_coupon_insert";
+	}
+	
+	// ------------ 쿠폰 목록 --------------------
+	@GetMapping("CouponList.po")
+	public String couponList() {
+		return "admin/admin_coupon_list";
+	}
+	
+	//------------쿠폰 수정------------------------
+}//AdminController
+
 		
 	
 

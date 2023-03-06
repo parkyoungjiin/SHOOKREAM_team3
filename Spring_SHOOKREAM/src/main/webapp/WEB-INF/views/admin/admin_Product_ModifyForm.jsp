@@ -105,9 +105,11 @@
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품명</td>
 						<td width="300px"><input class="w3-input w3-border"
+
 							type="text" placeholder="Product Name" name="product_name" id="product_name" value ="${product.product_name }" >
 							<input type="hidden" name="product_name" value="${product.product_name}">
 							</td>
+
 					</tr>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품 브랜드</td>
@@ -247,6 +249,7 @@
 						<td width="100px" align="left" class="table-secondary">메인 이미지</td>
 <%-- 						<td><input type="file" name="file" >기존 메인 파일: <input type="text" value="${image.image_main_file }" width="100" name ="origin_file" readonly></td> --%>
 						<td>
+
 						<input type="file" name="files" >
 <%-- 						 ${image.image_main_file } --%>
 						<c:set var="imagePathArray" value="${fn:split(image.image_main_file, '/')}" />
@@ -255,6 +258,7 @@
 <%-- 				        <a href="upload/${image.image_real_file1 }" download="${image.image_main_file }"> --%>
 <%-- 				            ${image.image_main_file } --%>
 <!-- 				        </a> -->
+
 						</td>
 					</tr>
 					<tr>
