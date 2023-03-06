@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.shookream.service.AdminService;
-import com.itwillbs.shookream.vo.MemberVo;
+
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.imageVo;
 
@@ -30,6 +30,8 @@ import com.itwillbs.shookream.vo.imageVo;
 public class AdminController {
 	@Autowired
 	private AdminService service;
+	@Autowired
+	private BoardService service1;
 	//관리자 페이지 이동
 	@GetMapping(value = "admin.ad")
 	public String adminMain() {
@@ -41,6 +43,69 @@ public class AdminController {
 		public String adminProd() {
 			return "admin/admin_product";
 	}
+	
+	//게시판 관리(공지사항) 페이지로 포워딩 
+	@GetMapping(value ="AdminBoard.ad")
+		public String adminboard(@ModelAttribute BoardVo board,@RequestParam(defaultValue = "1") int pageNum, String keyword, Model model) {
+		int listLimit = 10;
+		int startRow = (pageNum - 1) * listLimit;
+		String notice_type = "Notice";
+		
+		if(keyword ==null) {
+			keyword="";
+		}
+		List<BoardVo> boardList= service1.getBoardList(keyword, startRow, listLimit, notice_type);
+		int listCount = service1.getBoardListCount(keyword,notice_type);
+		System.out.println(boardList);
+		
+		int pageListLimit =3;
+		int maxPage = listCount / listLimit 
+				+ (listCount % listLimit == 0 ? 0 : 1); 
+
+
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+
+		int endPage = startPage + pageListLimit - 1;
+
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		PageInfo page = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("page", page);
+		return "admin/admin_notice_manage";
+	}
+	// 게시판관리(자주묻는질문) 페이지로 포워딩 
+	@GetMapping(value ="AdminFAQ.ad")
+	public String adminfaq(@ModelAttribute BoardVo board,@RequestParam(defaultValue = "1") int pageNum, String keyword, Model model) {
+		int listLimit =10;
+		pageNum =1;
+		int startRow = (pageNum -1) * listLimit;
+		
+		if(keyword ==null) {
+			keyword ="";
+		}
+		String type ="FAQ";
+		List<BoardVo> boardList = service1.getBoardList(keyword, startRow, listLimit, type);
+		int listCount = service1.getBoardListCount(keyword, type);
+
+		int pageListLimit =3;
+		int maxPage = listCount / listLimit 
+				+ (listCount % listLimit == 0 ? 0 : 1); 
+
+
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+
+		int endPage = startPage + pageListLimit - 1;
+
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		PageInfo page = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("page", page);
+	return "admin/admin_FAQ_manage";
+}
 	
 	//================== 현진 =============================
 			// 상품 등록

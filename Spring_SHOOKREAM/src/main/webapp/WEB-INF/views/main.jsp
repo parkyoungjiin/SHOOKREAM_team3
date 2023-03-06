@@ -5,7 +5,7 @@
  <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>   
 <c:set var="path" value="${pageContext.request.contextPath }"/>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <title>SHOOKREAM</title>
 <meta charset="UTF-8">
@@ -44,6 +44,11 @@ $(function() {
 });
 
 </script>
+<script type="text/javascript">
+local
+</script>
+
+
 <style>
 .w3-sidebar a {font-family: "Noto Sans KR", sans-serif}
 body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
@@ -101,6 +106,9 @@ footer {
 }
 </style>
 </head>
+<script type="text/javascript">
+localStorage.setItem("z","11");
+</script>
 <body class="w3-content" style="max-width:95%; margin-top: 20px;">
 
 <!-- Sidebar/menu -->
@@ -161,7 +169,9 @@ footer {
 							</div>
 							<p id="product_brand" >${productBestList.product_brand }</p>
 							<p id="product_name" >${productBestList.product_name }<br></p>
-							
+							<script type="text/javascript">
+							localStroage
+							</script>
 							<div id="price">
 							<c:choose>
 								<c:when test="${productBestList.product_discount_price gt 0}">
