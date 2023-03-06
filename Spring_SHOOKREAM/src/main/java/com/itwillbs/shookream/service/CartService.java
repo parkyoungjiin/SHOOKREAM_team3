@@ -17,10 +17,6 @@ public class CartService {
 	public List<cartVo> getCartlist(int member_idx, int startRow, int listLimit) {
 		return mapper.getCartlist(member_idx, startRow, listLimit);
 	}
-	//카트 금액 합계
-	public int CartTotalPrice(int member_idx) {
-		return 0;
-	}
 	// 페이징 처리
 	// 한 페이지에서 표시할 페이지 목록(번호) 갯수 계산
 	// 1. BoardListService - selectBoardListCount() 메서드를 호출하여 전체 게시물 수 조회(페이지 목록 계산에 사용)
@@ -47,6 +43,10 @@ public class CartService {
 	//이미 담긴 상품이 있는 경우 CART_count 만큼의 수량을 증가
 	public int getUpdateCart(int product_idx, int member_idx, int cart_count) {
 		return mapper.getUpdateCart(product_idx, member_idx, cart_count);
+	}
+	//장바구니 -> 구매페이지
+	public cartVo getCartOrderlist(String cart_idx, int member_idx) {
+		return mapper.getCartOrderList(cart_idx, member_idx);
 	}
 
 }

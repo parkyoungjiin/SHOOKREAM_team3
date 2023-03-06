@@ -61,6 +61,20 @@ public class MemberService {
 		return mapper.deleteMember(member);
 	}
 	
+	// 아이디 찾기
+	public String findId(MemberVo vo) {
+		return mapper.findId(vo);
+	}
+
+	// 아이디 유무 확인
+	public boolean isLoginUser(MemberVo vo) {
+		return mapper.isLoginUser(vo);
+	}
+
+
+	public boolean updatePass(MemberVo vo, String imsiPw) {
+		return mapper.updatePass(vo,imsiPw);
+	}
 
 }
 

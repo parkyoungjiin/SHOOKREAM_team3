@@ -76,4 +76,23 @@
   			FROM member
   			WHERE id = #{member_id}
   	</delete>
+  	
+  	<!-- 아이디 찾기 -->
+	<select id="findId" resultType="String">
+		SELECT member_id 
+			FROM member 
+				WHERE member_name=#{member_name} AND member_email=#{member_email}
+	</select>
+	
+	<!-- 아이디 유무 확인 -->
+	<select id="isLoginUser" resultType="boolean">
+		SELECT COUNT(member_id) FROM member WHERE member_id=#{member_id}
+	</select>
+	
+	<!--비밀번호 찾기  -->
+	<update id="updatePass">
+		UPDATE member 
+			SET member_pass=#{imsiPw}
+			WHERE member_id=#{vo.member_id}
+	</update>
 </mapper>

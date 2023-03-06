@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- font 굵기 -->
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
 <!-- icon CDN -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -284,13 +285,19 @@ font-size: 70%;
 		    <div class="col">
 				<div class="p-3 border bg-light" style="font-size: 25px; ">
 					<span style="margin-right: 12px">상품 금액</span> 
-					<span style="font-size: 27px; margin-right: 25px;">200,000원</span>
+					<span style="font-size: 27px; margin-right: 25px;">
+						<fmt:formatNumber pattern="#,###원" value="${cart_total_price }"></fmt:formatNumber>
+					</span>
 					<span class="material-symbols-outlined" style="margin-right: 30px; font-size: 25px">do_not_disturb_on</span>					
 					<span style="margin-right: 12px">할인 금액</span> 
-					<span style="font-size: 27px; margin-right: 25px;">100,000원</span>
+					<span style="font-size: 27px; margin-right: 25px;">
+						<fmt:formatNumber pattern="#,###원" value="${cart_total_price-cart_order_total_price }"></fmt:formatNumber>
+					</span>
 					<span class="material-symbols-outlined" style="margin-right: 30px; font-size: 25px">equal</span>
 					<span style="margin-right: 12px">총 결제금액</span> 
-					<span style="font-size: 27px; margin-right: 25px; color: blue;">100,000원</span>
+					<span style="font-size: 27px; margin-right: 25px; color: blue;">
+						<fmt:formatNumber pattern="#,###원" value="${cart_order_total_price }"></fmt:formatNumber>
+					</span>
 					<br>
 		      	<input type="button" class="btn btn-primary btn-lg" onclick="goOrder()" value="구매하기" style="margin-top: 30px; width: 100px" >
 				</div>	    
@@ -455,7 +462,7 @@ function goOrder() {
 // 	
 		
 		alert("구매페이지로 이동합니다.");
-		location.href = "CartOrderDetailProAction.ca?cart_idx=" + chk_arr + "&member_idx=" + ${sessionScope.member_idx};
+		location.href = "CartOrderDetail.ca?cart_idx=" + chk_arr;
 
 		
 	
