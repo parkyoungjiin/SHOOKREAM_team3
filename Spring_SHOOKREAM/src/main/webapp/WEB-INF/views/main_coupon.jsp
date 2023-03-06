@@ -2,7 +2,8 @@
     pageEncoding="UTF-8"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
  <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
- <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>   
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>  
+ <c:set var="path" value="${pageContext.request.contextPath }"/> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +14,7 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
-<link rel="stylesheet" href="css/main.css">
+<link href="${path}/resources/css/main.css" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -95,8 +96,10 @@ function downCoupon(){
 			dataType: "html", 
 			success: function(data) { 
 // 				alert("쿠폰이 발급되었습니다");
-				$(".coupon").html('<img id="coupondown" alt="" src="images/coupon_down.png" style="width: 300px;"/>');
+				if(data == 1) {
+				$(".coupon").html('<img id="coupondown" alt="" src="${path}/resources/images/coupon_down.png" style="width: 300px;"/>');
 				$("#btnDown").attr("disabled", true);
+				}
 			}, 
 			error: function(xhr, textStatus, errorThrown) {
 				alert("쿠폰 발급 실패"); 
@@ -137,12 +140,12 @@ function downCoupon(){
 							<c:choose>
 								<c:when test="${member_coupon.coupon_content eq couponList.coupon_content }">
 									<span class="coupon">
-									<img src="images/coupon_down.png" alt="..." style="width:300px">
+									<img src="${path}/resources/images/coupon_down.png" alt="..." style="width:300px">
 									</span>
 								</c:when>
 								<c:otherwise>
 									<span class="coupon">
-									<img src="images/coupon.png" alt="..." style="width:300px">
+									<img src="${path}/resources/images/coupon.png" alt="..." style="width:300px">
 									</span>
 									<div class="w3-display-middle w3-display-hover">
 									<button id="btnDown" class="w3-button w3-black" onclick="downCoupon()">
