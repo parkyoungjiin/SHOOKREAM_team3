@@ -29,12 +29,26 @@ private String image_main_file; // 메인 사진
 private String product_color; // 상품 색상 카테고리
 private int order_price;
 private int product_idx;
+private String member_id;
+private int product_price;
 
 
 
 
 
 
+public String getMember_id() {
+	return member_id;
+}
+public void setMember_id(String member_id) {
+	this.member_id = member_id;
+}
+public int getProduct_price() {
+	return product_price;
+}
+public void setProduct_price(int product_price) {
+	this.product_price = product_price;
+}
 public String getImage_main_file() {
 	return image_main_file;
 }
