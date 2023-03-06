@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.shookream.vo.MemberVo;
+import com.itwillbs.shookream.vo.OrderVo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.imageVo;
 
@@ -50,6 +51,12 @@ public interface AdminMapper {
 
 	// 회원목록 조회
 	public List<MemberVo> selectMember();
+
+	// 주문목록 조회
+	public List<OrderVo> selectOrderList();
+
+	// 주문목록 삭제
+	public int delectOrder(int order_idx);
 
 	
 
