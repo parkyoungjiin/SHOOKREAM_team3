@@ -24,6 +24,7 @@ import com.itwillbs.shookream.service.AdminService;
 import com.itwillbs.shookream.service.BoardService;
 import com.itwillbs.shookream.vo.BoardVo;
 import com.itwillbs.shookream.vo.MemberVo;
+import com.itwillbs.shookream.vo.OrderVo;
 import com.itwillbs.shookream.vo.PageInfo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.imageVo;
@@ -498,6 +499,41 @@ public class AdminController {
 	}
 	
 	//------------쿠폰 수정------------------------
+	
+	
+	
+	
+	// =========== 주문 관리 ===============
+	@GetMapping("AdminProductOrderList.ad")
+	public String OrderList(Model model) {
+		
+		List<OrderVo> Adminorderlist = service.getOrderList();
+		
+		model.addAttribute("Adminorderlist",Adminorderlist);
+		
+		return "admin/admin_order_list";
+		
+	} // =========== 주문 관리 ===============
+	
+	
+	
+	// =========== 주문 관리 - 삭제 ===============
+	@GetMapping("AdminProductOrderListDelete.ad")
+	public String OrderDelete(@RequestParam(defaultValue = "0") int order_idx, Model model) {
+		
+		
+		int deleteCount = service.deleteOrder(order_idx);
+		
+		if(deleteCount > 0) {
+			return "redirect:/AdminProductOrderList.ad";
+		} else {
+			model.addAttribute("msg", "삭제 실패!");
+			return "fail_back";
+		}
+		
+		
+	} // =========== 주문 관리 - 삭제 ===============
+	
 }//AdminController
 
 		

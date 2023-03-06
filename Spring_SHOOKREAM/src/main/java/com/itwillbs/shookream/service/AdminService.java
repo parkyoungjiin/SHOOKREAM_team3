@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.shookream.mapper.AdminMapper;
 import com.itwillbs.shookream.vo.MemberVo;
+import com.itwillbs.shookream.vo.OrderVo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.imageVo;
 
@@ -67,6 +68,16 @@ public class AdminService {
 		//회원목록
 		public List<MemberVo> getMemberInfo() {
 			return mapper.selectMember();
+		}
+
+		//주문목록
+		public List<OrderVo> getOrderList() {
+			return mapper.selectOrderList();
+		}
+		
+		//주문목록 - 삭제
+		public int deleteOrder(int order_idx) {
+			return mapper.delectOrder(order_idx);
 		}
 	
 }

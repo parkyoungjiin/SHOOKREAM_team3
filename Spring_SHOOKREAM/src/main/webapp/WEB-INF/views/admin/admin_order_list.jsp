@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
  <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+ <c:set var="path" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +17,7 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-        <link href="admin/css/styles.css" rel="stylesheet" />
+         <link href="${path}/resources/css/styles.css" rel="stylesheet" type="text/css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -91,9 +92,9 @@
                                       <c:forEach var="orderlist" items="${Adminorderlist }">
 										<tr>
 										<td>${orderlist.order_idx }</td>
-										 <td><img src="upload/${orderlist.order_main_image }"  alt="없음!" class="img-thumbnail" width="150" height="150"></td>
-									      <td>${orderlist.order_member_id }</td>
-									      <td><fmt:formatNumber value="${orderlist.order_product_price }" pattern="#,###원"></fmt:formatNumber></td>
+										 <td><img src="upload/${orderlist.image_main_file }"  alt="없음!" class="img-thumbnail" width="150" height="150"></td>
+									      <td>${orderlist.member_id }</td>
+									      <td><fmt:formatNumber value="${orderlist.product_price }" pattern="#,###원"></fmt:formatNumber></td>
 									      <td>${orderlist.order_category }</td>
 									      <td>${orderlist.order_progress }</td>
 									      <td><fmt:formatDate value="${orderlist.order_date }" pattern ="yyyy-MM-dd"/></td>
@@ -123,9 +124,9 @@
                 </footer>
             </div>
 <!--         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script> -->
-        <script src="admin/js/scripts.js"></script>
+        <script src="${path}/resources/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script src="admin/js/datatables-simple-demo.js"></script>
+        <script src="${path}/resources/js/datatables-simple-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     </body>
 </html>
