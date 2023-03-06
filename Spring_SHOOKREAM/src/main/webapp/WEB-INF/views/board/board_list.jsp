@@ -96,8 +96,12 @@
 			  </tbody>
 			 </c:forEach> 
 			</table>
+			
+			
 			<c:choose>
 		    	<c:when test="${sessionScope.sId eq 'admin' }">
+		    		<a href="BoardWriteForm.bo" class="w3-bar-item btn btn-dark btn-sm mx-1" style="float:right">글쓰기</a>
+		    		
 		    		<a href="AdminBoard.ad" class="w3-bar-item btn btn-dark btn-sm" style="float:right">게시판 관리</a>
 		    	</c:when>
 		    </c:choose>
