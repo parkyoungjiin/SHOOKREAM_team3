@@ -21,7 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.shookream.service.AdminService;
-
+import com.itwillbs.shookream.service.BoardService;
+import com.itwillbs.shookream.vo.BoardVo;
+import com.itwillbs.shookream.vo.MemberVo;
+import com.itwillbs.shookream.vo.PageInfo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.imageVo;
 
@@ -479,7 +482,7 @@ public class AdminController {
 	public String adMemberList(Model model) {
 		List<MemberVo> member = service.getMemberInfo();
 		model.addAttribute("member",member);
-		return "admin/admin_member_list";
+		return "admin/admin_Member_List";
 	}
 	
 	//----------- 쿠폰 등록 ----------------------
