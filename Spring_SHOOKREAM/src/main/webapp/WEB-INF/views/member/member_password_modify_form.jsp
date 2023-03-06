@@ -62,8 +62,8 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
     <div id = "sform" >
         <h4>회원정보 수정</h4>
         <p>개인정보 보호를 위해 비밀번호를 입력하세요</p>
-        <form action="MemberModifyForm.me?id=${sessionScope.sId }" method="post">
-        <input type="hidden" value ="${param.id }" name="id">
+        <form action="MemberPassCheck.me?id=${sessionScope.sId }" method="post">
+<%--         <input type="hidden" value ="${param.id }" name="id"> --%>
           <table>
           <tr>
           <td width="300px"><input class="w3-input w3-border" type="password" placeholder="비밀번호를 입력하세요" name="pass" required></td>
