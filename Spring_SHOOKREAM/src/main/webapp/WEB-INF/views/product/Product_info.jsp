@@ -259,6 +259,30 @@ display: block;
 	 	
 	}//valueCheckCart 끝
 	
+	//-------구매하기 버튼 클릭 시 작동되는 함수---------
+	function valueCheckPurchase() {
+	 	alert("클릭 ");
+	 	var color = $("#cart_color_id").value;
+	 	var size = $("#cart_size_id").value;
+	 	var product_idx = $("#product_idx").val();
+	 	var member_idx = '<%=session.getAttribute("member_idx")%>';
+
+	 	//색상 선택 여부 판별
+	 	if(color==""){
+	 		alert("색상을 선택 해주세요.");
+	 		return false;
+	 	//사이즈 선택 여부 판별  
+	 	}else if(size == ""){
+	 		alert("사이즈를 선택 해주세요.");
+	 		return false;
+	 	//로그인 여부 판별
+	 	}else if(member_idx == "null"){
+	 		alert("로그인 필수 입니다.");
+	 		return false;
+	 	}
+		
+	 	location.href="OrderDetailForm.po?product_idx=" + product_idx;
+	}//valueCheckPurchase 끝
 
 
 	
@@ -281,12 +305,12 @@ display: block;
 			'<div style="margin-bottom: 12px"><span style="font-weight: bold; font-size: 19px;">사이즈 : ' + cart_size_val + ' / 색상 : ' + cart_color_val + '</span></div>'
 			+ '<span style="margin-right: 20px">' 
 			+ '<button class="btn btn-outline-dark btn-sm" onclick="amount_adjust(' + "'minus'" + ')" style ="width: 30px; height: 35px; font-size: 15px;">-</button>'
-			+ '<input type="text" class="form-control" id="cart_count_id" name="cart_count" value="1" required="required" readonly="readonly" style="width: 50px; text-align: center; display: inline-block;">'
+			+ '<input type="text" class="form-control" id="cart_count_id" name="cart_count" value="1" required="required" readonly="readonly" style="width: 40px; text-align: center; display: inline-block;">'
 			+ '<button class="btn btn-outline-dark btn-sm" onclick="amount_adjust(' + "'plus'" + ')" style ="width: 30px; height: 35px; font-size: 15px;">+</button>'
 			+ '</span>'
 			+ '<span id ="total_price_area" style="font-weight: bold; font-size: 20px;">' + '총 금액 : ' + '</span>' 
-			+ '<span id ="total_price_areas" style="font-weight: bold; font-size: 20px; color:red;">' + comma_price + '</span>'
-			+ '<span style="font-weight: bold; font-size: 20px;">원</span>'
+			+ '<span id ="total_price_areas" style="font-weight: bold; font-size: 18px; color:red;">' + comma_price + '</span>'
+			+ '<span style="font-weight: bold; font-size: 18px;">원</span>'
 			
 			+ '<hr>';
 		}

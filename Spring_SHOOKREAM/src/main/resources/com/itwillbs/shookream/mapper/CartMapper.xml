@@ -26,8 +26,8 @@
 	<update id="getUpdateCart" >
 		UPDATE cart
 			SET cart_count = cart_count + #{cart_count},
-				cart_price = cart_price + (cart_price * #{cart_count}),
-				cart_order_price = cart_order_price + (cart_order_price * #{cart_count})
+				cart_price = cart_price + (product_price * #{cart_count}),
+				cart_order_price = cart_order_price + (product_release_price * #{cart_count})
 				
 				WHERE product_idx = #{product_idx} AND member_idx = #{member_idx}
 	</update>
