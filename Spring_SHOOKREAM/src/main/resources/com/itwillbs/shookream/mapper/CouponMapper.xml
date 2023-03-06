@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itwillbs.shookream.mapper.CouponMapper">
+	
+	<select id="selectMainCoupon" resultType="com.itwillbs.shookream.vo.CouponVo">
+		SELECT c.coupon_content
+           	FROM member_coupon m join coupon c
+            ON m.coupon_idx = c.coupon_idx
+            WHERE coupon_content 
+            LIKE '%${coupon_content}%' AND member_idx = #{member_idx}
+	</select>
+	
+	<select id="selectMainCouponList" resultType="com.itwillbs.shookream.vo.CouponVo">
+		SELECT *
+			FROM coupon
+			WHERE coupon_content 
+            LIKE '%${coupon_content}%' 
+	</select>
+	
+	<select id="selectCoupon" resultType="com.itwillbs.shookream.vo.CouponVo">
+		SELECT *
+			FROM coupon
+			WHERE coupon_content 
+            LIKE '%${coupon_content}%' 
+	</select>
+	
+	<insert id="insertCoupon">
+		<selectKey keyProperty="member_coupon_idx" resultType="int" order="BEFORE">
+			SELECT MAX(member_coupon_idx) FROM member_coupon
+		</selectKey>
+		
+		INSERT INTO member_coupon 
+			VALUES (
+				(#{member_coupon_idx} + 1)
+				,#{member_idx}
+				,#{coupon.coupon_idx}
+				,#{coupon.coupon_name}
+				,#{coupon.coupon_price}
+				,0
+				,#{coupon.coupon_start}
+				,#{coupon.coupon_end}
+			)
+	</insert>
+</mapper>

@@ -267,13 +267,14 @@ localStorage.setItem("z","11");
 
 function couponDown(coupon_content) {
 	
-	var member_idx = '<%=(String)session.getAttribute("sId")%>'
+	var sId = '<%=(String)session.getAttribute("sId")%>'
 	
-	if( member_idx == 'null'){
+	if( sId == 'null'){
 		alert("로그인 후 이용 가능합니다.");
 		location.href="LoginMember.me";
 	} else {
-		url = "CouponMainList.po?member_idx="+member_idx+"&coupon_content="+coupon_content; 
+// 		url = "CouponMainList.po?member_idx="+member_idx+"&coupon_content="+coupon_content; 
+		url = "CouponMainList.po?coupon_content="+coupon_content; 
 		let name = "Coupon List";
 		let attr = "width=350px, height=400px, top=200, left=510"
 		window.open(url, name, attr);

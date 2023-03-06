@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.itwillbs.shookream.service.AdminService;
 import com.itwillbs.shookream.service.BoardService;
 import com.itwillbs.shookream.vo.BoardVo;
+import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.OrderVo;
 import com.itwillbs.shookream.vo.PageInfo;
@@ -41,6 +42,7 @@ public class AdminController {
 	public String adminMain() {
 		return "admin/admin";
 	}
+	
 	
 	// 상품 및 주문 관리 페이지로 포워딩
 	@GetMapping(value="AdminProduct.ad")
@@ -486,19 +488,106 @@ public class AdminController {
 		return "admin/admin_Member_List";
 	}
 	
-	//----------- 쿠폰 등록 ----------------------
-	@GetMapping("CouponInsertForm.po") 
-	public String insertCouponForm() {
-		return "admin/admin_coupon_insert";
-	}
+	
+	// =========================== 쿠폰 ==============================
 	
 	// ------------ 쿠폰 목록 --------------------
 	@GetMapping("CouponList.po")
-	public String couponList() {
+	public String couponList(Model model) {
+		
+		List<CouponVo> couponList = service.getCouponList();
+		
+		model.addAttribute("couponList",couponList);
+		
 		return "admin/admin_coupon_list";
 	}
 	
-	//------------쿠폰 수정------------------------
+	// ------------ 쿠폰 수정 폼 --------------------
+	@GetMapping("CouponModifyForm.po")
+	public String couponModifyForm(Model model, @RequestParam(defaultValue = "0") int coupon_idx) {
+		
+		CouponVo coupon = service.getCouponInfo(coupon_idx);
+		
+		model.addAttribute("coupon",coupon);
+		
+		return "admin/admin_coupon_modify_form";
+	}
+	
+	// ------------ 쿠폰 수정 --------------------
+	@PostMapping("CouponModifyPro.po")
+	public String couponModifyPro(Model model, @RequestParam(defaultValue = "0") int coupon_idx, @ModelAttribute CouponVo coupon) {
+		
+		System.out.println("coupon : " + coupon);
+		
+		if(coupon.getCoupon_start().equals("")) {
+			coupon.setCoupon_start("0000-00-00");
+		}
+		
+		if(coupon.getCoupon_end().equals("")) {
+			coupon.setCoupon_end("0000-00-00");
+		}
+		
+		int updateCount = service.updateCoupon(coupon_idx, coupon);
+		
+		if(updateCount > 0) {
+			return "redirect:/CouponList.po";
+		} else {
+			model.addAttribute("msg", "수정 실패!");
+			return "fail_back";
+		}
+		
+	}
+	
+	// ------------ 쿠폰 삭제 --------------------
+	@GetMapping("CouponDeletePro.po")
+	public String couponDeletePro(Model model, @RequestParam(defaultValue = "0") int coupon_idx) {
+		
+		int deleteCount = service.deleteCoupon(coupon_idx);
+		
+		if(deleteCount > 0) {
+			return "redirect:/CouponList.po";
+		} else {
+			model.addAttribute("msg", "삭제 실패!");
+			return "fail_back";
+		}
+		
+	}
+	
+	//----------- 쿠폰 등록 폼----------------------
+	@GetMapping("CouponInsertForm.po") 
+	public String CouponForm() {
+		return "admin/admin_coupon_insert";
+	}
+	
+	
+	//----------- 쿠폰 등록----------------------
+	@PostMapping("CouponInsertPro.po") 
+	public String insertCoupon(Model model, @ModelAttribute CouponVo coupon) {
+		
+		System.out.println("coupon : " + coupon);
+		
+		if(coupon.getCoupon_start().equals("")) {
+			coupon.setCoupon_start("0000-00-00");
+		}
+		
+		if(coupon.getCoupon_end().equals("")) {
+			coupon.setCoupon_end("0000-00-00");
+		}
+		
+		int insertCount = service.insertCoupon(coupon);
+		
+		if(insertCount > 0) {
+			return "redirect:/CouponList.po";
+		} else {
+			model.addAttribute("msg", "등록 실패!");
+			return "fail_back";
+		}
+		
+	}
+	
+	
+	
+	// ========================== 쿠폰 끝 ================================
 	
 	
 	

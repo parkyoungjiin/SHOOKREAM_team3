@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.OrderVo;
 import com.itwillbs.shookream.vo.ProductVo;
@@ -57,6 +58,21 @@ public interface AdminMapper {
 
 	// 주문목록 삭제
 	public int delectOrder(int order_idx);
+
+	// 쿠폰목록
+	public List<CouponVo> selectCouponList();
+
+	// 쿠폰수정폼
+	public CouponVo selectCoupon(int coupon_idx);
+
+	// 쿠폰수정
+	public int updateCoupon(@Param("coupon_idx")int coupon_idx, @Param("coupon") CouponVo coupon);
+
+	// 쿠폰삭제
+	public int deletCoupon(int coupon_idx);
+
+	// 쿠폰등록
+	public int insertCoupon(CouponVo coupon);
 
 	
 

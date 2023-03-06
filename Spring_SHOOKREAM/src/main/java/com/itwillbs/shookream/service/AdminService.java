@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.shookream.mapper.AdminMapper;
+import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.OrderVo;
 import com.itwillbs.shookream.vo.ProductVo;
@@ -78,6 +79,31 @@ public class AdminService {
 		//주문목록 - 삭제
 		public int deleteOrder(int order_idx) {
 			return mapper.delectOrder(order_idx);
+		}
+
+		//쿠폰목록
+		public List<CouponVo> getCouponList() {
+			return mapper.selectCouponList();
+		}
+
+		//쿠폰수정폼
+		public CouponVo getCouponInfo(int coupon_idx) {
+			return mapper.selectCoupon(coupon_idx);
+		}
+
+		//쿠폰수정
+		public int updateCoupon(int coupon_idx, CouponVo coupon) {
+			return mapper.updateCoupon(coupon_idx, coupon);
+		}
+
+		//쿠폰삭제
+		public int deleteCoupon(int coupon_idx) {
+			return mapper.deletCoupon(coupon_idx);
+		}
+
+		//쿠폰등록
+		public int insertCoupon(CouponVo coupon) {
+			return mapper.insertCoupon(coupon);
 		}
 	
 }

@@ -150,6 +150,57 @@
   			WHERE order_idx = #{order_idx}
   	</delete>
   	
+  	
+  	<!-- 관리자 쿠폰 목록 -->
+  	<select id="selectCouponList" resultType="com.itwillbs.shookream.vo.CouponVo">
+  		SELECT *
+  			FROM coupon
+  	</select>
+  	
+  	<!-- 관리자 쿠폰 수정폼 -->
+  	<select id="selectCoupon" resultType="com.itwillbs.shookream.vo.CouponVo">
+  		SELECT *
+  			FROM coupon
+  			WHERE coupon_idx = #{coupon_idx}
+  	</select>
+  	
+  	<!-- 관리자 쿠폰 수정 -->
+  	<update id="updateCoupon" >
+  		UPDATE coupon
+  			SET
+  			 	coupon_name = #{coupon.coupon_name}
+  			 	,coupon_price = #{coupon.coupon_price}
+  			 	,coupon_content = #{coupon.coupon_content}
+  			 	,coupon_start = #{coupon.coupon_start}
+  			 	,coupon_end = #{coupon.coupon_end}
+  			WHERE coupon_idx = #{coupon_idx}
+  	</update>
+  	
+  	<!-- 관리자 쿠폰 삭제 -->
+  	<delete id="deletCoupon" >
+  		DELETE 
+  			FROM coupon
+  			WHERE coupon_idx = #{coupon_idx}
+  	</delete>
+  	
+  	<!-- 관리자 쿠폰 등록 -->
+  	<insert id="insertCoupon">
+  		<selectKey keyProperty="coupon_idx" resultType="int" order="BEFORE">
+			SELECT MAX(coupon_idx) FROM coupon
+		</selectKey>
+		
+		INSERT INTO coupon 
+			VALUES (
+				(#{coupon_idx} + 1)
+				,#{coupon_name}
+				,#{coupon_price}
+				,#{coupon_content}
+				,#{coupon_start}
+				,#{coupon_end}
+				,now()
+			)
+  	</insert>
+  	
 </mapper>
 
 
