@@ -37,7 +37,14 @@ public interface MemberMapper {
 	// 회원 탈퇴
 	public int deleteMember(MemberVo member);
 	
+	//아이디 찾기
+	public String findId(MemberVo vo);
 	
+	//아이디 유무 확인
+	public boolean isLoginUser(MemberVo vo);
+	
+	//비밀번호 찾기
+	public boolean updatePass(@Param("vo") MemberVo vo,@Param("imsiPw") String imsiPw);
 
 }
 

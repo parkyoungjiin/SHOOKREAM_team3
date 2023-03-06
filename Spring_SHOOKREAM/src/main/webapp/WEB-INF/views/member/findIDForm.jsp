@@ -1,4 +1,3 @@
-<%@page import="dao.MemberDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.net.URLEncoder" %>
@@ -60,13 +59,13 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
    
   <!-- Footer -->
   <!-- 로그인 화면 폼 -->
-  <footer class="w3-padding-64 w3-small w3-center" id="footer">
+  <footer class="w3-padding-50 w3-small w3-center" id="footer">
     <div id = "sform">
         <h4 style="padding-top: 30px;">아이디 찾기</h4>
         <form method="post" action="FindIdFormAction.me" >
         <p align="center"><a href="LoginMember.me">[돌아가기]</a></p>
           <table>
-				<tr style="">
+				<tr>
 					<th class="active">이름</th>
 					<td width="230px"><input class="w3-input w3-border" type="text" name="member_name" id="member_name" placeholder="이름을 입력해주세요." required></td>
 				</tr>
@@ -81,15 +80,14 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 				</tr>
 			</table>
         </form>
-        		<div style="margin-bottom: 10px;"></div>
+<!--         		<div style="margin-bottom: 10px;"></div> -->
 				<input style="margin-bottom: 2px;" type="button" value="비밀번호찾기" class="w3-button w3-block w3-black" onclick="location.href='./FindPwForm.me'">
 				<input type="button" value="회원가입" class="w3-button w3-block w3-black" onclick="location.href='./MemberJoinForm.me'">
-				
     </div>
   </footer>
-  <footer>
+<!--   <footer> -->
   	<jsp:include page="../inc/footer.jsp"/>
-  </footer>
+<!--   </footer> -->
  </div>	
 <!--   <div class="w3-black w3-center w3-padding-24">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></div> -->
 <!-- 아이디/비번찾기 화면 폼 -->
