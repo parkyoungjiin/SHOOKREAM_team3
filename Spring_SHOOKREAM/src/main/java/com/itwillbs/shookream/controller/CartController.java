@@ -3,6 +3,7 @@ package com.itwillbs.shookream.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.ibatis.annotations.Param;
 import org.apache.taglibs.standard.tag.el.fmt.RequestEncodingTag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.server.header.XFrameOptionsServerHttpHeadersWriter.Mode;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,10 +66,17 @@ public class CartController {
 
 			
 			List<cartVo> cartlist = service.getCartlist(member_idx,startRow,listLimit);
-			
-			// 합계 가격
-			int total = service.CartTotalPrice(member_idx);
-			
+			int cart_total_price =0;
+			int cart_order_total_price =0;
+			System.out.println(cartlist.size());
+			//반복문을 통해 cart_price합계 계산
+			for(int i=0; i<cartlist.size(); i++) {
+				cart_total_price += cartlist.get(i).getCart_price();
+				cart_order_total_price += cartlist.get(i).getCart_order_price();
+			}
+			//장바구니 금액(상품금액, 총 결제금액)
+//			int cartTotalPrice = service.getCartTotalPrice(member_idx);
+//			System.out.println(cartTotalPrice);
 			// 페이징 처리
 			// 한 페이지에서 표시할 페이지 목록(번호) 갯수 계산
 			// 1. BoardListService - selectBoardListCount() 메서드를 호출하여 전체 게시물 수 조회(페이지 목록 계산에 사용)
@@ -98,7 +107,8 @@ public class CartController {
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
 		request.setAttribute("pageInfo", pageInfo);
 		request.setAttribute("cartlist", cartlist);
-		request.setAttribute("total", total);
+		request.setAttribute("cart_total_price", cart_total_price);
+		request.setAttribute("cart_order_total_price", cart_order_total_price);
 		
 		return "product/Product_cart";
 	}
@@ -189,8 +199,47 @@ public class CartController {
 			return "reload_cart";
 			
 		}
+	}//cartDelete 
+	
+	//------장바구니 -> 구매페이지-------
+	@GetMapping(value = "CartOrderDetail.ca")
+	public String cartOrderForm(
+			@RequestParam("cart_idx") String cart_idx,
+			HttpSession session,
+			Model model,
+			HttpServletRequest request
+			) {
+		if(session.getAttribute("sId") == null || session.getAttribute("member_idx") == null ) {
+			model.addAttribute("msg", "로그인이 필요한 페이지입니다.");
+			model.addAttribute("url", "LoginMember.me");
+			return "reload_cart";
+		}
+		int member_idx = (int)session.getAttribute("member_idx");
+		//세션이 없을 경우 로그인 페이지로 이동
+		List<cartVo> cartOrderList = new ArrayList<cartVo>();
+		System.out.println("cart_idx :" + cart_idx);
+		String[] cart_idxArr = cart_idx.split(",");
+		System.out.println(cart_idxArr);
+		for(int i=0; i<cart_idxArr.length; i++) {
+			cart_idx = cart_idxArr[i];
+			System.out.println(cart_idx);
+			cartOrderList.add(service.getCartOrderlist(cart_idx, member_idx));
+		}
+		int cart_total_price =0;
+		int cart_order_total_price =0;
+		System.out.println(cartOrderList.size());
+		//반복문을 통해 cart_price합계 계산
+		for(int i=0; i<cartOrderList.size(); i++) {
+			cart_total_price += cartOrderList.get(i).getCart_price();
+			cart_order_total_price += cartOrderList.get(i).getCart_order_price();
+		}
+		System.out.println(cartOrderList);
+		model.addAttribute("cartOrderList", cartOrderList);
+		model.addAttribute("cart_total_price", cart_total_price);
+		model.addAttribute("cart_order_total_price", cart_order_total_price);
+		
+		return "product/order_form_cart";
 	}
-
 }//CartController 끝
 		
 	

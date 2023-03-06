@@ -60,6 +60,12 @@
 		DELETE FROM cart 
 			WHERE cart_idx=#{cart_idx } AND member_idx=#{member_idx}
 	</delete>
+	<!-- 장바구니 -> 구매페이지 -->
+	<select id="getCartOrderList" resultType="com.itwillbs.shookream.vo.cartVo">
+		SELECT * 
+			FROM cartlist_view 
+				WHERE member_idx = #{member_idx} AND cart_idx = #{cart_idx}; 
+	</select>
 	
 </mapper>
 

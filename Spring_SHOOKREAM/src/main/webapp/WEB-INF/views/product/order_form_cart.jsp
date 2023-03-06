@@ -6,32 +6,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>구매페이지</title>
+<title>주문서</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- font 굵기 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
+<!-- icon CDN -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 <!-- 네이버아이디로그인 -->
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <!-- 구글 아이디 로그인 -->
 <meta name="google-signin-client_id" content="1047574308186-h6ehte2k4901kjn1u3g5vnonbf2g56on.apps.googleusercontent.com">
-
 <style type="text/css">
 #sform {
           display: inline-block;
           text-align: center;
         }
 .td_cart{
-	font-size: 13px;
+	font-size: 18px;
 	text-align: center;
 	vertical-align : middle;
+	height: 50px;
 }
 
 .th_cart{
-	font-size: 16px;
+	font-size: 20px;
 	text-align: center;
+	background-color: #DCEBFF;
+	height: 60px;
+	vertical-align: middle;
+}t-align: center;
 }
 </style>
 <style type="text/css">
@@ -73,7 +82,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 <style>
     
     .footer {
-    	padding: 0px;
+    	padding: 50px;
     }
     
     .top_circle {
@@ -94,7 +103,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 	    left : 19%;
 	    bottom :30%;
 	    
-	    font-size: 15px;
+	    font-size: 18px;
 	    text-align: center;
 	    font-weight: bold;
     }
@@ -103,20 +112,25 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
     	background-color: #d2d2d2;
     }
     #cart_circle {
-    	background-color: #d2d2d2;
-    }
-    #com_circle {
     	background-color: #DCEBFF;
     }
+    #com_circle {
+    	background-color: #d2d2d2;
+    }
     
-    .cb {
+  .cb {
     font-size: 23px;
     }
     
     #no_cart {
     	padding: 50px 0px;
     }
-    </style>
+    #form_area{
+	  height: auto;
+	  min-height: 100%;
+	  padding-bottom: 300px;
+	}
+ </style>
 </head>
 <body class="w3-content" style="max-width:95%">
 <!-- Sidebar/menu -->
@@ -144,7 +158,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 </div>
 
   <header class="w3-container w3-xlarge" style="padding: 80px 50px;  z-index: -1">
-    <p class="w3-left">
+    <p class="w3-left" style="font-size: 37px">
     <i class="fa-solid fa-bag-shopping" ></i>
 <!--     <i class="fa-solid fa-cart-shopping"></i> -->
     &nbsp;주문 / 결제</p>
@@ -156,13 +170,17 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 <!--     </div> -->
 </header>
    <hr size="25px">
-<!--   Footer -->
-<!--   <footer class="w3-padding-64 w3-small w3-center" id="footer"> -->
-<form action="" style="padding: 0px 40px;">
-  <table class="table" border ="3">
-  <thead  class="table-dark" >
-    <tr>
-      <th scope="col" class ="th_cart"colspan="2">상품명</th>
+<!-- 상품 정보 -->
+<form action="" style="padding: padding: 40px; margin-top:20px; font-weight: bold; ">
+  <table class="table" style="height: 50px;">
+  <thead>
+	    <tr>
+	      <th scope="col" colspan="8" style="font-size: x-large;">상품 정보</th>
+	    </tr>
+  </thead>
+  <tbody>
+    <tr class="table-primary">
+      <th scope="col" class ="th_cart" colspan="2">상품명</th>
 <!--       <th scope="col">상품명</th> -->	
       <th scope="col"  class ="th_cart">상품금액</th>
       <th scope="col"  class ="th_cart">할인금액</th>
@@ -170,25 +188,23 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
       <th scope="col"  class ="th_cart">수량</th>
       <th scope="col"  class ="th_cart">배송정보</th>
     </tr>
-  </thead>
-  <tbody>
   	<!-- 카트 리스트가 없을 때 처리 -->
-    <c:if test="${total le 0 }">
+    <c:if test="${cart_order_total_price le 0 }">
 			<tr>
 				<td colspan="8" style="text-align: center"><h3 >구매 할 상품이 없습니다.</h3></td>
 			</tr>
 		</c:if>
 	<!-- 카트 리스트가 없을 때 처리 -->
-	<c:if test="${total gt 0}">
-    <c:forEach var="cart" items="${cartOrder }" varStatus="status">
+	<c:if test="${cart_order_total_price gt 0}">
+    <c:forEach var="cart" items="${cartOrderList }" varStatus="status">
     <tr>
-      <td><a href="ProductInfoForm.po?product_idx=${cart.product_idx }"><img src="upload/${cart.cart_product_image }"  alt="없음!" class="img-thumbnail" width="150" height="150" ></a></td>
-      <td class ="td_cart">${cart.cart_product_name }<br>색상 : ${cart.cart_color }</td>
+	 <td><a href="ProductInfoForm.po?product_idx=${cart.product_idx }"><img src="upload/${cart.cart_product_image }"  alt="없음!" class="img-thumbnail" width="150" height="150" ></a></td>
+      <td class ="td_cart">${cart.cart_product_name }<br><span style="color: #91949A;">색상 : ${cart.cart_color }</span></td>
 	  <td class ="td_cart" id="cart_price"><fmt:formatNumber value="${cart.cart_price }" pattern="#,###원"></fmt:formatNumber></td>
       <td class ="td_cart" id="cart_discount_price"><fmt:formatNumber value="${cart.cart_price * (cart.cart_discount / 100)}" pattern="#,###원"></fmt:formatNumber></td>
       <td class ="td_cart" id="cart_order_price" ><fmt:formatNumber value="${cart.cart_order_price}" pattern="#,###원"></fmt:formatNumber></td> 
       <td class ="td_cart">
-      <input type="number" value="${cart.cart_count }" style="width: 35px" readonly="readonly">
+     	${cart.cart_count }개
       </td>
       <td class ="td_cart">무료배송</td>
     </tr>
@@ -196,59 +212,106 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
     </c:if>
   </tbody>
 </table>
-	<div class="container px-4 text-center" id="totalResult">
-	  <div class="row gx-5" >
-	    <div class="col">
-			<div class="p-3 border bg-light" >
-			<h4>총 주문금액 : <fmt:formatNumber value="${total }" pattern="#,###"></fmt:formatNumber>원</h4>
-			</div>	    
-		</div>
-	    <div class="col">
-	      <div class="p-3 border bg-light">
-	      <input type="button" onclick="goOrder()" value="주문하기" >
- 	      </div>
-	    </div>
-	  </div>
-    </div>
 </form>
-<!-- 페이징 처리 -->	
-	<div class="paging">
-        <c:choose>
-			<c:when test="${param.pageNum > 1}">
-				<a href="CartList.ca?pageNum=${param.pageNum - 1 }&member_idx=${member_idx }">이전</a>
-			</c:when>
-			<c:otherwise>
-				<a href="javascript:void(0)">이전</a>
-			</c:otherwise>
-		</c:choose>
-		
-		<c:forEach var="i" begin="${pageInfo.startPage }" end="${pageInfo.endPage }">
-			<!-- 단, 현재 페이지 번호는 링크 없이 표시 -->
-			<c:choose>
-				<c:when test="${param.pageNum eq i}">
-					${i }
-				</c:when>
-				<c:otherwise>
-					<a href="CartList.ca?pageNum=${i }&member_idx=${member_idx }">${i }</a>
-				</c:otherwise>
-			</c:choose>
-		</c:forEach>
-		
-		<c:choose>
-			<c:when test="${param.pageNum < pageInfo.maxPage}">
-				<a href="CartList.ca?pageNum=${param.pageNum + 1 }&member_idx=${member_idx }">다음</a>
-			</c:when>
-			<c:otherwise>
-				<a href="javascript:void(0)">다음</a>
-			</c:otherwise>
-		</c:choose>
-<!--         <a class="select" href="#">1</a> -->
-<!--         <a href="#">2</a> -->
-<!--         <a href="#">3</a> -->
-<!--         <a href="#">4</a> -->
-<!--         <a href="#">5</a> -->
-    </div>
-   </div>
+<!-- 배송 정보 -->
+<table class="table" id="delivery_table" style="border-collapse: separate; border-spacing: 0 13px; font-size: 18px">
+	  <thead>
+	    <tr>
+	      <th scope="col" colspan="8" style="font-size: x-large;">배송 정보</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	   <tr>
+	    	<th colspan="2">
+	    		주문 하시는 분
+	    	</th>
+	    	<td colspan="6">
+	    		주문자이름<br>
+	    		xxxxx@xxxx.com<br>
+	    		010-1111-1111<br>
+	    	</td>
+	   </tr>
+	   <tr>
+		<th colspan="2">배송지 선택</th>
+		<td colspan="6" style="margin-left:500px;">
+			<input type="radio" value="" name=""> 기본배송지
+			<input type="radio" value="새로운 배송지" name=""> 새로운 배송지
+		</td>
+	   </tr>
+	   <tr>
+	    <th colspan="2">배송지명</th>
+	   	<td colspan="6" style="text-align: left;">집</td>
+	   </tr>
+	   
+	   <tr>
+	   <th colspan="2">받으시는 분</th>   
+	   <td>박영진<br>
+	 	   전화번호 : 000-0000-0000/휴대폰 번호 : 000-0000-0000 <br>
+	       주소: 주소들어가기<br>
+	   </td>
+	   </tr>
+	   <tr>
+	   	<th colspan="2">배송 메세지</th>
+	   	<td>
+	   		<select>
+	   			<option>부재시 문 앞에 놓아주세요</option>
+	   			<option>경비실에 ㄱㄱ </option>
+	   			<option>전화 부탁 드립니다</option>
+	   			<option>소화전에 넣어 주세요</option>
+	   		</select>
+	   	 </td>
+	   </tr>
+	   <tr>
+	   	<th colspan="2">총 배송비</th>
+	   	<td colspan="6">0원 </td>
+	   </tr>
+	  </tbody>
+	</table>
+	
+<!-- 할인 정보 및 총 결제가격 표시	 -->
+    <table class="table" style="border-collapse: separate; border-spacing: 0 13px; font-size: 18px" >
+	  <input type="hidden" id="coupon_idx" >
+	  <thead>
+	    <tr>
+	      <th scope="col" colspan="6" style="font-size: x-large;">할인 혜택</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	   <tr>
+		<th colspan="2">상품 할인쿠폰</th>
+		<td colspan="6" style="margin-left:500px;"><input type="text" id="priceValue" readonly="readonly">원 할인 
+	   	<button type="button" class="btn btn-dark btn-sm" onclick="CouponCheck()">내가 보유한 쿠폰 보러가기</button>
+	   	</td>
+	   </tr>
+	  </tbody>
+	</table>
+	 
+	 <!-- 결제금액 영역 -->
+		<div class="container px-4 text-center" id="totalResult" style="margin-top: 30px; font-size: 25px;">
+		  <div class="row gx-5" >
+		    <div class="col">
+				<div class="p-3 border bg-light" style="font-size: 25px; ">
+					<span style="margin-right: 12px">상품 금액</span> 
+					<span style="font-size: 27px; margin-right: 25px;">
+						<fmt:formatNumber pattern="#,###원" value="${cart_total_price }"></fmt:formatNumber>
+					</span>
+					<span class="material-symbols-outlined" style="margin-right: 30px; font-size: 25px">do_not_disturb_on</span>					
+					<span style="margin-right: 12px">할인 금액</span> 
+					<span style="font-size: 27px; margin-right: 25px;">
+						<fmt:formatNumber pattern="#,###원" value="${cart_total_price-cart_order_total_price }"></fmt:formatNumber>
+					</span>
+					<span class="material-symbols-outlined" style="margin-right: 30px; font-size: 25px">equal</span>
+					<span style="margin-right: 12px">총 결제금액</span> 
+					<span style="font-size: 27px; margin-right: 25px; color: blue;">
+						<fmt:formatNumber pattern="#,###원" value="${cart_order_total_price }"></fmt:formatNumber>
+					</span>
+					<br>
+		      	<input type="button" class="btn btn-primary btn-lg" onclick="goOrder()" value="구매하기" style="margin-top: 30px; width: 100px" >
+				</div>	    
+		    </div>
+		  </div>
+	    </div>
+	    
 <!-- </footer> -->
  <footer>
   	<jsp:include page="../inc/footer.jsp"/>

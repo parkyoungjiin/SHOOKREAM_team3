@@ -15,6 +15,7 @@ public interface CartMapper {
 			@Param("member_idx") int member_idx,
 			@Param("startRow") int startRow,
 			@Param("listLimit") int listLimit);
+	//장바구니 금액(상품금액, 총 결제금액)
 	//장바구니 담기
 	int getInsertCart(
 			@Param("product_idx") int product_idx, 
@@ -36,4 +37,8 @@ public interface CartMapper {
 			@Param("product_idx") int product_idx, 
 			@Param("member_idx") int member_idx,
 			@Param("cart_count") int cart_count);
+	//장바구니 -> 구매페이지
+	cartVo getCartOrderList(
+			@Param("cart_idx") String cart_idx,
+			@Param("member_idx") int member_idx);
 }
