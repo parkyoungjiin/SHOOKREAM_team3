@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>주문서</title>
+<title>주문 / 결제</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -22,6 +22,22 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <!-- 구글 아이디 로그인 -->
 <meta name="google-signin-client_id" content="1047574308186-h6ehte2k4901kjn1u3g5vnonbf2g56on.apps.googleusercontent.com">
+<!-- 쿠폰 확인 -->
+<script type="text/javascript">
+// 쿠폰 보러가기 클릭 함수
+function CouponCheck() {
+	
+	let url = "CouponListForm.po";
+	let name = "Coupon List";
+	let attr = "width=900, height=600, top=200, left=510"
+
+	window.open(url, name, attr);
+}
+function total_discount_cal() {
+	
+}
+
+</script>
 <style type="text/css">
 #sform {
           display: inline-block;
@@ -72,6 +88,18 @@
 /*         color: #fff; */
 /*         background-color: #FFA7A7; */
     }
+    #delivery_table td {
+		vertical-align : middle;
+	}	
+	}
+	table th {
+		vertical-align : middle;
+		width: 200px;
+	}	
+	
+/* 	td { */
+/* 	vertical-align : baseline; */
+/* 	} */
     </style>
 
 <style>
@@ -112,10 +140,11 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
     	background-color: #d2d2d2;
     }
     #cart_circle {
-    	background-color: #DCEBFF;
+    	background-color: #d2d2d2;
+    	
     }
     #com_circle {
-    	background-color: #d2d2d2;
+    	background-color: #DCEBFF;
     }
     
   .cb {
@@ -175,7 +204,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
   <table class="table" style="height: 50px;">
   <thead>
 	    <tr>
-	      <th scope="col" colspan="8" style="font-size: x-large;">상품 정보</th>
+	      <th scope="col" colspan="8" style="font-size: x-large;">주문상품</th>
 	    </tr>
   </thead>
   <tbody>
@@ -253,7 +282,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 	   <tr>
 	   	<th colspan="2">배송 메세지</th>
 	   	<td>
-	   		<select>
+	   		<select class="form-select" style="width: 300px">
 	   			<option>부재시 문 앞에 놓아주세요</option>
 	   			<option>경비실에 ㄱㄱ </option>
 	   			<option>전화 부탁 드립니다</option>
@@ -269,22 +298,30 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 	</table>
 	
 <!-- 할인 정보 및 총 결제가격 표시	 -->
-    <table class="table" style="border-collapse: separate; border-spacing: 0 13px; font-size: 18px" >
-	  <input type="hidden" id="coupon_idx" >
+
+<!-- 배송 정보 -->
+<table class="table" id="delivery_table" style="border-collapse: separate; border-spacing: 0 13px; font-size: 18px">
+  	  <input type="hidden" id="coupon_idx" >
 	  <thead>
 	    <tr>
-	      <th scope="col" colspan="6" style="font-size: x-large;">할인 혜택</th>
+	      <th scope="col" colspan="6" style="font-size: x-large;">할인 금액</th>
 	    </tr>
 	  </thead>
 	  <tbody>
 	   <tr>
-		<th colspan="2">상품 할인쿠폰</th>
-		<td colspan="6" style="margin-left:500px;"><input type="text" id="priceValue" readonly="readonly">원 할인 
-	   	<button type="button" class="btn btn-dark btn-sm" onclick="CouponCheck()">내가 보유한 쿠폰 보러가기</button>
+		<th colspan="2">즉시 할인금액</th>
+		<td><input type="text" class="form-control" readonly="readonly" value="<fmt:formatNumber value='${cart_total_price-cart_order_total_price }'></fmt:formatNumber>" style="width: 100px; display: inline-block; text-align: right; font-size: 18px ">원 할인 
 	   	</td>
 	   </tr>
-	  </tbody>
-	</table>
+	   <tr>
+		<th colspan="2">상품 할인쿠폰</th>
+		<td><input type="text" class="form-control" id="priceValue" readonly="readonly" value="0" style="width: 100px; display: inline-block; text-align: right; font-size: 18px">원 할인 
+	   	<button type="button" class="btn btn-outline-danger" onclick="CouponCheck()">쿠폰함</button>
+	   	</td>
+	   </tr>
+	   </tbody>
+ </table>
+   
 	 
 	 <!-- 결제금액 영역 -->
 		<div class="container px-4 text-center" id="totalResult" style="margin-top: 30px; font-size: 25px;">
@@ -292,21 +329,32 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 		    <div class="col">
 				<div class="p-3 border bg-light" style="font-size: 25px; ">
 					<span style="margin-right: 12px">상품 금액</span> 
-					<span style="font-size: 27px; margin-right: 25px;">
-						<fmt:formatNumber pattern="#,###원" value="${cart_total_price }"></fmt:formatNumber>
+					<span style="font-size: 27px;">
+						<fmt:formatNumber pattern="#,###" value="${cart_total_price }"></fmt:formatNumber>
 					</span>
-					<span class="material-symbols-outlined" style="margin-right: 30px; font-size: 25px">do_not_disturb_on</span>					
+					<span style="font-size: 27px; margin-right: 25px;">원</span>
+					
+					<span class="material-symbols-outlined" style="margin-right: 30px; font-size: 25px">do_not_disturb_on</span>	
+									
 					<span style="margin-right: 12px">할인 금액</span> 
-					<span style="font-size: 27px; margin-right: 25px;">
-						<fmt:formatNumber pattern="#,###원" value="${cart_total_price-cart_order_total_price }"></fmt:formatNumber>
+					<span style="font-size: 27px;" id="discount_area">
+						<fmt:formatNumber pattern="#,###" value="${cart_total_price-cart_order_total_price }"></fmt:formatNumber>
 					</span>
+					<span style="font-size: 27px; margin-right: 25px;">원</span>
+					
 					<span class="material-symbols-outlined" style="margin-right: 30px; font-size: 25px">equal</span>
+					
 					<span style="margin-right: 12px">총 결제금액</span> 
-					<span style="font-size: 27px; margin-right: 25px; color: blue;">
-						<fmt:formatNumber pattern="#,###원" value="${cart_order_total_price }"></fmt:formatNumber>
+					<span style="font-size: 27px; color: blue;" id="order_total_area">
+						<fmt:formatNumber pattern="#,###" value="${cart_order_total_price }"></fmt:formatNumber>
 					</span>
+					<span style="font-size: 27px; margin-right: 25px;">원</span>
+					
 					<br>
-		      	<input type="button" class="btn btn-primary btn-lg" onclick="goOrder()" value="구매하기" style="margin-top: 30px; width: 100px" >
+		      	<input type="button" class="btn btn-primary btn-lg" onclick="goOrder()" value="결제" style="margin-top: 30px; width: 100px" >
+		      	<input type="hidden" id="order_discount_price" value="${cart_total_price-cart_order_total_price }">
+		      	<input type="hidden" id="order_total_price" value="${cart_order_total_price }">
+		      	
 				</div>	    
 		    </div>
 		  </div>
