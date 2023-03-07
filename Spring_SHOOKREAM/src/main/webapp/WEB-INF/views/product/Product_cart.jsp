@@ -36,6 +36,89 @@ function deleteCart(cb) {
 		location.href='CartDeletePro.ca?cart_idx=' + cart_idx_value
 	}
 }
+
+//---------상세 페이지에서 수량 +, - 버튼에 따른 수량 변동 작업 --------
+function amount_adjust_plus(type) {
+ 	var idx = type.id.replace("plus_btn", "");
+
+	var cart_count = parseInt($("#cart_count_id" + idx).val());
+ 	var cart_idx = $("#cart_idx_hidden" + idx).val();
+	cart_count = cart_count + 1;
+		
+	 	$.ajax({
+			type: "get",
+			url: "amount_adjust.ca",
+			data: {
+				cart_idx: cart_idx,
+				type: "plus"
+			},
+			dataType: "html",
+			success: function(data) {
+				 if(data == "성공"){
+					 alert("수량이 변경되었습니다.")
+					 $("#form_area").load(window.location.href + " #form_area");
+				 }else if(data == "실패"){
+					 alert("수량변경에 실패했습니다.")
+				 }
+			}
+		});
+// 	}else if(type ="minus"){
+// 	 	var idx = type.id.replace("minus_btn", "");
+// 	 	var cart_idx = $("#cart_idx_hidden" + idx).val();
+// 		cart_count = cart_count - 1;
+
+// 	 	$.ajax({
+// 			type: "get",
+// 			url: "amount_adjust.ca",
+// 			data: {
+// 				cart_idx: cart_idx,
+// 				type: type
+// 			},
+// 			dataType: "html",
+// 			success: function(data) {
+// 				 if(data == "성공"){
+// 					 alert("수량이 변경되었습니다.")
+// 				 }else if(data == "실패"){
+// 					 alert("수량변경에 실패했습니다.")
+// 				 }
+// 			}//success 끝
+	
+// 		});//ajax 끝
+// 	}//else if 끝
+	
+}//amount_adjust 끝
+
+function amount_adjust_minus(type) {
+ 	var idx = type.id.replace("minus_btn", "");
+
+	var cart_count = parseInt($("#cart_count_id" +idx).val());
+ 	var cart_idx = $("#cart_idx_hidden" + idx).val();
+//  	alert(cart_count);
+	if(cart_count > 1){
+		$.ajax({
+			type: "get",
+			url: "amount_adjust.ca",
+			data: {
+				cart_idx: cart_idx,
+				type: "minus"
+			},
+			dataType: "html",
+			success: function(data) {
+				 if(data == "성공"){
+					 alert("수량이 변경되었습니다.")
+					 $("#form_area").load(window.location.href + " #form_area");
+				 }else if(data == "실패"){
+					 alert("수량변경에 실패했습니다.")
+				 }
+					
+	 		}//success 끝
+ 		});//ajax 끝
+	}else{
+		alert("주문 가능한 최소 수량은 1개 입니다.")
+	}
+	 	
+				
+}
 </script>
 <style type="text/css">
 #sform {
@@ -197,8 +280,7 @@ font-size: 70%;
 	<!--   <footer class="w3-padding-64 w3-small w3-center" id="footer"> -->
 	<div id="form_area">
 	
-	<form action="" style="padding: 40px; margin-top:20px; font-weight: bold; ">
-	  <table class="table" style="height: 50px; ">
+	  <table class="table" style="height: 50px; padding: 40px; margin-top:20px; font-weight: bold;">
 	  <thead  class="table-primary" >
 	    <tr>
 	      <th scope="col" class ="th_cart">선택</th>
@@ -235,8 +317,10 @@ font-size: 70%;
 			  <td class ="td_cart" id="cart_price"><fmt:formatNumber value="${cart.cart_price }" pattern="#,###원"></fmt:formatNumber></td>
 		      <td class ="td_cart" id="cart_discount_price"><fmt:formatNumber value="${cart.cart_price * (cart.cart_discount / 100)}" pattern="#,###원"></fmt:formatNumber></td>
 		      <td class ="td_cart" id="cart_order_price" ><fmt:formatNumber value="${cart.cart_order_price}" pattern="#,###원"></fmt:formatNumber></td> 
-		      <td class ="td_cart">
-		      <input type="number" value="${cart.cart_count }" style="width: 35px; text-align: center;" readonly="readonly">
+		      <td class ="td_cart" style="vertical-align: middle;">
+		      <button id="minus_btn${status.index }" class="btn btn-outline-dark btn-sm" onclick="amount_adjust_minus(this)"  style ="width: 30px; height: 35px; font-size: 15px;">-</button>
+			  <input type="text" class="form-control" id="cart_count_id${status.index }" name="cart_count" value="${cart.cart_count }" required="required" readonly="readonly" style="width: 40px; text-align: center; display: inline-block;">
+		      <button id="plus_btn${status.index }"class="btn btn-outline-dark btn-sm" onclick="amount_adjust_plus(this)"  style ="width: 30px; height: 35px; font-size: 15px;">+</button>
 		      </td>
 		      <td class ="td_cart">무료배송</td>
 		      <td class ="td_cart">
@@ -304,7 +388,6 @@ font-size: 70%;
 		    </div>
 		  </div>
 	    </div>
-	</form>
 	
    	</div>
 	  	<jsp:include page="../inc/footer.jsp"/>

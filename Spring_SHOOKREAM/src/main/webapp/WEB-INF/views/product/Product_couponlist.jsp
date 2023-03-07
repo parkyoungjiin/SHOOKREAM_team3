@@ -51,12 +51,13 @@
 	function useCoupon(price,idx) {
 		// 부모창(주문 / 결제페이지)에서 값 가져오기 
 		//1. 할인 금액
-		var order_price = parseInt(opener.$("#order_discount_price").val());
+		var discount_price = parseInt(opener.$("#order_discount_price").val());
+
 		//2. 총 결제금액
 		var order_total_price = parseInt(opener.$("#order_total_price").val());
 		
 		//3. 쿠폰 적용한 할인금액
-		 order_price = (order_price + price).toLocaleString("en-US");
+		 discount_price = (discount_price + price).toLocaleString("en-US");
 		//4. 쿠폰 적용한 총 결제금액
 		 order_total_price = (order_total_price - price).toLocaleString("en-US");
 		//5. priceValue 값에 콤마
@@ -68,9 +69,9 @@
 		//상품 할인쿠폰 input 값에 들어감.
 		 window.opener.document.getElementById( "priceValue" ).value = price;
 		// 마지막 span영역에 쿠폰 적용된 할인가격, 총 결제금액이 들어감.
-
-		 window.opener.document.getElementById( "discount_area" ).innerText = order_price;
+		 window.opener.document.getElementById( "discount_area" ).innerText = discount_price;
 		 window.opener.document.getElementById( "order_total_area" ).innerText = order_total_price;
+		 window.opener.document.getElementById( "order_total_price_pay" ).value = order_total_price;
 		 close();
 	}
 	

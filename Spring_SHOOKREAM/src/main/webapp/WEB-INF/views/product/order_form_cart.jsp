@@ -200,6 +200,9 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 </header>
    <hr size="25px">
 <!-- 상품 정보 -->
+<div id="form_area">
+
+
 <form action="" style="padding: padding: 40px; margin-top:20px; font-weight: bold; ">
   <table class="table" style="height: 50px;">
   <thead>
@@ -241,7 +244,6 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
     </c:if>
   </tbody>
 </table>
-</form>
 <!-- 배송 정보 -->
 <table class="table" id="delivery_table" style="border-collapse: separate; border-spacing: 0 13px; font-size: 18px">
 	  <thead>
@@ -304,18 +306,18 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
   	  <input type="hidden" id="coupon_idx" >
 	  <thead>
 	    <tr>
-	      <th scope="col" colspan="6" style="font-size: x-large;">할인 금액</th>
+	      <th scope="col" colspan="8" style="font-size: x-large;">할인 금액</th>
 	    </tr>
 	  </thead>
 	  <tbody>
 	   <tr>
 		<th colspan="2">즉시 할인금액</th>
-		<td><input type="text" class="form-control" readonly="readonly" value="<fmt:formatNumber value='${cart_total_price-cart_order_total_price }'></fmt:formatNumber>" style="width: 100px; display: inline-block; text-align: right; font-size: 18px ">원 할인 
+		<td colspan="6" ><input type="text" class="form-control" readonly="readonly" value="<fmt:formatNumber value='${cart_total_price-cart_order_total_price }'></fmt:formatNumber>" style="width: 100px; display: inline-block; text-align: right; font-size: 18px ">원 할인 
 	   	</td>
 	   </tr>
 	   <tr>
 		<th colspan="2">상품 할인쿠폰</th>
-		<td><input type="text" class="form-control" id="priceValue" readonly="readonly" value="0" style="width: 100px; display: inline-block; text-align: right; font-size: 18px">원 할인 
+		<td colspan="6"><input type="text" class="form-control" id="priceValue" readonly="readonly" value="0" style="width: 100px; display: inline-block; text-align: right; font-size: 18px">원 할인 
 	   	<button type="button" class="btn btn-outline-danger" onclick="CouponCheck()">쿠폰함</button>
 	   	</td>
 	   </tr>
@@ -351,19 +353,19 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 					<span style="font-size: 27px; margin-right: 25px;">원</span>
 					
 					<br>
-		      	<input type="button" class="btn btn-primary btn-lg" onclick="goOrder()" value="결제" style="margin-top: 30px; width: 100px" >
+		      	<input type="button" class="btn btn-primary btn-lg" onclick="iamport()" value="결제" style="margin-top: 30px; width: 100px" >
 		      	<input type="hidden" id="order_discount_price" value="${cart_total_price-cart_order_total_price }">
 		      	<input type="hidden" id="order_total_price" value="${cart_order_total_price }">
+		      	<input type="hidden" id="order_total_price_pay" value="${cart_order_total_price }">
 		      	
 				</div>	    
 		    </div>
 		  </div>
 	    </div>
-	    
-<!-- </footer> -->
- <footer>
   	<jsp:include page="../inc/footer.jsp"/>
-  </footer> 
+  	</form>
+  </div>
+<!-- </footer> -->
 
 
 
@@ -461,89 +463,14 @@ function w3_close() {
   });
 </script>
 
-<script type="text/javascript">
-//----------------------장바구니 체크박스 선택 여부에 따라 카트 금액 증가, 감소 작업 -------------------------
-function removeCheck(cb) {
-// 	alert(cb.id);
-// 	let cartCheckBox = cb.id.replace("cartCheckBox", ""); // id값의 index값을 가져옴
-	let cart_idx = cb.value; // id값의 index값을 가져옴
-// 	alert(cart_idx);
-	
-	//체크박스 상태 판별(true이면 체크된 상태, false이면 체크가 풀린 상태)
-	let ischeck = cb.checked;
-	
-	//check가 true일 때
-	if(ischeck == true){
-		$.ajax({
-			type: "get",
-			url: "CartPlusPro.ca",
-			data: {
-				cart_idx: cart_idx
-			},
-			dataType: "html",
-			success: function() {
-				 $("#totalResult").load(window.location.href + " #totalResult");
-			}
-		});
-	//check가 false일 때
-	}else if(ischeck == false){
-		$.ajax({
-			type: "get",
-			url: "CartMinusPro.ca",
-			data: {
-				cart_idx: cart_idx
-			},
-			dataType: "html",
-			success: function() {
-				 $("#totalResult").load(window.location.href + " #totalResult");
-			}
-		});
-	}
-	
-};
-	
-</script>
-<script type="text/javascript">
 
-// 체크된 cart_idx 값을 넘기는 작업
-function goOrder() {
-		var check = $('input[name=cartCheckBox]:checked');
-		let chk_arr = new Array();
-		$('input[name=cartCheckBox]:checked').each(function(i) {
-			chk_arr.push($(this).val());
-		});
-// 	
-		//체크된 상품 개수만큼 반복
-		for(var i =0; i<chk_arr.length; i++){
-                 alert("배열값 = "+ chk_arr);
-			
-		}
-		location.href = "CartOrderDetailProAtion.ca?cart_idx=" + chk_arr + "&member_idx=" + ${sessionScope.member_idx};
-
-		
-	
-	
-}
-
-
-
-// $(document).ready(function(){
-// 	let listArr = new Array();
-//     let list = $("input[name='cartCheckBox']:checked");
-    
-//     for(var i = 0; i < list.length; i++){
-//         if(list[i].checked){
-//            listArr.push(list[i].value);
-//            alert("배열값 = "+ listArr);
-//         }
-//      }
-// }); 
-</script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript">
 function iamport(){
 	// 	
+	var total = $("#order_total_price_pay").val();
+	alert(total)
 		//가맹점 식별코드
 		IMP.init('imp77718215');
 		IMP.request_pay({
@@ -551,7 +478,7 @@ function iamport(){
 		    pay_method : 'cart',
 		    merchant_uid : 'merchant_' + new Date().getTime(),
 		    name : 'SHOOKREAM' , //결제창에서 보여질 이름
-		    amount : '${total }', //실제 결제되는 가격
+		    amount : total, //실제 결제되는 가격
 		    buyer_name : '${sessionScope.sId}',
 		}, function(rsp) {
 			console.log(rsp);
@@ -561,11 +488,11 @@ function iamport(){
 		        msg += '상점 거래ID : ' + rsp.merchant_uid;
 		        msg += '결제 금액 : ' + rsp.paid_amount;
 		        msg += '카드 승인번호 : ' + rsp.apply_num;
-		        location.href="ProductOrderPro.po?order_category=주문완료&order_progress=배송완료&member_idx=${member_idx}&product_idx=${product.product_idx}&product_amount=${product.product_amount}&product_sell_count=${product.product_sell_count} ";
+		        location.href="ProductOrderPro.po?order_category=주문완료&order_progress=배송완료&member_idx=${member_idx}&product_idx=${product.product_idx}&product_amount=${product.product_amount}&product_sell_count=${product.product_sell_count}&product_price="+rsp.paid_amount+"&coupon_idx="+$("#coupon_idx").val();
 		    } else {
 		    	 var msg = '결제에 실패하였습니다.';
 		         msg += '에러내용 : ' + rsp.error_msg;
-		         window.history.back();
+// 		         window.history.back();
 		    }
 		    alert(msg);
 		    

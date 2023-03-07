@@ -240,6 +240,60 @@ public class CartController {
 		
 		return "product/order_form_cart";
 	}
+	
+	//------------수량 변동에 따라 수량, 금액 변경--------------
+	@ResponseBody
+	@GetMapping(value = "amount_adjust.ca")
+	public void amount_adjust(
+			HttpSession session,
+			HttpServletResponse response,
+			Model model,
+			@RequestParam String type,
+			@RequestParam int cart_idx) {
+		
+		if(session.getAttribute("sId") == null || session.getAttribute("member_idx") == null ) {
+			try {
+				model.addAttribute("msg", "로그인이 필요한 페이지입니다.");
+				model.addAttribute("url", "LoginMember.me");
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				
+				out.println("<script>");
+				out.println("location.href='reload_cart'");
+				out.println("</script>");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else {
+			int member_idx = (int)session.getAttribute("member_idx");
+			System.out.println(cart_idx);
+			System.out.println(type);
+			System.out.println(member_idx);
+			int updateCount = service.getAmountAdjust(cart_idx, type, member_idx);
+			if(updateCount > 0) {
+				try {
+					response.setContentType("text/html; charset=UTF-8");
+					PrintWriter out = response.getWriter();
+					
+					out.print("성공");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}else {
+				try {
+					response.setContentType("text/html; charset=UTF-8");
+					PrintWriter out = response.getWriter();
+					
+					out.print("실패");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		
+	}
 }//CartController 끝
 		
 	

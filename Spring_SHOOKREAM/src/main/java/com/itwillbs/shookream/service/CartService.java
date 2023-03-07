@@ -48,5 +48,8 @@ public class CartService {
 	public cartVo getCartOrderlist(String cart_idx, int member_idx) {
 		return mapper.getCartOrderList(cart_idx, member_idx);
 	}
+	public int getAmountAdjust(int cart_idx, String type, int member_idx) {
+		return mapper.getAmountAdjust(cart_idx, type, member_idx);
+	}
 
 }

@@ -66,6 +66,34 @@
 			FROM cartlist_view 
 				WHERE member_idx = #{member_idx} AND cart_idx = #{cart_idx}; 
 	</select>
+	<!-- 장바구니 수량 업데이트 -->
+	<update id="getAmountAdjust">
+		UPDATE cart
+			SET cart_count = 
+			<if test="type.equals('plus')">
+			cart_count + 1,
+			</if>
+			<if test="type.equals('minus')">
+			cart_count - 1,
+			</if>
+			
+			<if test="type.equals('plus')">
+				cart_price = cart_price + (product_price * 1),
+			</if>
+			<if test="type.equals('minus')">
+				cart_price = cart_price - (product_price * 1),
+			</if>
+			
+			<if test="type.equals('plus')">
+				cart_order_price = cart_order_price + (product_release_price * 1)
+			</if>
+			<if test="type.equals('minus')">
+				cart_order_price = cart_order_price - (product_release_price * 1)
+			</if>
+				WHERE cart_idx = #{cart_idx} AND member_idx = #{member_idx}
+		
+	
+	</update>
 	
 </mapper>
 

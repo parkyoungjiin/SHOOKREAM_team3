@@ -41,4 +41,10 @@ public interface CartMapper {
 	cartVo getCartOrderList(
 			@Param("cart_idx") String cart_idx,
 			@Param("member_idx") int member_idx);
+	int getAmountAdjust(
+			@Param("cart_idx") int cart_idx,
+			@Param("type") String type,
+			@Param("member_idx") int member_idx);
+
+			
 }
