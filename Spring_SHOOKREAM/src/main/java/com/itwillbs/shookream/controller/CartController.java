@@ -13,6 +13,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.taglibs.standard.tag.el.fmt.RequestEncodingTag;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.server.header.XFrameOptionsServerHttpHeadersWriter.Mode;
 import org.springframework.stereotype.Controller;
@@ -290,10 +292,93 @@ public class CartController {
 					e.printStackTrace();
 				}
 			}
-		}
+		}//else 끝
 		
 		
-	}
+	}//amount_adjust 끝
+	
+	//-----------장바구니 체크박스에 따른 합계금액 변동------------
+		@ResponseBody
+		@GetMapping(value = "ChangeTotalPrice.ca", produces = "application/json; charset=utf-8")
+		private void ChangeTotalPrice(
+				HttpSession session,
+				HttpServletResponse response,
+				Model model,
+				@RequestParam String cart_idx,
+				@RequestParam String type,
+				@RequestParam int total_price,
+				@RequestParam int total_order_price
+				) {
+			if(session.getAttribute("sId") == null || session.getAttribute("member_idx") == null ) {
+				try {
+					model.addAttribute("msg", "로그인이 필요한 페이지입니다.");
+					model.addAttribute("url", "LoginMember.me");
+					
+					response.setContentType("text/html; charset=UTF-8");
+					PrintWriter out = response.getWriter();
+					
+					out.println("<script>");
+					out.println("location.href='reload_cart'");
+					out.println("</script>");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}else {
+				//타입이 minus 인 경우(체크박스 해제)
+				if(type.equals("minus")) {
+					
+					int member_idx = (int)session.getAttribute("member_idx");
+					//cart_idx와 member_idx에 맞는 카트 정보를 검색
+					cartVo cart = service.getCartOrderlist(cart_idx, member_idx);
+					//cart_price : 상품금액 , cart_order_price : 결제금액
+					int cart_price = cart.getCart_price();
+					int cart_order_price = cart.getCart_order_price();
+					//minus 인 경우 체크박스 해제로 (전체 금액 - 상품 금액)
+					total_price -= cart_price;
+					total_order_price -= cart_order_price;
+					//JS로 전송하기 위해 JSONObject 객체를 생성
+					JSONObject jsonObject = new JSONObject();
+					//Object 객체에 계산된 상품 금액, 총 결제 금액을 put 하였음.
+					jsonObject.put("cart_total_price", total_price);
+					jsonObject.put("cart_order_total_price", total_order_price);
+					System.out.println(jsonObject);
+					try {
+						response.setCharacterEncoding("UTF-8");
+						response.getWriter().print(jsonObject); // toString() 생략
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+					
+				}else if(type.equals("plus")){
+					//타입이 minus 인 경우(체크박스 해제)
+					int member_idx = (int)session.getAttribute("member_idx");
+					//cart_idx와 member_idx에 맞는 카트 정보를 검색
+					cartVo cart = service.getCartOrderlist(cart_idx, member_idx);
+					//cart_price : 상품금액 , cart_order_price : 결제금액
+					int cart_price = cart.getCart_price();
+					int cart_order_price = cart.getCart_order_price();
+					//plus 인 경우 체크박스 활성화 (전체 금액 + 상품 금액)
+					total_price += cart_price;
+					total_order_price += cart_order_price;
+					//JS로 전송하기 위해 JSONObject 객체를 생성
+					JSONObject jsonObject = new JSONObject();
+					//Object 객체에 계산된 상품 금액, 총 결제 금액을 put 하였음.
+					jsonObject.put("cart_total_price", total_price);
+					jsonObject.put("cart_order_total_price", total_order_price);
+					try {
+						response.setCharacterEncoding("UTF-8");
+						response.getWriter().print(jsonObject); // toString() 생략
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+				}
+			}
+			
+		}//ChangeTotalPrice 끝
+	
+	
 }//CartController 끝
 		
 	
