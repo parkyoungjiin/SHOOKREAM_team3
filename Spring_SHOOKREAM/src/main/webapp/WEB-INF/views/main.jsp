@@ -120,8 +120,7 @@ footer {
 
 let idx = null;
 	
-// 찜 하기
-
+// 찜 하기 - best
 function plus_wish_btn(cb){
 	
 	let checkLogin = '<%=(String)session.getAttribute("sId")%>';
@@ -163,7 +162,7 @@ function plus_wish_btn(cb){
 } // function plus_wish_btn() 끝
 
 
-// 찜 취소
+// 찜 취소 - best
 function minus_wish_btn(cb){
 	
 	let checkLogin = '<%=(String)session.getAttribute("sId")%>';
@@ -176,7 +175,7 @@ function minus_wish_btn(cb){
 	idx = cb.id.replace("wish_minus_btn","");
 	let product_idx = $("#product_idx" + idx).val();
 // 	var product_idx = parseInt($(cb).data("product-idx"));
-	alert(idx);
+// 	alert(idx);
 	
 	$.ajax({
 		type: "post", 
@@ -203,6 +202,7 @@ function minus_wish_btn(cb){
 } // function plus_wish_btn() 끝
 
 
+//찜 하기 - new
 function new_plus_wish_btn(cb){
 	
 	let checkLogin = '<%=(String)session.getAttribute("sId")%>';
@@ -215,7 +215,7 @@ function new_plus_wish_btn(cb){
 	idx = cb.id.replace("wish_btn","");
 	let product_idx = $("#new_product_idx" + idx).val();
 // 	var product_idx = parseInt($(cb).data("product-idx"));
-	alert(idx);
+// 	alert(idx);
 	
 	$.ajax({
 		type: "post", 
@@ -244,7 +244,7 @@ function new_plus_wish_btn(cb){
 } // function plus_wish_btn() 끝
 
 
-// 찜 취소
+// 찜 취소 - new
 function new_minus_wish_btn(cb){
 	
 	let checkLogin = '<%=(String)session.getAttribute("sId")%>';
@@ -257,7 +257,7 @@ function new_minus_wish_btn(cb){
 	idx = cb.id.replace("wish_minus_btn","");
 	let product_idx = $("#new_product_idx" + idx).val();
 // 	var product_idx = parseInt($(cb).data("product-idx"));
-	alert(idx);
+// 	alert(idx);
 	
 	$.ajax({
 		type: "post", 
