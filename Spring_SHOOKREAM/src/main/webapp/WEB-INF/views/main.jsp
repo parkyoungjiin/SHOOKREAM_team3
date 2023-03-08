@@ -134,7 +134,7 @@ function plus_wish_btn(cb){
 	idx = cb.id.replace("wish_btn","");
 	let product_idx = $("#product_idx" + idx).val();
 // 	var product_idx = parseInt($(cb).data("product-idx"));
-	alert(idx);
+// 	alert(idx);
 	
 	$.ajax({
 		type: "post", 
