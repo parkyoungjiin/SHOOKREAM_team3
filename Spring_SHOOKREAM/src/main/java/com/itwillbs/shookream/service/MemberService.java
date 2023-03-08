@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.shookream.mapper.MemberMapper;
 import com.itwillbs.shookream.vo.AuthVo;
 import com.itwillbs.shookream.vo.MemberVo;
+import com.itwillbs.shookream.vo.WishVo;
 
 @Service
 public class MemberService {
@@ -74,6 +75,12 @@ public class MemberService {
 
 	public boolean updatePass(MemberVo vo, String imsiPw) {
 		return mapper.updatePass(vo,imsiPw);
+	}
+
+
+	// wish 조회
+	public List<WishVo> getWish(int member_idx) {
+		return mapper.selectWish(member_idx);
 	}
 
 }
