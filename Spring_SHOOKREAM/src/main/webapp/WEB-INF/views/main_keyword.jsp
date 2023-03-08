@@ -32,33 +32,41 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 #main_category{
 	text-align: center;
 	padding-top: 100px;
-	padding-bottom: 100px;
+	padding-bottom: 50px;
 	font-size: x-large;
 }
 
 #product_brand {
 	margin-bottom: 1.5px; 
 	margin-top:2px; 
-	font-weight: bold
+	font-weight: bold;
+	font-size: 18px;
 }
 
 #product_name {
 	margin-bottom: 3.5px;
 	color: gray;
+	font-size: 18px;
 }
 
 #price {
+font-size: 20px;
 }
 
 #product_price {
 	text-decoration: line-through; 
-	font-size: small;
+	font-size: 18px;
 }
 
 #product_discount_price {
 	color: red; 
-	font-size: big; 
+	font-size: 20px;
 	float: right;
+	padding-right: 10px;
+}
+
+#etcInfo {
+	font-size: 15px;
 }
 
 .paging {
@@ -85,6 +93,95 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 /*         background-color: #FFA7A7; */
     }
 </style>
+
+<script type="text/javascript">
+
+// ================== 찜하기 ========================
+
+let idx = null;
+	
+// 찜 하기
+
+function plus_wish_btn(cb){
+	
+	let checkLogin = '<%=(String)session.getAttribute("sId")%>';
+	
+	if(checkLogin == "null"){
+		alert("로그인 후 이용 가능합니다.");
+		return;
+	}
+	
+	idx = cb.id.replace("wish_btn","");
+	let product_idx = $("#product_idx" + idx).val();
+// 	var product_idx = parseInt($(cb).data("product-idx"));
+	
+	$.ajax({
+		type: "post", 
+		url: "LikeInsertPro.ca?product_idx="+product_idx, 
+		data: { 
+			member_idx: '${sessionScope.member_idx}',
+// 			product_idx: $("#product_idx" + idx).val()
+// 			product_idx: product_idx
+		},	
+		dataType: "html", 
+		success: function(data) { 
+
+				
+				alert("찜한 상품에 추가되었습니다!");
+				
+				$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+		
+				idx = null;
+				
+		}, 
+		error: function(xhr, textStatus, errorThrown) {
+			alert("찜하기 실패"); 
+		}
+	});
+
+} // function plus_wish_btn() 끝
+
+
+// 찜 취소
+function minus_wish_btn(cb){
+	
+	let checkLogin = '<%=(String)session.getAttribute("sId")%>';
+	
+	if(checkLogin == "null"){
+		alert("로그인 후 이용 가능합니다.");
+		return;
+	}
+	
+	idx = cb.id.replace("wish_minus_btn","");
+	let product_idx = $("#product_idx" + idx).val();
+// 	var product_idx = parseInt($(cb).data("product-idx"));
+	
+	$.ajax({
+		type: "post", 
+		url: "LikeDeletePro.ca?product_idx="+product_idx, 
+		data: { 
+			member_idx: '${sessionScope.member_idx}',
+// 			product_idx: $("#product_idx" + idx).val()
+// 			product_idx: product_idx
+		},	
+		dataType: "html", 
+		success: function(data) { 
+
+				alert("찜한 상품에서 삭제되었습니다!");
+				
+				$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-regular fa-heart" id="wish_btn' + idx + '" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+				
+				idx = null;
+		}, 
+		error: function(xhr, textStatus, errorThrown) {
+			alert("찜 삭제 실패"); 
+		}
+	});
+
+} // function plus_wish_btn() 끝
+
+
+</script>
 </head>
 <body class="w3-content" style="max-width:95%">
 
@@ -126,18 +223,41 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 	</div>
   <!-- Product grid -->
   <div class="w3-row w3-grayscale">
-  <c:forEach var="productList" items="${productList }">
+  <c:forEach var="productList" items="${productList }" varStatus="status">
+  <input type="hidden" id="product_idx${status.index }" value="${productList.product_idx }">
    <div class="w3-col l3 s6">
-      	<div class="w3-container">
+      	<div class="w3-container" style="padding-top: 100px;">
         <div class="w3-display-container">
-          <img src="./upload/${productList.product_img }"  alt="..." style="width: 500px; height: 400px;">
+          <img src="./upload/${productList.product_img }"  onError="this.onerror=null; this.src='resources/images/noImg.JPG';"  alt="..." style="width: 100%">
          <div class="w3-display-middle w3-display-hover">
-									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productList.product_idx }&member_idx=${sessionScope.member_idx }'">
+<%-- 									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productList.product_idx }&member_idx=${sessionScope.member_idx }'"> --%>
+									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productList.product_idx }'">	
 										Buy now <i class="fa fa-shopping-cart" ></i>
 									</button>
 								</div>
-								<input type="hidden" id="product_idx${productList.product_idx }"
-									value="${productList.product_idx }">
+								<!-- 목록에서 찜하기 -->
+								<div class="w3-display-topright">
+									<c:set var="isWished" value="false" />
+								 	<c:forEach var="wish" items="${wish}">
+<%-- 								 	<input type="hidden" id="product_idx${status.index }" value="${productBestList.product_idx }"> --%>
+									   <c:if test="${wish.product_idx eq productList.product_idx}">
+									     <c:set var="isWished" value="true" />
+									   </c:if>
+									</c:forEach>   
+								  <!-- 하트 모양 아이콘 표시 -->
+									 <c:choose>
+									   <c:when test="${isWished}">
+									   	<span id="wishBtnId${status.index }">
+									     <i class="fa-solid fa-heart" id="wish_minus_btn${status.index }" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
+									     </span>
+									   </c:when>
+									   <c:otherwise>
+									   <span id="wishBtnId${status.index }">
+									     <i class="fa-regular fa-heart" id="wish_btn${status.index }" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
+									     </span>
+									   </c:otherwise>
+									 </c:choose>
+								</div>
 							</div>
 							<p id="product_brand" >${productList.product_brand }</p>
 							<p id="product_name" >${productList.product_name }<br></p>
@@ -145,7 +265,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 							<div id="price">
 							<c:choose>
 								<c:when test="${productList.product_discount_price gt 0}">
-									<span>
+									<span  id="price">
 <%-- 									<c:set var="discounted_price" value="${productList.product_price - (productList.product_price * productList.product_discount_price) }"/> --%>
 <%-- 									<c:out value="${discounted_price}" /> --%>
 										<fmt:formatNumber value="${productList.product_price - (productList.product_price * (productList.product_discount_price/100)) }" pattern="#,###" />
@@ -160,7 +280,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 							</c:choose>
 							</div>
 							
-							<div id="etcInfo" style="font-size: small; padding-bottom: 20px;">
+							<div id="etcInfo" style=" padding-bottom: 20px;">
 								<span>
 									구매 ${productList.product_sell_count } &nbsp;
 								</span>
@@ -174,7 +294,12 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 </div>
 	
 <!-- 페이징 처리 -->	
-
+<c:choose>
+		<c:when test="${productList eq null or empty productList}">
+		<div class="paging" style="padding-top: 10px;">
+		</div>
+		</c:when>
+		<c:otherwise>
 	<div class="paging">
         <c:choose>
 			<c:when test="${param.pageNum > 1}">
@@ -206,6 +331,10 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 			</c:otherwise>
 		</c:choose>
     </div>
+		</c:otherwise>
+    </c:choose>
+    
+    
  <footer>
   	<jsp:include page="./inc/footer.jsp"/>
   </footer>
