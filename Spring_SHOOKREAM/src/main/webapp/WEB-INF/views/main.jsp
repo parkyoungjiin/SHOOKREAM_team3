@@ -135,29 +135,55 @@ function plus_wish_btn(cb){
 // 	var product_idx = parseInt($(cb).data("product-idx"));
 // 	alert(idx);
 	
+	// 중복 검사
 	$.ajax({
 		type: "post", 
-		url: "LikeInsertPro.ca?product_idx="+product_idx, 
+		url: "LikeInsertCheck.ca?product_idx="+product_idx, 
 		data: { 
 			member_idx: '${sessionScope.member_idx}',
-// 			product_idx: $("#product_idx" + idx).val()
-// 			product_idx: product_idx
 		},	
 		dataType: "html", 
-		success: function(data) { 
+		success: function(data) {
+			
+			if(data == 1){
+			alert("이미 찜한 상품입니다!");
+			
+			$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+			
+			idx = null;
+				
+			} else {
+				$.ajax({
+					type: "post", 
+					url: "LikeInsertPro.ca?product_idx="+product_idx, 
+					data: { 
+						member_idx: '${sessionScope.member_idx}',
+//			 			product_idx: $("#product_idx" + idx).val()
+//			 			product_idx: product_idx
+					},	
+					dataType: "html", 
+					success: function(data) { 
 
-				
-				alert("찜한 상품에 추가되었습니다!");
-				
-				$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
-		
-				idx = null;
-				
-		}, 
+							
+							alert("찜한 상품에 추가되었습니다!");
+							
+							$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+					
+							idx = null;
+							
+					}, 
+					error: function(xhr, textStatus, errorThrown) {
+						alert("찜하기 실패"); 
+					}
+				});
+			}
+		},
 		error: function(xhr, textStatus, errorThrown) {
-			alert("찜하기 실패"); 
+			
+			alert("오류가 발생했습니다.");
 		}
 	});
+
 
 } // function plus_wish_btn() 끝
 
@@ -216,30 +242,55 @@ function new_plus_wish_btn(cb){
 	let product_idx = $("#new_product_idx" + idx).val();
 // 	var product_idx = parseInt($(cb).data("product-idx"));
 // 	alert(idx);
-	
+
+	// 중복 검사
 	$.ajax({
 		type: "post", 
-		url: "LikeInsertPro.ca?product_idx="+product_idx, 
+		url: "LikeInsertCheck.ca?product_idx="+product_idx, 
 		data: { 
 			member_idx: '${sessionScope.member_idx}',
-// 			product_idx: $("#product_idx" + idx).val()
-// 			product_idx: product_idx
 		},	
 		dataType: "html", 
-		success: function(data) { 
-
+		success: function(data) {
+			
+			if(data == 1){
+			alert("이미 찜한 상품입니다!");
+			
+			$("#new_wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="new_minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+			
+			idx = null;
 				
-				alert("찜한 상품에 추가되었습니다!");
+			} else {
+				$.ajax({
+					type: "post", 
+					url: "LikeInsertPro.ca?product_idx="+product_idx, 
+					data: { 
+						member_idx: '${sessionScope.member_idx}',
+//			 			product_idx: $("#product_idx" + idx).val()
+//			 			product_idx: product_idx
+					},	
+					dataType: "html", 
+					success: function(data) { 
+							
+						alert("찜한 상품에 추가되었습니다!");
+						
+						$("#new_wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="new_minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
 				
-				$("#new_wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
-		
-				idx = null;
-				
-		}, 
+						idx = null;
+							
+					}, 
+					error: function(xhr, textStatus, errorThrown) {
+						alert("찜하기 실패"); 
+					}
+				});
+			}
+		},
 		error: function(xhr, textStatus, errorThrown) {
-			alert("찜하기 실패"); 
+			
+			alert("오류가 발생했습니다.");
 		}
 	});
+	
 
 } // function plus_wish_btn() 끝
 
@@ -272,7 +323,7 @@ function new_minus_wish_btn(cb){
 
 				alert("찜한 상품에서 삭제되었습니다!");
 				
-				$("#new_wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-regular fa-heart" id="wish_btn' + idx + '" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+				$("#new_wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-regular fa-heart" id="wish_btn' + idx + '" onclick="new_plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
 				
 				idx = null;
 		}, 

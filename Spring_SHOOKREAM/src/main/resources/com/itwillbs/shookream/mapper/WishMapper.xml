@@ -60,4 +60,10 @@
 				WHERE product_idx = #{product_idx}
 	</update>
 	<!-- 좋아요 -1 끝  -->	
+	
+	<select id="wishCheck" resultType="int">
+		SELECT COUNT(wish_idx)
+			FROM wish
+			WHERE product_idx = #{product_idx} AND member_idx = #{member_idx}
+	</select>
 </mapper>
