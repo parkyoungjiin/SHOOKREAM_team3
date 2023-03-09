@@ -43,4 +43,7 @@ public interface WishMapper {
 	//========좋아요 개수 - 1  ============
 	int DecWishCount(int product_idx);
 	//========좋아요 개수 - 1  끝============
+
+	int wishCheck(@Param("member_idx")int member_idx, 
+				@Param("product_idx")int product_idx);
 }
