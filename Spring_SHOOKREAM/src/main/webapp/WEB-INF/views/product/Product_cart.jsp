@@ -544,12 +544,13 @@ function goOrder() {
 		});
 // 	
 		
-		alert("구매페이지로 이동합니다.");
-		location.href = "CartOrderDetail.ca?cart_idx=" + chk_arr;
-
-		
-	
-	
+		if(chk_arr.length == 0){//구매 할 상품이 없을 시
+			alert("구매 하실 상품이 없습니다");
+			return false;
+		}else{//구매 할 상품이 있을 시
+			alert("구매페이지로 이동합니다.");
+			location.href = "CartOrderDetail.ca?cart_idx=" + chk_arr;
+		}
 }
 
 

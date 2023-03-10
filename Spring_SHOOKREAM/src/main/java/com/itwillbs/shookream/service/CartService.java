@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.shookream.mapper.CartMapper;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.cartVo;
+import com.itwillbs.shookream.vo.cartVoArr;
 
 @Service
 public class CartService {
@@ -48,8 +49,29 @@ public class CartService {
 	public cartVo getCartOrderlist(String cart_idx, int member_idx) {
 		return mapper.getCartOrderList(cart_idx, member_idx);
 	}
+	
 	public int getAmountAdjust(int cart_idx, String type, int member_idx) {
 		return mapper.getAmountAdjust(cart_idx, type, member_idx);
+	}
+	
+	//다중 구매 작업
+	public int insertCartOrder(cartVo vo2) {
+		return mapper.insertCartOrder(vo2);
+	}
+	
+	// 상품 수량 빼기 작업
+	public void updatePorduct_Amount(cartVo vo2) {
+		mapper.updatePorduct_Amount(vo2);
+	}
+	
+	//이미 주문 한 상품이 있는지 확인 작업
+	public int getCartOrderCount(cartVo vo2) {
+		return mapper.getCartOrderCount(vo2);
+	}
+	
+	//주문 수량 더하기 작업 
+	public void updateOrder_Amount(cartVo vo2) {
+		mapper.updateOrder_Amount(vo2);		
 	}
 
 }

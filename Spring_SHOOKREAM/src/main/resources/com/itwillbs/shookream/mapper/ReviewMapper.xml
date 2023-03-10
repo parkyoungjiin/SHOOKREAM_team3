@@ -52,7 +52,7 @@
 	
 	<!-- 배송 완료 목록 개수 -->
 	<select id="selectProgress" resultType="int">
-		SELECT COUNT(order_progress) FROM ORDERLIST WHERE member_idx=#{member_idx}
+		SELECT COUNT(order_progress) FROM ORDERLIST WHERE member_idx=#{member_idx} AND order_progress='배송완료'
 	</select>
 	<!--배송 완료 목록 개수 끝-->	
 </mapper>

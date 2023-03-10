@@ -31,6 +31,7 @@ import com.itwillbs.shookream.vo.BoardVo;
 import com.itwillbs.shookream.vo.PageInfo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.cartVo;
+import com.itwillbs.shookream.vo.cartVoArr;
 
 
 @Controller
@@ -241,59 +242,45 @@ public class CartController {
 		return "product/order_form_cart";
 	}
 	
-	//------------수량 변동에 따라 수량, 금액 변경--------------
-	@ResponseBody
-	@GetMapping(value = "amount_adjust.ca")
-	public void amount_adjust(
-			HttpSession session,
-			HttpServletResponse response,
-			Model model,
-			@RequestParam String type,
-			@RequestParam int cart_idx) {
-		
+	
+	//------구매페이지에서 다중 구매 처리 -------
+	@GetMapping(value = "CartOrderDetailPro.ca")
+	public String cartOrderForm(HttpSession session,Model model,cartVoArr vo) {
 		if(session.getAttribute("sId") == null || session.getAttribute("member_idx") == null ) {
-			try {
-				model.addAttribute("msg", "로그인이 필요한 페이지입니다.");
-				model.addAttribute("url", "LoginMember.me");
-				
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				
-				out.println("<script>");
-				out.println("location.href='reload_cart'");
-				out.println("</script>");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}else {
-			int member_idx = (int)session.getAttribute("member_idx");
-			System.out.println(cart_idx);
-			System.out.println(type);
-			System.out.println(member_idx);
-			int updateCount = service.getAmountAdjust(cart_idx, type, member_idx);
-			if(updateCount > 0) {
-				try {
-					response.setContentType("text/html; charset=UTF-8");
-					PrintWriter out = response.getWriter();
-					
-					out.print("성공");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}else {
-				try {
-					response.setContentType("text/html; charset=UTF-8");
-					PrintWriter out = response.getWriter();
-					
-					out.print("실패");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+			model.addAttribute("msg", "로그인이 필요한 페이지입니다.");
+			model.addAttribute("url", "LoginMember.me");
+			return "reload_cart";
 		}
 		
-		
-	}
+		//cartArrvo를 단일 cartVO에 풀기 
+		for(int i=0;i<vo.getProduct_idxArr().length;i++) {
+			cartVo vo2 = new cartVo();
+			vo2.setMember_idx(vo.getMember_idxArr()[i]);
+			vo2.setProduct_idx(vo.getProduct_idxArr()[i]);
+			vo2.setCart_order_price(vo.getCart_order_priceArr()[i]);
+			vo2.setCart_count(vo.getCart_countArr()[i]);
+			vo2.setCart_color(vo.getCart_colorArr()[i]);
+			vo2.setCart_size(vo.getCart_sizeArr()[i]);
+			vo2.setCart_product_name(vo.getCart_product_nameArr()[i]);
+			vo2.setCart_idx(vo.getCart_idxArr()[i]);
+			int orderSelectCount = service.getCartOrderCount(vo2);// db에 이미 주문 한 상품 있는지 확인
+			
+			if(orderSelectCount > 0) { //이미 주문한 상품이 있을 시
+				service.updatePorduct_Amount(vo2); //상품 수량 빼기 작업 
+				service.updateOrder_Amount(vo2); // 주문 수량 더하기 작업
+				service.getCartDelete(vo2.getCart_idx(), vo2.getMember_idx()); // 주문 성공시 카트에 담긴 상품 삭제 작업
+			
+			}else {//이미 주문한 상품이 없을 시
+				int insertCount = service.insertCartOrder(vo2);// insert 작업
+				
+				if(insertCount > 0) {//insert 성공 시
+					service.updatePorduct_Amount(vo2); // 상품 수량 빼기 작업
+					service.getCartDelete(vo2.getCart_idx(), vo2.getMember_idx());// 주문 성공시 카트에 담긴 상품 삭제 작업
+				} 
+			}
+		}
+		return "product/order_form_cart";
+	}// 다중 주문 끝
 }//CartController 끝
 		
 	
