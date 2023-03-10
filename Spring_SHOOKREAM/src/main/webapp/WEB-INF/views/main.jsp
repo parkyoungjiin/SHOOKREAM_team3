@@ -13,9 +13,9 @@
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
-<link href="${path}/resources/css/main.css" rel="stylesheet">
-<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<%-- <link href="${path}/resources/css/main.css" rel="stylesheet"> --%>
+<!-- <link rel="stylesheet" href="css/main.css"> -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -62,35 +62,43 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 #main_category{
 	text-align: center;
 	padding-top: 120px;
-	padding-bottom: 60px;
+/* 	padding-bottom: 30px; */
 	font-size: x-large;
 	clear:both;
+	font-weight: bold;
 }
 
 #product_brand {
 	margin-bottom: 1.5px; 
 	margin-top:2px; 
-	font-weight: bold
+	font-weight: bold;
+	font-size: 18px;
 }
 
 #product_name {
 	margin-bottom: 3.5px;
 	color: gray;
+	font-size: 18px;
 }
 
 #price {
+font-size: 20px;
 }
 
 #product_price {
 	text-decoration: line-through; 
-	font-size: small;
+	font-size: 18px;
 }
 
 #product_discount_price {
 	color: red; 
-	font-size: big; 
+	font-size: 20px;
 	float: right;
+	padding-right: 10px;
+}
 
+#etcInfo {
+	font-size: 15px;
 }
 
 body{
@@ -105,10 +113,237 @@ footer {
 
 }
 </style>
+
+<script type="text/javascript">
+
+// ================== 찜하기 ========================
+
+let idx = null;
+	
+// 찜 하기 - best
+function plus_wish_btn(cb){
+	
+	let checkLogin = '<%=(String)session.getAttribute("sId")%>';
+	
+	if(checkLogin == "null"){
+		alert("로그인 후 이용 가능합니다.");
+		return;
+	}
+	
+	idx = cb.id.replace("wish_btn","");
+	let product_idx = $("#product_idx" + idx).val();
+// 	var product_idx = parseInt($(cb).data("product-idx"));
+// 	alert(idx);
+	
+	// 중복 검사
+	$.ajax({
+		type: "post", 
+		url: "LikeInsertCheck.ca?product_idx="+product_idx, 
+		data: { 
+			member_idx: '${sessionScope.member_idx}',
+		},	
+		dataType: "html", 
+		success: function(data) {
+			
+			if(data == 1){
+			alert("이미 찜한 상품입니다!");
+			
+			$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+			
+			idx = null;
+				
+			} else {
+				$.ajax({
+					type: "post", 
+					url: "LikeInsertPro.ca?product_idx="+product_idx, 
+					data: { 
+						member_idx: '${sessionScope.member_idx}',
+//			 			product_idx: $("#product_idx" + idx).val()
+//			 			product_idx: product_idx
+					},	
+					dataType: "html", 
+					success: function(data) { 
+
+							
+							alert("찜한 상품에 추가되었습니다!");
+							
+							$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+					
+							idx = null;
+							
+					}, 
+					error: function(xhr, textStatus, errorThrown) {
+						alert("찜하기 실패"); 
+					}
+				});
+			}
+		},
+		error: function(xhr, textStatus, errorThrown) {
+			
+			alert("오류가 발생했습니다.");
+		}
+	});
+
+
+} // function plus_wish_btn() 끝
+
+
+// 찜 취소 - best
+function minus_wish_btn(cb){
+	
+	let checkLogin = '<%=(String)session.getAttribute("sId")%>';
+	
+	if(checkLogin == "null"){
+		alert("로그인 후 이용 가능합니다.");
+		return;
+	}
+	
+	idx = cb.id.replace("wish_minus_btn","");
+	let product_idx = $("#product_idx" + idx).val();
+// 	var product_idx = parseInt($(cb).data("product-idx"));
+// 	alert(idx);
+	
+	$.ajax({
+		type: "post", 
+		url: "LikeDeletePro.ca?product_idx="+product_idx, 
+		data: { 
+			member_idx: '${sessionScope.member_idx}',
+// 			product_idx: $("#product_idx" + idx).val()
+// 			product_idx: product_idx
+		},	
+		dataType: "html", 
+		success: function(data) { 
+
+				alert("찜한 상품에서 삭제되었습니다!");
+				
+				$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-regular fa-heart" id="wish_btn' + idx + '" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+				
+				idx = null;
+		}, 
+		error: function(xhr, textStatus, errorThrown) {
+			alert("찜 삭제 실패"); 
+		}
+	});
+
+} // function plus_wish_btn() 끝
+
+
+//찜 하기 - new
+function new_plus_wish_btn(cb){
+	
+	let checkLogin = '<%=(String)session.getAttribute("sId")%>';
+	
+	if(checkLogin == "null"){
+		alert("로그인 후 이용 가능합니다.");
+		return;
+	}
+	
+	idx = cb.id.replace("wish_btn","");
+	let product_idx = $("#new_product_idx" + idx).val();
+// 	var product_idx = parseInt($(cb).data("product-idx"));
+// 	alert(idx);
+
+	// 중복 검사
+	$.ajax({
+		type: "post", 
+		url: "LikeInsertCheck.ca?product_idx="+product_idx, 
+		data: { 
+			member_idx: '${sessionScope.member_idx}',
+		},	
+		dataType: "html", 
+		success: function(data) {
+			
+			if(data == 1){
+			alert("이미 찜한 상품입니다!");
+			
+			$("#new_wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="new_minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+			
+			idx = null;
+				
+			} else {
+				$.ajax({
+					type: "post", 
+					url: "LikeInsertPro.ca?product_idx="+product_idx, 
+					data: { 
+						member_idx: '${sessionScope.member_idx}',
+//			 			product_idx: $("#product_idx" + idx).val()
+//			 			product_idx: product_idx
+					},	
+					dataType: "html", 
+					success: function(data) { 
+							
+						alert("찜한 상품에 추가되었습니다!");
+						
+						$("#new_wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="new_minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+				
+						idx = null;
+							
+					}, 
+					error: function(xhr, textStatus, errorThrown) {
+						alert("찜하기 실패"); 
+					}
+				});
+			}
+		},
+		error: function(xhr, textStatus, errorThrown) {
+			
+			alert("오류가 발생했습니다.");
+		}
+	});
+	
+
+} // function plus_wish_btn() 끝
+
+
+// 찜 취소 - new
+function new_minus_wish_btn(cb){
+	
+	let checkLogin = '<%=(String)session.getAttribute("sId")%>';
+	
+	if(checkLogin == "null"){
+		alert("로그인 후 이용 가능합니다.");
+		return;
+	}
+	
+	idx = cb.id.replace("wish_minus_btn","");
+	let product_idx = $("#new_product_idx" + idx).val();
+// 	var product_idx = parseInt($(cb).data("product-idx"));
+// 	alert(idx);
+	
+	$.ajax({
+		type: "post", 
+		url: "LikeDeletePro.ca?product_idx="+product_idx, 
+		data: { 
+			member_idx: '${sessionScope.member_idx}',
+// 			product_idx: $("#product_idx" + idx).val()
+// 			product_idx: product_idx
+		},	
+		dataType: "html", 
+		success: function(data) { 
+
+				alert("찜한 상품에서 삭제되었습니다!");
+				
+				$("#new_wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-regular fa-heart" id="wish_btn' + idx + '" onclick="new_plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+				
+				idx = null;
+		}, 
+		error: function(xhr, textStatus, errorThrown) {
+			alert("찜 삭제 실패"); 
+		}
+	});
+
+} // function plus_wish_btn() 끝
+
+
+</script>
+
 </head>
 <script type="text/javascript">
 localStorage.setItem("z","11");
 </script>
+
+
+
 <body class="w3-content" style="max-width:95%; margin-top: 20px;">
 
 <!-- Sidebar/menu -->
@@ -124,7 +359,7 @@ localStorage.setItem("z","11");
 <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
 <!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-left:250px">
+<div class="w3-main" style="margin-left:250px; margin-top: 20px;margin-right: 17px;">
 
   <!-- Push down content on small screens -->
   <div class="w3-hide-large" style="margin-top:83px"></div>
@@ -153,29 +388,48 @@ localStorage.setItem("z","11");
 	
   <!-- Product grid -->
 <div class="w3-row w3-grayscale" style="clear:both;">
-		<c:forEach var="productBestList" items="${productBestList }" begin="0" end="7" step="1">
+		<c:forEach var="productBestList" items="${productBestList }" begin="0" end="7" step="1" varStatus="status">
+		<input type="hidden" id="product_idx${status.index }" value="${productBestList.product_idx }">
 			<div class="w3-col l3 s6">
-				<div class="w3-container">
+				<div class="w3-container" style="padding-top: 100px;">
 							<div class="w3-display-container">
-								<img src="${path}/resources/upload/${productBestList.product_img }" alt="..." style="width: 100%">
+								<img src="${path}/resources/upload/${productBestList.product_img }" onError="this.onerror=null; this.src='resources/images/noImg.JPG';" alt="..." style="width: 100%" >
 								<div class="w3-display-middle w3-display-hover">
 <%-- 									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productBestList.product_idx }&member_idx=${sessionScope.member_idx }'"> --%>
 									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productBestList.product_idx }'">
 										Buy now <i class="fa fa-shopping-cart" ></i>
 									</button>
 								</div>
-								<input type="hidden" id="product_idx${productBestList.product_idx }"
-									value="${productBestList.product_idx }">
+								<!-- 목록에서 찜하기 -->
+								<div class="w3-display-topright">
+									<c:set var="isWished" value="false" />
+								 	<c:forEach var="wish" items="${wish}">
+<%-- 								 	<input type="hidden" id="product_idx${status.index }" value="${productBestList.product_idx }"> --%>
+									   <c:if test="${wish.product_idx eq productBestList.product_idx}">
+									     <c:set var="isWished" value="true" />
+									   </c:if>
+									</c:forEach>   
+								  <!-- 하트 모양 아이콘 표시 -->
+									 <c:choose>
+									   <c:when test="${isWished}">
+									   	<span id="wishBtnId${status.index }">
+									     <i class="fa-solid fa-heart" id="wish_minus_btn${status.index }" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
+									     </span>
+									   </c:when>
+									   <c:otherwise>
+									   <span id="wishBtnId${status.index }">
+									     <i class="fa-regular fa-heart" id="wish_btn${status.index }" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
+									     </span>
+									   </c:otherwise>
+									 </c:choose>
+								</div>
 							</div>
 							<p id="product_brand" >${productBestList.product_brand }</p>
 							<p id="product_name" >${productBestList.product_name }<br></p>
-							<script type="text/javascript">
-							localStroage
-							</script>
-							<div id="price">
+							<div>
 							<c:choose>
 								<c:when test="${productBestList.product_discount_price gt 0}">
-									<span>
+									<span id="price">
 <%-- 									<c:set var="discounted_price" value="${productBestList.product_price - (productBestList.product_price * productBestList.product_discount_price) }"/> --%>
 <%-- 									<c:out value="${discounted_price}" /> --%>
 										<fmt:formatNumber value="${productBestList.product_price - (productBestList.product_price * (productBestList.product_discount_price/100)) }" pattern="#,###" />
@@ -189,7 +443,7 @@ localStorage.setItem("z","11");
 								</c:otherwise>
 							</c:choose>
 							</div>
-							<div id="etcInfo" style="font-size: small; padding-bottom: 20px;">
+							<div id="etcInfo" style=" padding-bottom: 20px;">
 								<span>
 									구매 ${productBestList.product_sell_count } &nbsp;
 								</span>
@@ -204,23 +458,46 @@ localStorage.setItem("z","11");
 		
 
 	<!-- 최근 등록 상품 조회 -->
-  <div id="main_category" style="margin-top: 400px;">
+  <div id="main_category">
 		<p>NEW</p>
 	</div>
 	<!-- Product grid -->
-  <div class="w3-row w3-grayscale">
-  <c:forEach var="productNewList" items="${productNewList }" begin="0" end="7" step="1">
+  <div class="w3-row w3-grayscale" style="clear:both;">
+  <c:forEach var="productNewList" items="${productNewList }" begin="0" end="7" step="1" varStatus="status">
+  <input type="hidden" id="new_product_idx${status.index }" value="${productNewList.product_idx }">
    <div class="w3-col l3 s6" style="z-index:1;">
-      <div class="w3-container">
+      <div class="w3-container" style="padding-top: 100px;">
         <div class="w3-display-container">
-          <img src="${path}/resources/upload/${productNewList.product_img }"  alt="..." style="width:100%">
-          <div class="w3-display-middle w3-display-hover">
-									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productNewList.product_idx }&member_idx=${sessionScope.member_idx }'">
+          <img src="${path}/resources/upload/${productNewList.product_img }" onError="this.onerror=null; this.src='resources/images/noImg.JPG';"  alt="..." style="width:100%">
+          		<div class="w3-display-middle w3-display-hover">
+<%-- 									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productNewList.product_idx }&member_idx=${sessionScope.member_idx }'"> --%>
+								<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productNewList.product_idx }'">
 										Buy now <i class="fa fa-shopping-cart" ></i>
 									</button>
 								</div>
-								<input type="hidden" id="product_idx${productNewList.product_idx }"
-									value="${productNewList.product_idx }">
+								<!-- 목록에서 찜하기 -->
+								<div class="w3-display-topright">
+									<c:set var="isWished" value="false" />
+								 	<c:forEach var="wish" items="${wish}">
+<%-- 								 	<input type="hidden" id="product_idx${status.index }" value="${productBestList.product_idx }"> --%>
+									   <c:if test="${wish.product_idx eq productNewList.product_idx}">
+									     <c:set var="isWished" value="true" />
+									   </c:if>
+									</c:forEach>   
+								  <!-- 하트 모양 아이콘 표시 -->
+									 <c:choose>
+									   <c:when test="${isWished}">
+									   	<span id="new_wishBtnId${status.index }">
+									     <i class="fa-solid fa-heart" id="wish_minus_btn${status.index }" onclick="new_minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
+									     </span>
+									   </c:when>
+									   <c:otherwise>
+									   <span id="new_wishBtnId${status.index }">
+									     <i class="fa-regular fa-heart" id="wish_btn${status.index }" onclick="new_plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
+									     </span>
+									   </c:otherwise>
+									 </c:choose>
+								</div>	
 							</div>
 							<p id="product_brand" >${productNewList.product_brand }</p>
 							<p id="product_name" >${productNewList.product_name }<br></p>
@@ -242,7 +519,7 @@ localStorage.setItem("z","11");
 								</c:otherwise>
 							</c:choose>
 							</div>
-							<div id="etcInfo" style="font-size: small; padding-bottom: 20px;">
+							<div id="etcInfo" style=" padding-bottom: 20px;">
 								<span>
 									구매 ${productNewList.product_sell_count } &nbsp;
 								</span>
@@ -254,11 +531,9 @@ localStorage.setItem("z","11");
 					</div>
 				</c:forEach>
    	 </div>
-   	 <div>
-		<footer style="z-index:-1;">
-	    	<jsp:include page="./inc/footer.jsp"/>
-		</footer>
-	</div>	
+   	 <div style="padding-top: 100px;">
+  		<jsp:include page="./inc/footer.jsp"/>
+   	 </div>
    	 </div>
 
  

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.shookream.service.WishService;
 import com.itwillbs.shookream.vo.PageInfo;
@@ -29,6 +30,26 @@ public class WishController {
 	@Autowired 
 	private WishService service;
 	
+	//========좋아요 중복 검사 ============
+	@RequestMapping(value = "/LikeInsertCheck.ca", method= {RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public void LikeInsertCheck(@RequestParam(defaultValue = "1")int member_idx,
+			@RequestParam(defaultValue = "1")int product_idx,
+			HttpServletResponse response
+			) {
+		
+		
+		int result = service.wishCheck(member_idx, product_idx);
+		
+		try {
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().print(result);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	//========좋아요 중복 검사 끝 ============
+	
 	//========좋아요 등록 하기============
 	@RequestMapping(value = "/LikeInsertPro.ca", method= {RequestMethod.GET, RequestMethod.POST})
 	public void likeInsert(@RequestParam(defaultValue = "1")int member_idx,
@@ -41,7 +62,7 @@ public class WishController {
 				service.updateWishCount(product_idx);//등록 성공 시 count + 1
 				response.setContentType("text/html; charset=UTF-8");
 				PrintWriter out = response.getWriter();
-
+				
 				out.println("<script>");
 				out.println("alert('찜한 상품에 추가되었습니다')");
 				out.println("</script>");

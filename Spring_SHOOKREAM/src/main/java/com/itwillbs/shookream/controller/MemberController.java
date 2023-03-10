@@ -1,6 +1,7 @@
 package com.itwillbs.shookream.controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.itwillbs.shookream.service.MemberService;
 import com.itwillbs.shookream.vo.AuthVo;
 import com.itwillbs.shookream.vo.MemberVo;
+import com.itwillbs.shookream.vo.WishVo;
 
 import mail.GoogleMailAuthenticator;
 
@@ -63,6 +65,8 @@ public class MemberController {
 			//성공 시 세션아이디, member_idx 저장
 			session.setAttribute("sId", id);
 			session.setAttribute("member_idx", member.getMember_idx());
+			
+			
 				return "redirect:/";
 		}
 	}//LoginPro 끝 

@@ -13,6 +13,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.taglibs.standard.tag.el.fmt.RequestEncodingTag;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.server.header.XFrameOptionsServerHttpHeadersWriter.Mode;
 import org.springframework.stereotype.Controller;
@@ -242,45 +244,179 @@ public class CartController {
 		return "product/order_form_cart";
 	}
 	
-	
-	//------구매페이지에서 다중 구매 처리 -------
-	@GetMapping(value = "CartOrderDetailPro.ca")
-	public String cartOrderForm(HttpSession session,Model model,cartVoArr vo) {
-		if(session.getAttribute("sId") == null || session.getAttribute("member_idx") == null ) {
-			model.addAttribute("msg", "로그인이 필요한 페이지입니다.");
-			model.addAttribute("url", "LoginMember.me");
-			return "reload_cart";
-		}
+	//------------수량 변동에 따라 수량, 금액 변경--------------
+	@ResponseBody
+	@GetMapping(value = "amount_adjust.ca")
+	public void amount_adjust(
+			HttpSession session,
+			HttpServletResponse response,
+			Model model,
+			@RequestParam String type,
+			@RequestParam int cart_idx) {
 		
-		//cartArrvo를 단일 cartVO에 풀기 
-		for(int i=0;i<vo.getProduct_idxArr().length;i++) {
-			cartVo vo2 = new cartVo();
-			vo2.setMember_idx(vo.getMember_idxArr()[i]);
-			vo2.setProduct_idx(vo.getProduct_idxArr()[i]);
-			vo2.setCart_order_price(vo.getCart_order_priceArr()[i]);
-			vo2.setCart_count(vo.getCart_countArr()[i]);
-			vo2.setCart_color(vo.getCart_colorArr()[i]);
-			vo2.setCart_size(vo.getCart_sizeArr()[i]);
-			vo2.setCart_product_name(vo.getCart_product_nameArr()[i]);
-			vo2.setCart_idx(vo.getCart_idxArr()[i]);
-			int orderSelectCount = service.getCartOrderCount(vo2);// db에 이미 주문 한 상품 있는지 확인
-			
-			if(orderSelectCount > 0) { //이미 주문한 상품이 있을 시
-				service.updatePorduct_Amount(vo2); //상품 수량 빼기 작업 
-				service.updateOrder_Amount(vo2); // 주문 수량 더하기 작업
-				service.getCartDelete(vo2.getCart_idx(), vo2.getMember_idx()); // 주문 성공시 카트에 담긴 상품 삭제 작업
-			
-			}else {//이미 주문한 상품이 없을 시
-				int insertCount = service.insertCartOrder(vo2);// insert 작업
+		if(session.getAttribute("sId") == null || session.getAttribute("member_idx") == null ) {
+			try {
+				model.addAttribute("msg", "로그인이 필요한 페이지입니다.");
+				model.addAttribute("url", "LoginMember.me");
 				
-				if(insertCount > 0) {//insert 성공 시
-					service.updatePorduct_Amount(vo2); // 상품 수량 빼기 작업
-					service.getCartDelete(vo2.getCart_idx(), vo2.getMember_idx());// 주문 성공시 카트에 담긴 상품 삭제 작업
-				} 
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				
+				out.println("<script>");
+				out.println("location.href='reload_cart'");
+				out.println("</script>");
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		}
-		return "product/order_form_cart";
-	}// 다중 주문 끝
+		}else {
+			int member_idx = (int)session.getAttribute("member_idx");
+			System.out.println(cart_idx);
+			System.out.println(type);
+			System.out.println(member_idx);
+			int updateCount = service.getAmountAdjust(cart_idx, type, member_idx);
+			if(updateCount > 0) {
+				try {
+					response.setContentType("text/html; charset=UTF-8");
+					PrintWriter out = response.getWriter();
+					
+					out.print("성공");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}else {
+				try {
+					response.setContentType("text/html; charset=UTF-8");
+					PrintWriter out = response.getWriter();
+					
+					out.print("실패");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}//else 끝
+		
+		
+	}//amount_adjust 끝
+	
+	//-----------장바구니 체크박스에 따른 합계금액 변동------------
+		@ResponseBody
+		@GetMapping(value = "ChangeTotalPrice.ca", produces = "application/json; charset=utf-8")
+		private void ChangeTotalPrice(
+				HttpSession session,
+				HttpServletResponse response,
+				Model model,
+				@RequestParam String cart_idx,
+				@RequestParam String type,
+				@RequestParam int total_price,
+				@RequestParam int total_order_price
+				) {
+			if(session.getAttribute("sId") == null || session.getAttribute("member_idx") == null ) {
+				try {
+					model.addAttribute("msg", "로그인이 필요한 페이지입니다.");
+					model.addAttribute("url", "LoginMember.me");
+					
+					response.setContentType("text/html; charset=UTF-8");
+					PrintWriter out = response.getWriter();
+					
+					out.println("<script>");
+					out.println("location.href='reload_cart'");
+					out.println("</script>");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}else {
+				//타입이 minus 인 경우(체크박스 해제)
+				if(type.equals("minus")) {
+					
+					int member_idx = (int)session.getAttribute("member_idx");
+					//cart_idx와 member_idx에 맞는 카트 정보를 검색
+					cartVo cart = service.getCartOrderlist(cart_idx, member_idx);
+					//cart_price : 상품금액 , cart_order_price : 결제금액
+					int cart_price = cart.getCart_price();
+					int cart_order_price = cart.getCart_order_price();
+					//minus 인 경우 체크박스 해제로 (전체 금액 - 상품 금액)
+					total_price -= cart_price;
+					total_order_price -= cart_order_price;
+					//JS로 전송하기 위해 JSONObject 객체를 생성
+					JSONObject jsonObject = new JSONObject();
+					//Object 객체에 계산된 상품 금액, 총 결제 금액을 put 하였음.
+					jsonObject.put("cart_total_price", total_price);
+					jsonObject.put("cart_order_total_price", total_order_price);
+					System.out.println(jsonObject);
+					try {
+						response.setCharacterEncoding("UTF-8");
+						response.getWriter().print(jsonObject); // toString() 생략
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+					
+				}else if(type.equals("plus")){
+					//타입이 minus 인 경우(체크박스 해제)
+					int member_idx = (int)session.getAttribute("member_idx");
+					//cart_idx와 member_idx에 맞는 카트 정보를 검색
+					cartVo cart = service.getCartOrderlist(cart_idx, member_idx);
+					//cart_price : 상품금액 , cart_order_price : 결제금액
+					int cart_price = cart.getCart_price();
+					int cart_order_price = cart.getCart_order_price();
+					//plus 인 경우 체크박스 활성화 (전체 금액 + 상품 금액)
+					total_price += cart_price;
+					total_order_price += cart_order_price;
+					//JS로 전송하기 위해 JSONObject 객체를 생성
+					JSONObject jsonObject = new JSONObject();
+					//Object 객체에 계산된 상품 금액, 총 결제 금액을 put 하였음.
+					jsonObject.put("cart_total_price", total_price);
+					jsonObject.put("cart_order_total_price", total_order_price);
+					try {
+						response.setCharacterEncoding("UTF-8");
+						response.getWriter().print(jsonObject); // toString() 생략
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+				}
+			}
+			
+		}//ChangeTotalPrice 끝
+	
+		//------구매페이지에서 다중 구매 처리 -------
+		@GetMapping(value = "CartOrderDetailPro.ca")
+		public String cartOrderForm(HttpSession session,Model model,cartVoArr vo) {
+			if(session.getAttribute("sId") == null || session.getAttribute("member_idx") == null ) {
+				model.addAttribute("msg", "로그인이 필요한 페이지입니다.");
+				model.addAttribute("url", "LoginMember.me");
+				return "reload_cart";
+			}
+			
+			//cartArrvo를 단일 cartVO에 풀기 
+			for(int i=0;i<vo.getProduct_idxArr().length;i++) {
+				cartVo vo2 = new cartVo();
+				vo2.setMember_idx(vo.getMember_idxArr()[i]);
+				vo2.setProduct_idx(vo.getProduct_idxArr()[i]);
+				vo2.setCart_order_price(vo.getCart_order_priceArr()[i]);
+				vo2.setCart_count(vo.getCart_countArr()[i]);
+				vo2.setCart_color(vo.getCart_colorArr()[i]);
+				vo2.setCart_size(vo.getCart_sizeArr()[i]);
+				vo2.setCart_product_name(vo.getCart_product_nameArr()[i]);
+				vo2.setCart_idx(vo.getCart_idxArr()[i]);
+				int orderSelectCount = service.getCartOrderCount(vo2);// db에 이미 주문 한 상품 있는지 확인
+				
+				if(orderSelectCount > 0) { //이미 주문한 상품이 있을 시
+					service.updatePorduct_Amount(vo2); //상품 수량 빼기 작업 
+					service.updateOrder_Amount(vo2); // 주문 수량 더하기 작업
+					service.getCartDelete(vo2.getCart_idx(), vo2.getMember_idx()); // 주문 성공시 카트에 담긴 상품 삭제 작업
+				
+				}else {//이미 주문한 상품이 없을 시
+					int insertCount = service.insertCartOrder(vo2);// insert 작업
+					
+					if(insertCount > 0) {//insert 성공 시
+						service.updatePorduct_Amount(vo2); // 상품 수량 빼기 작업
+						service.getCartDelete(vo2.getCart_idx(), vo2.getMember_idx());// 주문 성공시 카트에 담긴 상품 삭제 작업
+					} 
+				}
+			}
+			return "product/order_form_cart";
+		}// 다중 주문 끝
 }//CartController 끝
 		
 	

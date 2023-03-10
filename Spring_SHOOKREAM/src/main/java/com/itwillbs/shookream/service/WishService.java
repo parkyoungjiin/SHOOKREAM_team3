@@ -52,5 +52,10 @@ public class WishService {
 		return mapper.DecWishCount(product_idx);
 	}
 	//========좋아요 개수 - 1  끝============
+
+	// 좋아요 중복 검사
+	public int wishCheck(int member_idx, int product_idx) {
+		return mapper.wishCheck(member_idx, product_idx);
+	}
 	
 }

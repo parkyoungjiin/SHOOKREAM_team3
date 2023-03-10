@@ -95,4 +95,11 @@
 			SET member_pass=#{imsiPw}
 			WHERE member_id=#{vo.member_id}
 	</update>
+	
+	<!-- wish 조회 -->
+	<select id="selectWish" resultType="com.itwillbs.shookream.vo.WishVo">
+		SELECT product_idx
+			FROM wish
+			WHERE member_idx = #{member_idx}
+	</select>
 </mapper>
