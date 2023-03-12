@@ -3,6 +3,7 @@ package com.itwillbs.shookream.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.shookream.service.MainService;
+import com.itwillbs.shookream.service.MemberService;
+import com.itwillbs.shookream.service.ProductService;
 import com.itwillbs.shookream.vo.PageInfo;
 import com.itwillbs.shookream.vo.ProductVo;
+import com.itwillbs.shookream.vo.WishVo;
 
 /**
  * Handles requests for the application home page.
@@ -25,9 +29,15 @@ public class MainController {
 	
 	@Autowired 
 	private MainService service;
+	
+	@Autowired 
+	private MemberService service_member;
+	@Autowired 
+	private ProductService service_product;
+
 	//-----------------------메인 페이지--------------------------------
 	@RequestMapping(value = "/main.ma", method = RequestMethod.GET)
-	public String main(Model model, HttpServletRequest request, ProductVo product) {
+	public String main(Model model, HttpServletRequest request, HttpSession session, ProductVo product) {
 		int listLimit = 16; // 한 페이지에서 표시할 게시물 목록을 10개로 제한
 		int pageNum = 1; // 현재 페이지 번호 설정(pageNum 파라미터 사용)
 		
@@ -45,12 +55,28 @@ public class MainController {
 		List<ProductVo> productNewList = service.getProductNewList(startRow, listLimit);
 		model.addAttribute("productNewList", productNewList);
 		
+		String sId = (String)session.getAttribute("sId");
+//		String sId = "admin";
+		
+		if(sId != null) {
+		// 로그인 후 session 에 member_idx 저장할 시 불필요한 과정
+		int member_idx = service_product.getMemberIdx(sId);
+		
+		// wish 조회
+		List<WishVo> wish = service_member.getWish(member_idx);
+		
+		if(wish == null) {
+			model.addAttribute("wish", null);
+		}else {
+			model.addAttribute("wish", wish);
+		}
+		}
 		return "main";
 	}//main 끝
 	
 	//---------------------Best 페이지--------------------------
 	@GetMapping(value = "Best.ma")
-	public String best(Model model, HttpServletRequest request, ProductVo product) {
+	public String best(Model model, HttpServletRequest request, HttpSession session,ProductVo product) {
 		// 페이징 처리를 위한 변수 선언
 		int listLimit = 16; // 한 페이지에서 표시할 게시물 목록을 10개로 제한
 		int pageNum = 1; // 현재 페이지 번호 설정(pageNum 파라미터 사용)
@@ -63,6 +89,25 @@ public class MainController {
 		
 		List<ProductVo> productBestList = service.getProductBestList(startRow, listLimit);
 		model.addAttribute("productBestList", productBestList);
+		
+
+		String sId = (String)session.getAttribute("sId");
+//		String sId = "admin";
+		
+		if(sId != null) {
+		// 로그인 후 session 에 member_idx 저장할 시 불필요한 과정
+		int member_idx = service_product.getMemberIdx(sId);
+		
+		// wish 조회
+		List<WishVo> wish = service_member.getWish(member_idx);
+		
+		if(wish == null) {
+			model.addAttribute("wish", null);
+		}else {
+			model.addAttribute("wish", wish);
+		}
+		}
+		
 		
 		// ------------------페이징 처리----------------------
 		// => 파라미터 : x   리턴타입 : int(listCount)
@@ -98,7 +143,7 @@ public class MainController {
 	
 //------------------------------New(최근 상품) 페이지--------------------------------------
 	@GetMapping(value = "New.ma")
-	public String New(Model model, HttpServletRequest request, ProductVo product) {
+	public String New(Model model, HttpServletRequest request,HttpSession session, ProductVo product) {
 		// 페이징 처리를 위한 변수 선언
 				int listLimit = 16; // 한 페이지에서 표시할 게시물 목록을 10개로 제한
 				int pageNum = 1; // 현재 페이지 번호 설정(pageNum 파라미터 사용)
@@ -111,6 +156,24 @@ public class MainController {
 				
 				List<ProductVo> productNewList = service.getProductNewList(startRow, listLimit);
 				model.addAttribute("productNewList", productNewList);
+				
+
+				String sId = (String)session.getAttribute("sId");
+//				String sId = "admin";
+				
+				if(sId != null) {
+				// 로그인 후 session 에 member_idx 저장할 시 불필요한 과정
+				int member_idx = service_product.getMemberIdx(sId);
+				
+				// wish 조회
+				List<WishVo> wish = service_member.getWish(member_idx);
+				
+				if(wish == null) {
+					model.addAttribute("wish", null);
+				}else {
+					model.addAttribute("wish", wish);
+				}
+				}
 				
 				// ------------------페이징 처리----------------------
 				// => 파라미터 : x   리턴타입 : int(listCount)
@@ -146,7 +209,7 @@ public class MainController {
 	
 //------------------------------Sale 페이지--------------------------------------
 	@GetMapping(value = "Sale.ma")
-	public String sale(Model model, HttpServletRequest request, ProductVo product) {
+	public String sale(Model model, HttpServletRequest request, HttpSession session,ProductVo product) {
 		// 페이징 처리를 위한 변수 선언
 		int listLimit = 16; // 한 페이지에서 표시할 게시물 목록을 10개로 제한
 		int pageNum = 1; // 현재 페이지 번호 설정(pageNum 파라미터 사용)
@@ -159,6 +222,24 @@ public class MainController {
 		
 		List<ProductVo> productSaleList = service.getProductSaleList(startRow, listLimit);
 		model.addAttribute("productSaleList", productSaleList);
+		
+
+		String sId = (String)session.getAttribute("sId");
+//		String sId = "admin";
+		
+		if(sId != null) {
+		// 로그인 후 session 에 member_idx 저장할 시 불필요한 과정
+		int member_idx = service_product.getMemberIdx(sId);
+		
+		// wish 조회
+		List<WishVo> wish = service_member.getWish(member_idx);
+		
+		if(wish == null) {
+			model.addAttribute("wish", null);
+		}else {
+			model.addAttribute("wish", wish);
+		}
+		}
 		
 		// ------------------페이징 처리----------------------
 		// => 파라미터 : x   리턴타입 : int(listCount)
@@ -193,7 +274,7 @@ public class MainController {
 	}//sale 끝
 	//--------------브랜드별 포워딩----------------
 	@GetMapping(value = "BrandCG.ma")
-	public String brand(Model model, HttpServletRequest request) {
+	public String brand(Model model, HttpSession session,HttpServletRequest request) {
 		String cg = request.getParameter("cg");
 		// 페이징 처리를 위한 변수 선언
 			int listLimit = 16; // 한 페이지에서 표시할 게시물 목록을 10개로 제한
@@ -209,6 +290,24 @@ public class MainController {
 
 				List<ProductVo> productList = service.getProductCGList(cg, startRow, listLimit);
 				model.addAttribute("productList", productList);
+				
+
+				String sId = (String)session.getAttribute("sId");
+//				String sId = "admin";
+				
+				if(sId != null) {
+				// 로그인 후 session 에 member_idx 저장할 시 불필요한 과정
+				int member_idx = service_product.getMemberIdx(sId);
+				
+				// wish 조회
+				List<WishVo> wish = service_member.getWish(member_idx);
+				
+				if(wish == null) {
+					model.addAttribute("wish", null);
+				}else {
+					model.addAttribute("wish", wish);
+				}
+				}
 				
 				int listCount = service.getProductCgListCount(cg);
 				
@@ -233,7 +332,7 @@ public class MainController {
 			
 	//----------------------------------검색창(Keyword)----------------------------------------
 	@GetMapping(value = "keyword.ma")
-	public String search(@RequestParam("keyword") String keyword, Model model, HttpServletRequest request, ProductVo product) {
+	public String search(@RequestParam("keyword") String keyword, Model model, HttpServletRequest request, HttpSession session,ProductVo product) {
 		
 		
 		
@@ -249,6 +348,24 @@ public class MainController {
 		
 		List<ProductVo> productList = service.getProductSearchList(keyword, startRow, listLimit);
 		model.addAttribute("productList", productList);
+		
+
+		String sId = (String)session.getAttribute("sId");
+//		String sId = "admin";
+		
+		if(sId != null) {
+		// 로그인 후 session 에 member_idx 저장할 시 불필요한 과정
+		int member_idx = service_product.getMemberIdx(sId);
+		
+		// wish 조회
+		List<WishVo> wish = service_member.getWish(member_idx);
+		
+		if(wish == null) {
+			model.addAttribute("wish", null);
+		}else {
+			model.addAttribute("wish", wish);
+		}
+		}
 		
 		// ------------------페이징 처리----------------------
 		// => 파라미터 : x   리턴타입 : int(listCount)

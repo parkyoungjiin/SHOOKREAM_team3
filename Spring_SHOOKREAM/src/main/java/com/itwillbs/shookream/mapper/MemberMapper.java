@@ -1,9 +1,12 @@
 package com.itwillbs.shookream.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.shookream.vo.AuthVo;
 import com.itwillbs.shookream.vo.MemberVo;
+import com.itwillbs.shookream.vo.WishVo;
 
 public interface MemberMapper {
 
@@ -37,7 +40,16 @@ public interface MemberMapper {
 	// 회원 탈퇴
 	public int deleteMember(MemberVo member);
 	
+	//아이디 찾기
+	public String findId(MemberVo vo);
 	
+	//아이디 유무 확인
+	public boolean isLoginUser(MemberVo vo);
+	
+	//비밀번호 찾기
+	public boolean updatePass(@Param("vo") MemberVo vo,@Param("imsiPw") String imsiPw);
+
+	public List<WishVo> selectWish(int member_idx);
 
 }
 

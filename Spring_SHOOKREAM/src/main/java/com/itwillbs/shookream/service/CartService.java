@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.shookream.mapper.CartMapper;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.cartVo;
+import com.itwillbs.shookream.vo.cartVoArr;
 
 @Service
 public class CartService {
@@ -16,10 +17,6 @@ public class CartService {
 	//카트 이동
 	public List<cartVo> getCartlist(int member_idx, int startRow, int listLimit) {
 		return mapper.getCartlist(member_idx, startRow, listLimit);
-	}
-	//카트 금액 합계
-	public int CartTotalPrice(int member_idx) {
-		return 0;
 	}
 	// 페이징 처리
 	// 한 페이지에서 표시할 페이지 목록(번호) 갯수 계산
@@ -47,6 +44,34 @@ public class CartService {
 	//이미 담긴 상품이 있는 경우 CART_count 만큼의 수량을 증가
 	public int getUpdateCart(int product_idx, int member_idx, int cart_count) {
 		return mapper.getUpdateCart(product_idx, member_idx, cart_count);
+	}
+	//장바구니 -> 구매페이지
+	public cartVo getCartOrderlist(String cart_idx, int member_idx) {
+		return mapper.getCartOrderList(cart_idx, member_idx);
+	}
+	
+	public int getAmountAdjust(int cart_idx, String type, int member_idx) {
+		return mapper.getAmountAdjust(cart_idx, type, member_idx);
+	}
+	
+	//다중 구매 작업
+	public int insertCartOrder(cartVo vo2) {
+		return mapper.insertCartOrder(vo2);
+	}
+	
+	// 상품 수량 빼기 작업
+	public void updatePorduct_Amount(cartVo vo2) {
+		mapper.updatePorduct_Amount(vo2);
+	}
+	
+	//이미 주문 한 상품이 있는지 확인 작업
+	public int getCartOrderCount(cartVo vo2) {
+		return mapper.getCartOrderCount(vo2);
+	}
+	
+	//주문 수량 더하기 작업 
+	public void updateOrder_Amount(cartVo vo2) {
+		mapper.updateOrder_Amount(vo2);		
 	}
 
 }

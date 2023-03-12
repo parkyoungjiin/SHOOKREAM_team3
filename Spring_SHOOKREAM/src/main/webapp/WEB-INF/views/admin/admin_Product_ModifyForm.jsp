@@ -25,14 +25,14 @@
 		<script src = "../js/jquery-3.6.3.js"></script>
         <script type="text/javascript">
 			<%
-// 			String sId = (String)session.getAttribute("sId");
-// 			String id = request.getParameter("id");
-// 			if(sId == null || !sId.equals("admin")) { 
+			String sId = (String)session.getAttribute("sId");
+			String id = request.getParameter("id");
+			if(sId == null || !sId.equals("admin")) { 
 			%>
-// 				alert("잘못된 접근입니다!")
-// 				location.href=history.back();
+				alert("잘못된 접근입니다!")
+				location.href=history.back();
 			<% 
-// 			} 
+			} 
 			%>
 		</script>		
 		<style type="text/css">
@@ -105,7 +105,11 @@
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품명</td>
 						<td width="300px"><input class="w3-input w3-border"
-							type="text" placeholder="Product Name" name="product_name" id="product_name" value ="${product.product_name }" required ></td>
+
+							type="text" placeholder="Product Name" name="product_name" id="product_name" value ="${product.product_name }" >
+							<input type="hidden" name="product_name" value="${product.product_name}">
+							</td>
+
 					</tr>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품 브랜드</td>
@@ -245,24 +249,33 @@
 						<td width="100px" align="left" class="table-secondary">메인 이미지</td>
 <%-- 						<td><input type="file" name="file" >기존 메인 파일: <input type="text" value="${image.image_main_file }" width="100" name ="origin_file" readonly></td> --%>
 						<td>
-						<input type="file" name="file" >기존 메인 파일: <input type="text" value="${image.image_main_file }" width="100" name ="origin_file" readonly>
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						기존 파일 : <c:set var="arrRealFile" value="${fn:split(image.image_real_file1, '/') }"/>
-				        <a href="upload/${image.image_real_file1 }" download="${image.image_main_file }">
-				            ${image.image_main_file }
-				        </a>
+
+						<input type="file" name="files" >
+<%-- 						 ${image.image_main_file } --%>
+						<c:set var="imagePathArray" value="${fn:split(image.image_main_file, '/')}" />
+							기존 메인 파일  :  <input type="text" value="${imagePathArray[0]}" name="origin_file_1" readonly size="30">
+<%-- 						기존 파일 : <c:set var="arrRealFile" value="${fn:split(image.image_real_file1, '/') }"/> --%>
+<%-- 				        <a href="upload/${image.image_real_file1 }" download="${image.image_main_file }"> --%>
+<%-- 				            ${image.image_main_file } --%>
+<!-- 				        </a> -->
+
 						</td>
 					</tr>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">제품 이미지1</td>
-						<td><input type="file" name="file2" >기존 제품 이미지1: <input type="text" value="${image.image_real_file1 }" width="100" name ="origin_file2" readonly></td>					</tr>
+						<td><input type="file" name="file2" >
+						<c:set var="imagePathArray" value="${fn:split(image.image_main_file, '/')}" />
+							기존 제품 이미지1 : <input type="text" value="${imagePathArray[1]}" name="origin_file_2" readonly size="30">
+<%-- 						<input type="text" value="${image.image_real_file1 }" width="100" name ="origin_file2" readonly></td>					</tr> --%>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">제품 이미지2</td>
-						<td><input type="file" name="file3"> 기존 제품 이미지2: <input type="text" value="${image.image_real_file2 }" width="100" name ="origin_file3" readonly></td>					</tr>
+						<td><input type="file" name="file3"> 
+						<c:set var="imagePathArray" value="${fn:split(image.image_main_file, '/')}" />
+						기존 제품 이미지2 : <input type="text" value="${imagePathArray[2]}" name="origin_file_3" readonly size="30"></td>					</tr>
 
 					<tr>
-						<td colspan="2"><button type="submit"
-								class="w3-button w3-block w3-black">수정하기</button></td>
+						<td colspan="2"><button type="submit" class="w3-button w3-block w3-black">수정하기</button></td>
+						
 					</tr>
 				</table>
 			</form>

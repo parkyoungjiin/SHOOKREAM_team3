@@ -405,11 +405,20 @@ display: block;
 		</div>
 
 		<div id="price_block" style="display: inline-block; width: 300px; ">
+		<p class="prod_title">상품금액</p>
 		
-			<p class="prod_title">상품금액</p>
-			<div id ="price_div" style="color: red; font-size: 30px; font-weight: bold; float: left; margin-right: 15px">${product.product_discount_price}%</div>
-			<div id ="price_div" style="float: left; font-weight: bold; font-size: 30px; margin-right: 5px"><fmt:formatNumber value="${product.product_release_price }" pattern="#,###원"></fmt:formatNumber></div> 
-			<div id ="price_div" style="float: left; font-size: 17px; vertical-align: bottom; text-decoration: line-through; height: 45px;"><fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber></div> 
+		<c:choose>
+			
+			<c:when test="${product.product_discount_price eq 0 }">
+				<div id ="price_div" style="float: left; font-weight: bold; font-size: 30px; margin-right: 5px"><fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber></div> 
+			</c:when>
+			<c:otherwise>
+				<div id ="price_div" style="color: red; font-size: 30px; font-weight: bold; float: left; margin-right: 15px">${product.product_discount_price}%</div>
+				<div id ="price_div" style="float: left; font-weight: bold; font-size: 30px; margin-right: 5px"><fmt:formatNumber value="${product.product_release_price }" pattern="#,###원"></fmt:formatNumber></div> 
+				<div id ="price_div" style="float: left; font-size: 17px; vertical-align: bottom; text-decoration: line-through; height: 45px;"><fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber></div> 
+			</c:otherwise>
+		</c:choose>
+			
 		</div>
 <!-- 		<div id="detail1" style="display: inline-block; width: 300px"> -->
 <!-- 			<p class="prod_title">상품금액</p> -->

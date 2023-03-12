@@ -5,7 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.MemberVo;
+import com.itwillbs.shookream.vo.OrderVo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.imageVo;
 
@@ -22,9 +24,17 @@ public interface AdminMapper {
 
 	// 3. 상품 수정
 	public int modifyProduct(
-			int product_idx, 
-			@Param("product") ProductVo product,
-			@Param("image") imageVo image);
+			@Param("product_idx")int product_idx, 
+//			@Param("product_name") String product_name,
+//			@Param("product_brand") String product_brand,
+//			@Param("product_size") String product_size,
+			ProductVo product);
+	
+	// 3-1. 상품 수정 시 이미지 수정
+	public int modifyImage(
+			@Param("product_idx") int product_idx,
+			ProductVo product,
+			imageVo image);
 
 	// 4. 상품 삭제
 	public int removeProduct(int product_idx);
@@ -33,7 +43,8 @@ public interface AdminMapper {
 	public List<ProductVo> selectProductList();
 	
 	// 6. 이미지 조회
-	public imageVo selectImgList(int product_idx);
+	public List<imageVo> selectImgList(int product_idx);
+//	public List<imageVo> selectImgList();
 	
 	public ProductVo selectProduct(int product_idx);
 
@@ -41,6 +52,29 @@ public interface AdminMapper {
 
 	// 회원목록 조회
 	public List<MemberVo> selectMember();
+
+	// 주문목록 조회
+	public List<OrderVo> selectOrderList();
+
+	// 주문목록 삭제
+	public int delectOrder(int order_idx);
+
+	// 쿠폰목록
+	public List<CouponVo> selectCouponList();
+
+	// 쿠폰수정폼
+	public CouponVo selectCoupon(int coupon_idx);
+
+	// 쿠폰수정
+	public int updateCoupon(@Param("coupon_idx")int coupon_idx, @Param("coupon") CouponVo coupon);
+
+	// 쿠폰삭제
+	public int deletCoupon(int coupon_idx);
+
+	// 쿠폰등록
+	public int insertCoupon(CouponVo coupon);
+
+	
 
 	
 }

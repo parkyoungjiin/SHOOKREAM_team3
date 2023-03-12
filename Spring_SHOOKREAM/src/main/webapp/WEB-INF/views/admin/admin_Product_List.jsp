@@ -35,14 +35,14 @@
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
 			<%
-// 			String sId = (String)session.getAttribute("sId");
-// 			String id = request.getParameter("id");
-// 			if(sId == null || !sId.equals("admin")) { 
+			String sId = (String)session.getAttribute("sId");
+			String id = request.getParameter("id");
+			if(sId == null || !sId.equals("admin")) { 
 			%>
-// 				alert("잘못된 접근입니다!")
-// 				location.href=history.back();
+				alert("잘못된 접근입니다!")
+				location.href=history.back();
 			<% 
-// 			} 
+			} 
 			%>
 		</script>
 		<style type="text/css">
@@ -102,18 +102,23 @@
                                       <c:forEach var="product" items="${productList }">
 										<tr>
 										<td name="product_idx">${product.product_idx }</td>
-										<td>${product.product_name } <br>(색상 : ${product.product_color })</td>
-										<td><img src="${path}/resources/upload/${product.image_main_file }" class="img-thumbnail" alt="..." width="150" height="150"></td>
+										<td>${product.product_name } <br>(색상 : ${product.product_color })</td>   
+										<td><img src="${path}/resources/upload/${product.image_main_file }" class="img-thumbnail" onError="this.onerror=null; this.src='resources/images/noImg.JPG';" alt="..." style="width:100px; height:100px;"></td>
+<%-- 										<td><img src="${path}/resources/upload/${product.image_main_file }" class="img-thumbnail" onError="this.onerror=null; this.src='resources/images/noImg.JPG';" alt="..." style="width:100px; height:100px;"></td> --%>
+<%-- 										<td><img src="${path}/resources/upload/${image.image_main_file }" class="img-thumbnail" onError="this.onerror=null; this.src='resources/images/noImg.JPG';" alt="..." style="width:100px; height:100px;"></td> --%>
 										<td>${product.product_brand }</td>
 										<td><fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber> </td>
 										<td><fmt:formatNumber value="${product.product_amount }" pattern="#개"></fmt:formatNumber></td>
 										<td><fmt:formatDate value="${product.product_date}" pattern="yyyy-MM-dd"/></td>
 										<td>
 										
-										<button type="button" class="btn btn-light" onclick="location.href ='ProductModifyForm.po?product_idx=${product.product_idx}'">수정</button>
+										<button type="button" class="btn btn-light" onclick="location.href ='ProductModifyForm.po?product_idx=${product.product_idx}'">수정
+										</button>
+											<input type="hidden" name="image_main_file" value="${product.image_main_file}">
 <%-- 										<button type="button" class="btn btn-light" onclick= "deleteProduct(${product.product_idx})">삭제</button> --%>
-										<form action="ProductDeletePro.po" method="post">
+										<form action="ProductDeletePro.po" method="post" onsubmit="location.href='ProductList.po'">
 											<input type="hidden" name="product_idx" value="${product.product_idx}">
+											<input type="hidden" name="image_main_file" value="${product.image_main_file}">
 											<input type="submit" class="btn btn-light" value="삭제">
 										</form>
 										</td>

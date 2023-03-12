@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- font 굵기 -->
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
 <!-- icon CDN -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -35,6 +36,161 @@ function deleteCart(cb) {
 		location.href='CartDeletePro.ca?cart_idx=' + cart_idx_value
 	}
 }
+
+//---------상세 페이지에서 수량 +, - 버튼에 따른 수량 변동 작업 --------
+function amount_adjust_plus(type) {
+ 	var idx = type.id.replace("plus_btn", "");
+
+	var cart_count = parseInt($("#cart_count_id" + idx).val());
+ 	var cart_idx = $("#cart_idx_hidden" + idx).val();
+	cart_count = cart_count + 1;
+		
+	 	$.ajax({
+			type: "get",
+			url: "amount_adjust.ca",
+			data: {
+				cart_idx: cart_idx,
+				type: "plus"
+			},
+			dataType: "html",
+			success: function(data) {
+				 if(data == "성공"){
+					 alert("수량이 변경되었습니다.")
+					 $("#form_area").load(window.location.href + " #form_area");
+				 }else if(data == "실패"){
+					 alert("수량변경에 실패했습니다.")
+				 }
+			}
+		});
+
+}//amount_adjust_plus 끝
+
+function amount_adjust_minus(type) {
+ 	var idx = type.id.replace("minus_btn", "");
+
+	var cart_count = parseInt($("#cart_count_id" +idx).val());
+ 	var cart_idx = $("#cart_idx_hidden" + idx).val();
+//  	alert(cart_count);
+	if(cart_count > 1){
+		$.ajax({
+			type: "get",
+			url: "amount_adjust.ca",
+			data: {
+				cart_idx: cart_idx,
+				type: "minus"
+			},
+			dataType: "html",
+			success: function(data) {
+				 if(data == "성공"){
+					 alert("수량이 변경되었습니다.")
+					 $("#form_area").load(window.location.href + " #form_area");
+				 }else if(data == "실패"){
+					 alert("수량변경에 실패했습니다.")
+				 }
+					
+	 		}//success 끝
+ 		});//ajax 끝
+	}else{
+		alert("주문 가능한 최소 수량은 1개 입니다.")
+	}
+	 	
+				
+}//amount_adjust_minus 끝
+
+function check_function(cb) {
+	//-------변수 선언------------
+	var idx = cb.id.replace("cartCheckBox", "");
+	var cart_idx = $("#cartCheckBox" + idx).val();
+	//체크박스 상태 판별 (해제했을 경우 합계 금액에서 제외 )
+	var checked = $('#cartCheckBox' + idx).is(':checked');
+	//상품금액(금액의 경우 , 가 붙어있기에 정규표현식을 사용하여 ,가 붙은 항목들을 "" 처리 한 뒤 정수형으로 변환)
+	var total_price = parseInt($("#total_product_area").text().replace(/,/g, ""));
+	//총 결제금액(금액의 경우 , 가 붙어있기에 정규표현식을 사용하여 ,가 붙은 항목들을 "" 처리 한 뒤 정수형으로 변환)
+	var total_order_price = parseInt($("#total_order_area").text().replace(/,/g, ""));
+	
+	//--------체크박스 상태에 따른 처리---------	
+	if(!checked){
+		//checked 해제에 따른 처리로 minus 타입을 넘김
+		$.ajax({
+				type: "get",
+				url: "ChangeTotalPrice.ca",
+				data: {
+					cart_idx: cart_idx,
+					type: "minus",
+					total_price: total_price,
+					total_order_price: total_order_price
+				},
+				dataType: "json",
+				success: function(data) {
+					//총 주문금액 
+					total_price = data.cart_total_price.toLocaleString("en-US");
+					
+					//총 할인금액 
+					total_discount_price = (data.cart_total_price-data.cart_order_total_price).toLocaleString("en-US");
+					
+					//총 상품금액
+					total_order_price = data.cart_order_total_price.toLocaleString("en-US");
+
+					//주문, 할인, 상품 금액 넣기
+					$("#total_product_area").text(total_price);
+					$("#discount_area").text(total_discount_price);
+					$("#total_order_area").text(total_order_price);
+						
+	 			}//success 끝
+ 		});//ajax 끝
+	}else{
+		//checked 됐을경우에 따른 처리로 plus 타입을 넘김
+		$.ajax({
+				type: "get",
+				url: "ChangeTotalPrice.ca",
+				data: {
+					cart_idx: cart_idx,
+					type: "plus",
+					total_price: total_price,
+					total_order_price: total_order_price
+				},
+				dataType: "json",
+				success: function(data) {
+					//총 주문금액 
+					total_price = data.cart_total_price.toLocaleString("en-US");
+					
+					//총 할인금액 
+					total_discount_price = (data.cart_total_price-data.cart_order_total_price).toLocaleString("en-US");
+					
+					//총 상품금액
+					total_order_price = data.cart_order_total_price.toLocaleString("en-US");
+
+					//주문, 할인, 상품 금액 넣기
+					$("#total_product_area").text(total_price);
+					$("#discount_area").text(total_discount_price);
+					$("#total_order_area").text(total_order_price);
+						
+	 			}//success 끝
+ 		});//ajax 끝
+		
+	}
+	
+	
+}//check_function 끝
+
+// 체크된 cart_idx 값을 넘기는 작업
+function goOrder() {
+		var check = $('input[name=cartCheckBox]:checked');
+		let chk_arr = new Array();
+		$('input[name=cartCheckBox]:checked').each(function(i) {
+			chk_arr.push($(this).val());
+		});
+		if(chk_arr.length > 0){
+			alert("구매페이지로 이동합니다.");
+			location.href = "CartOrderDetail.ca?cart_idx=" + chk_arr;
+			
+		}else{
+			alert("선택된 상품이 없습니다. 구매하실 상품을 선택하세요.")
+		}
+	
+	
+}
+
 </script>
 <style type="text/css">
 #sform {
@@ -196,8 +352,12 @@ font-size: 70%;
 	<!--   <footer class="w3-padding-64 w3-small w3-center" id="footer"> -->
 	<div id="form_area">
 	
-	<form action="" style="padding: 40px; margin-top:20px; font-weight: bold; ">
-	  <table class="table" style="height: 50px; ">
+	  <table class="table" style="height: 50px; padding: 40px; margin-top:20px; font-weight: bold;">
+		<thead>
+		    <tr>
+		      <th scope="col" colspan="8" style="font-size: x-large;">장바구니 목록</th>
+		    </tr>
+	   </thead>
 	  <thead  class="table-primary" >
 	    <tr>
 	      <th scope="col" class ="th_cart">선택</th>
@@ -225,7 +385,7 @@ font-size: 70%;
 		    <tr>
 		      <!-- 체크박스 -->
 		      <input type="hidden" id="cart_idx_hidden${status.index }" value="${cart.cart_idx }">
-			  <td class ="td_cart"><input type="checkbox" class ="cartCheckBox" id="cartCheckBox${status.index }" name ="cartCheckBox" checked="checked" value="${cart.cart_idx }" onclick="removeCheck(this)"></td> 
+			  <td class ="td_cart"><input type="checkbox" class ="form-check-input" id="cartCheckBox${status.index }" name ="cartCheckBox" checked="checked" value="${cart.cart_idx }" onclick="check_function(this)"></td> 
 		      <td><a href="ProductInfoForm.po?product_idx=${cart.product_idx }"><img src="upload/${cart.cart_product_image }"  alt="없음!" class="img-thumbnail" width="150" height="150" ></a></td>
 		      <td class ="td_cart" style="text-align:left;">
 		      <span style="font-size: 20px; font-weight: bold;"> ${cart.cart_product_name }<br></span>
@@ -234,8 +394,10 @@ font-size: 70%;
 			  <td class ="td_cart" id="cart_price"><fmt:formatNumber value="${cart.cart_price }" pattern="#,###원"></fmt:formatNumber></td>
 		      <td class ="td_cart" id="cart_discount_price"><fmt:formatNumber value="${cart.cart_price * (cart.cart_discount / 100)}" pattern="#,###원"></fmt:formatNumber></td>
 		      <td class ="td_cart" id="cart_order_price" ><fmt:formatNumber value="${cart.cart_order_price}" pattern="#,###원"></fmt:formatNumber></td> 
-		      <td class ="td_cart">
-		      <input type="number" value="${cart.cart_count }" style="width: 35px; text-align: center;" readonly="readonly">
+		      <td class ="td_cart" style="vertical-align: middle;">
+		      <button id="minus_btn${status.index }" class="btn btn-outline-dark btn-sm" onclick="amount_adjust_minus(this)"  style ="width: 30px; height: 35px; font-size: 15px;">-</button>
+			  <input type="text" class="form-control" id="cart_count_id${status.index }" name="cart_count" value="${cart.cart_count }" required="required" readonly="readonly" style="width: 40px; text-align: center; display: inline-block;">
+		      <button id="plus_btn${status.index }"class="btn btn-outline-dark btn-sm" onclick="amount_adjust_plus(this)"  style ="width: 30px; height: 35px; font-size: 15px;">+</button>
 		      </td>
 		      <td class ="td_cart">무료배송</td>
 		      <td class ="td_cart">
@@ -284,20 +446,30 @@ font-size: 70%;
 		    <div class="col">
 				<div class="p-3 border bg-light" style="font-size: 25px; ">
 					<span style="margin-right: 12px">상품 금액</span> 
-					<span style="font-size: 27px; margin-right: 25px;">200,000원</span>
+					<span style="font-size: 27px;" id="total_product_area">
+						<fmt:formatNumber pattern="#,###" value="${cart_total_price }"></fmt:formatNumber>
+					</span>
+					<span style="font-size: 27px; margin-right: 25px;">원</span>
 					<span class="material-symbols-outlined" style="margin-right: 30px; font-size: 25px">do_not_disturb_on</span>					
 					<span style="margin-right: 12px">할인 금액</span> 
-					<span style="font-size: 27px; margin-right: 25px;">100,000원</span>
+					<span style="font-size: 27px;" id="discount_area">
+						<fmt:formatNumber pattern="#,###" value="${cart_total_price-cart_order_total_price }"></fmt:formatNumber>
+					</span>
+					<span style="font-size: 27px; margin-right: 25px;">원</span>
+					
 					<span class="material-symbols-outlined" style="margin-right: 30px; font-size: 25px">equal</span>
 					<span style="margin-right: 12px">총 결제금액</span> 
-					<span style="font-size: 27px; margin-right: 25px; color: blue;">100,000원</span>
+					<span style="font-size: 27px; color: blue;" id="total_order_area">
+						<fmt:formatNumber pattern="#,###" value="${cart_order_total_price }"></fmt:formatNumber>
+					</span>
+					<span style="font-size: 27px; margin-right: 25px;">원</span>
+					
 					<br>
 		      	<input type="button" class="btn btn-primary btn-lg" onclick="goOrder()" value="구매하기" style="margin-top: 30px; width: 100px" >
 				</div>	    
 		    </div>
 		  </div>
 	    </div>
-	</form>
 	
    	</div>
 	  	<jsp:include page="../inc/footer.jsp"/>
@@ -401,67 +573,8 @@ function w3_close() {
   });
 </script>
 
+
 <script type="text/javascript">
-//----------------------장바구니 체크박스 선택 여부에 따라 카트 금액 증가, 감소 작업 -------------------------
-function removeCheck(cb) {
-// 	alert(cb.id);
-// 	let cartCheckBox = cb.id.replace("cartCheckBox", ""); // id값의 index값을 가져옴
-	let cart_idx = cb.value; // id값의 index값을 가져옴
-// 	alert(cart_idx);
-	
-	//체크박스 상태 판별(true이면 체크된 상태, false이면 체크가 풀린 상태)
-	let ischeck = cb.checked;
-	
-	//check가 true일 때
-	if(ischeck == true){
-		$.ajax({
-			type: "get",
-			url: "CartPlusPro.ca",
-			data: {
-				cart_idx: cart_idx
-			},
-			dataType: "html",
-			success: function() {
-				 $("#totalResult").load(window.location.href + " #totalResult");
-			}
-		});
-	//check가 false일 때
-	}else if(ischeck == false){
-		$.ajax({
-			type: "get",
-			url: "CartMinusPro.ca",
-			data: {
-				cart_idx: cart_idx
-			},
-			dataType: "html",
-			success: function() {
-				 $("#totalResult").load(window.location.href + " #totalResult");
-			}
-		});
-	}
-	
-};
-	
-</script>
-<script type="text/javascript">
-
-// 체크된 cart_idx 값을 넘기는 작업
-function goOrder() {
-		var check = $('input[name=cartCheckBox]:checked');
-		let chk_arr = new Array();
-		$('input[name=cartCheckBox]:checked').each(function(i) {
-			chk_arr.push($(this).val());
-		});
-// 	
-		
-		alert("구매페이지로 이동합니다.");
-		location.href = "CartOrderDetailProAction.ca?cart_idx=" + chk_arr + "&member_idx=" + ${sessionScope.member_idx};
-
-		
-	
-	
-}
-
 
 
 // $(document).ready(function(){

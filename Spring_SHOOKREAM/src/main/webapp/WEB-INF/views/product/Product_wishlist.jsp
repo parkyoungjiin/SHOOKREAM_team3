@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri ="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri ="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,9 +22,24 @@
           display: inline-block;
           text-align: center;
         }
+        
+.td_cart{
+	font-size: 18px;
+	text-align: center;
+	vertical-align : middle;
+	height: 50px;
+}
+
+.th_cart{
+	font-size: 20px;
+	text-align: center;
+	background-color: #DCEBFF;
+	height: 60px;
+	vertical-align: middle;
+}
 </style>
 <style type="text/css">
-#table, {
+#table {
      text-align: center;
 }
 </style>
@@ -81,55 +97,60 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
  <jsp:include page="../inc/top.jsp"/>
 </div>
 
-<div style="padding: 80px;">
-  <header class="w3-container w3-xlarge">
-    <p class="w3-left">위시리스트</p>
-    <p class="w3-right">
-<!--       <i class="fa fa-shopping-cart w3-margin-right"></i> -->
-<!--       <i class="fa fa-search"></i> -->
-    </p>
+  <header class="w3-container w3-xlarge" style="padding: 80px 50px;">
+    <p class="w3-left" style="font-size: 37px">
+    <i class="fa-solid fa-heart" style="color: #FFC0CB;"></i>
+    위시리스트</p>
 </header>
-   
+    <hr size="25px">
   <!-- Footer -->
-  <div class="w3-padding-64 w3-small w3-center">
+  <div class="w3-small w3-center" style="padding: 40px; margin-top:20px; font-weight: bold; ">
   <c:choose>
   	<c:when test="${wishlist eq null or empty wishlist}">
-  		<hr>
   		<div id="no_cart" style="padding: 50px;">
 <!--   		<i class="fa-solid fa-cart-plus"></i> -->
   		<h5>위시리스트에 담긴 상품이 없습니다.</h5>
   		</div>
   	</c:when>
   	<c:otherwise>
-  <table class="table">
-  <thead  class="table-dark" >
+  <table class="table" style="height: 50px; ">
+  <thead class="table-primary" >
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">image</th>
-      <th scope="col">name</th>
-      <th scope="col">brand</th>
-      <th scope="col">price</th>
-      <th scope="col">size</th>
-      <th scope="col">delete</th>
+<!--       <th scope="col">#</th> -->
+      <th scope="col" class ="th_cart"></th>
+      <th scope="col" class ="th_cart">상품명</th>
+      <th scope="col" class ="th_cart">브랜드</th>
+      <th scope="col" class ="th_cart">상품금액</th>
+      <th scope="col" class ="th_cart">할인가</th>
+<!--       <th scope="col">size</th> -->
+      <th scope="col" class ="th_cart"></th>
     </tr>
   </thead>
   <tbody>
     
     <c:forEach var="wish" items="${wishlist }">
     <tr>
-      <th scope="row">${wish.wish_idx }</th>
-      <td><a href="ProductInfoForm.po?product_idx=${wish.product_idx }"><img src="upload/${wish.product_img }"  alt="없음!" class="img-thumbnail" width="150" height="150"></a></td>
-      <td>${wish.product_name }</td>
-      <td>${wish.product_brand }</td>
-      <td>${wish.product_price }</td>
-      <td>${wish.product_size }</td>
-      <td><button type="button" class="btn btn-dark" onclick="location.href='LikeDeletePro.ca?member_idx=${sessionScope.member_idx}&product_idx=${wish.product_idx }'">삭제</button></td>
+<%--       <th scope="row">${wish.wish_idx }</th> --%>
+      <td class ="td_cart"><a href="ProductInfoForm.po?product_idx=${wish.product_idx }"><img src="upload/${wish.product_img }" onError="this.onerror=null; this.src='resources/images/noImg.JPG';" alt="없음!"  width="100" height="70"></a></td>
+      <td class ="td_cart">${wish.product_name }</td>
+      <td class ="td_cart">${wish.product_brand }</td>
+      <td class ="td_cart"><fmt:formatNumber value="${wish.product_price }" pattern="#,###원"></fmt:formatNumber></td>
+      <c:choose>
+  		<c:when test="${wish.product_release_price eq 0}">
+  			<td class ="td_cart"></td>
+  		</c:when>
+  		<c:otherwise>
+      <td class ="td_cart"><fmt:formatNumber value="${wish.product_release_price }" pattern="#,###원"></fmt:formatNumber></td>
+  		</c:otherwise>
+  		</c:choose>
+<%--       <td>${wish.product_size }</td> --%>
+      <td class ="td_cart"><button type="button" class="btn btn-primary" onclick="location.href='LikeDeletePro.ca?member_idx=${sessionScope.member_idx}&product_idx=${wish.product_idx }'">삭제</button></td>
     </tr>
     </c:forEach>
   </tbody>
 </table>
 <!-- 페이징 처리 -->	
-	<div class="paging">
+	<div class="paging" style="padding-top: 30px; padding-bottom: 60px;">
         <c:choose>
 			<c:when test="${param.pageNum > 1}">
 				<a href="CartList.ca?pageNum=${param.pageNum - 1 }&member_idx=${member_idx }">이전</a>
@@ -169,14 +190,10 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
   </c:choose>
 
 </div>
-</div>
 
 
- <footer>
 
   	<jsp:include page="../inc/footer.jsp"/>
-</footer>
-
 </div>
 
 <!-- ------------------------------------------------------------------------------------------------------------>
