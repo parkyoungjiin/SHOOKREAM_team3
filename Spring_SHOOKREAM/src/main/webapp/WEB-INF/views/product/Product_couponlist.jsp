@@ -55,7 +55,7 @@
 
 		//2. 총 결제금액
 		var order_total_price = parseInt(opener.$("#order_total_price").val());
-		
+		window.opener.document.getElementById("order_total_price").value = order_total_price - price;
 		//3. 쿠폰 적용한 할인금액
 		 discount_price = (discount_price + price).toLocaleString("en-US");
 		//4. 쿠폰 적용한 총 결제금액
@@ -71,8 +71,8 @@
 		// 마지막 span영역에 쿠폰 적용된 할인가격, 총 결제금액이 들어감.
 		 window.opener.document.getElementById( "discount_area" ).innerText = discount_price;
 		 window.opener.document.getElementById( "order_total_area" ).innerText = order_total_price;
-		 window.opener.document.getElementById( "order_total_price_pay" ).value = order_total_price;
-		 close();
+// 		 window.opener.document.getElementById( "order_total_price_pay" ).value = order_total_price;
+		 window.close();
 	}
 	
 

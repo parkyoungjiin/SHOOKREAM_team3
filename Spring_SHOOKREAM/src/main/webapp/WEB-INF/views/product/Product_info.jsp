@@ -261,13 +261,12 @@ display: block;
 	
 	//-------구매하기 버튼 클릭 시 작동되는 함수---------
 	function valueCheckPurchase() {
-	 	alert("클릭 ");
 	 	var color = $("#cart_color_id").value;
 	 	var size = $("#cart_size_id").value;
 	 	var product_idx = $("#product_idx").val();
 	 	var member_idx = '<%=session.getAttribute("member_idx")%>';
-
-	 	//색상 선택 여부 판별
+		var order_count = document.getElementById("cart_count_id").value;
+		//색상 선택 여부 판별
 	 	if(color==""){
 	 		alert("색상을 선택 해주세요.");
 	 		return false;
@@ -281,7 +280,7 @@ display: block;
 	 		return false;
 	 	}
 		
-	 	location.href="OrderDetailForm.po?product_idx=" + product_idx;
+	 	location.href="OrderDetailForm.po?product_idx=" + product_idx+"&order_count="+order_count;
 	}//valueCheckPurchase 끝
 
 

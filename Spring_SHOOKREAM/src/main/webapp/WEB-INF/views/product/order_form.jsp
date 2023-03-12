@@ -12,6 +12,9 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+<!-- icon CDN -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 <!-- 네이버아이디로그인 -->
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -22,10 +25,26 @@
           display: inline-block;
           text-align: center;
         }
+.td_cart{
+	font-size: 18px;
+	text-align: center;
+	vertical-align : middle;
+	height: 50px;
+}
+
+.th_cart{
+	font-size: 20px;
+	text-align: center;
+	background-color: #DCEBFF;
+	height: 60px;
+	vertical-align: middle;
+}t-align: center;
+}
 </style>
 <style type="text/css">
-#table, {
-     text-align: center;
+#table {	
+	margin-top: 150px
+   	text-align: center;
 }
 </style>
 <style>
@@ -51,27 +70,93 @@
 /*         color: #fff; */
 /*         background-color: #FFA7A7; */
     }
-    </style>
-	<style type="text/css">
-	#delivery_table{
-	td {
+    #delivery_table td {
 		vertical-align : middle;
 	}	
-	
+	}
 	table th {
 		vertical-align : middle;
+		width: 200px;
 	}	
 	
-	}
-	
-	td {
-	vertical-align : baseline;
-	}
-	</style>
+/* 	td { */
+/* 	vertical-align : baseline; */
+/* 	} */
+    </style>
+
 <style>
-.w3-sidebar a {font-family: "Noto Sans KR", sans-serif}
-body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
+/* .w3-sidebar a {font-family: "Roboto", sans-serif} */
+body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;} 
 </style>
+
+<style>
+    
+    .footer {
+    	padding: 50px;
+    }
+    
+    .top_circle {
+    	 
+	    border-radius: 50%;
+	    
+	    width: 100px;
+	    height: 100px;
+	    margin: 0px 7px;
+/* 	    padding-bottom: 24%; */
+	    
+	    position: relative;
+    }
+    
+    .top_circle_h {
+    	 position : absolute;
+    	 top: 20%;
+	    left : 19%;
+	    bottom :30%;
+	    
+	    font-size: 18px;
+	    text-align: center;
+	    font-weight: bold;
+    }
+    
+    #order_circle {
+    	background-color: #d2d2d2;
+    }
+    #cart_circle {
+    	background-color: #d2d2d2;
+    	
+    }
+    #com_circle {
+    	background-color: #DCEBFF;
+    }
+    
+  .cb {
+    font-size: 23px;
+    }
+    
+    #no_cart {
+    	padding: 50px 0px;
+    }
+    #form_area{
+	  height: auto;
+	  min-height: 100%;
+	  padding-bottom: 300px;
+	}
+ </style>
+ <script type="text/javascript">
+	// 쿠폰 보러가기 클릭 함수
+	function CouponCheck() {
+		
+		let url = "CouponListForm.po";
+		let name = "Coupon List";
+		let attr = "width=900, height=600, top=200, left=510"
+	
+		window.open(url, name, attr);
+	}
+	function total_discount_cal() {
+		
+	}
+
+</script>
 </head>
 <body class="w3-content" style="max-width:95%">
 <!-- Sidebar/menu -->
@@ -106,61 +191,57 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
     </p>
 </header>
    
-  <!-- Footer -->
-  <table class="table">
-  <thead  class="table-dark" >
-   <tr>
-      <th scope="col" class ="th_cart"colspan="2" style="text-align: center;">상품명</th>
-<!--       <th scope="col">상품명</th> -->	
-      <th scope="col"  class ="th_cart">상품금액</th>
-      <th scope="col"  class ="th_cart">할인금액</th>
-      <th scope="col"  class ="th_cart">주문금액</th>
-      <th scope="col"  class ="th_cart">수량</th>
-      <th scope="col"  class ="th_cart">배송정보</th>
-    </tr>
-  </thead>
-  <tbody>
-	  <tr>
-      <td><a href="ProductInfoForm.po?product_idx=${product.product_idx }"><img src="upload/${image.image_main_file}"  alt="없음!" class="img-thumbnail" width="150" height="150" ></a></td>
-      <td class ="td_cart">${product.product_name }<br>색상 : ${product.product_color }</td>
-	  <td class ="td_cart" id="cart_price"><fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber></td>
-      <td class ="td_cart" id="cart_discount_price"><fmt:formatNumber value="${product.product_price * (product.product_discount_price / 100)}" pattern="#,###원"></fmt:formatNumber></td>
-      <td class ="td_cart" id="cart_order_price" ><fmt:formatNumber value="${product.product_release_price}" pattern="#,###원"></fmt:formatNumber></td> 
-<%--       <td class ="td_cart">${status.end }</td> --%>
-      <td class ="td_cart">
-      <input type="number" value="1" style="width: 35px">
-      </td>
-      <td class ="td_cart">무료배송</td>
-	    </tr>
-	  </tbody>
-	</table>
+   <div id="form_area">
+		  <table class="table" style="height: 50px; padding: 40px; margin-top:20px; font-weight: bold;">
+			<thead>
+			    <tr>
+			      <th scope="col" colspan="8" style="font-size: x-large;">주문내역 목록</th>
+			    </tr>
+		   </thead>
+		  <thead  class="table-primary" >
+		    <tr>
+		      <th scope="col" class ="th_cart"colspan="2">상품명</th>
+		<!--       <th scope="col">상품명</th> -->	
+		      <th scope="col"  class ="th_cart">상품금액</th>
+		      <th scope="col"  class ="th_cart">할인금액</th>
+		      <th scope="col"  class ="th_cart">주문금액</th>
+		      <th scope="col"  class ="th_cart">수량</th>
+		      <th scope="col"  class ="th_cart">배송정보</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	<!-- 카트 리스트가 없을 때 처리 -->
+		    <c:if test="${product eq null or empty product}">
+					<tr>
+						<td colspan="8" style="text-align: center;"><b>주문내역이 없습니다.</b></td>
+					</tr>
+			</c:if>
+			<!-- 카트 리스트가 있을 때 처리 -->
+			<c:if test="${product ne null and not empty product}">
+			<!-- 카트 목록(foreach로 처리) -->
+			    <tr>
+			      <td><a href="ProductInfoForm.po?product_idx=${product.product_idx }"><img src="upload/${product.image_main_file }"  alt="없음!" class="img-thumbnail" width="150" height="150" ></a></td>
+			      <td class ="td_cart" style="text-align:left;">
+			      <span style="font-size: 20px; font-weight: bold;"> ${product.product_name }<br></span>
+			      <span style="color: #91949A;">색상 : ${product.product_color } / 사이즈 : ${product.product_size }</span>
+			      </td>
+				  <td class ="td_cart" id="cart_price"><fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber></td>
+			      <td class ="td_cart" id="cart_discount_price"><fmt:formatNumber value="${product.product_price * (product.product_discount_price / 100)}" pattern="#,###원"></fmt:formatNumber></td>
+			      <td class ="td_cart" id="cart_order_price" ><fmt:formatNumber value="${product.product_price - product.product_price * (product.product_discount_price / 100)}" pattern="#,###원"></fmt:formatNumber></td> 
+			      <td class ="td_cart" style="vertical-align: middle;">
+<%-- 			      <button id="minus_btn${status.index }" class="btn btn-outline-dark btn-sm" onclick="amount_adjust_minus(this)"  style ="width: 30px; height: 35px; font-size: 15px;">-</button> --%>
+<%-- 				  <input type="text" class="form-control" id="cart_count_id${status.index }" name="cart_count" value="${param.order_count }" required="required" readonly="readonly" style="width: 40px; text-align: center; display: inline-block;"> --%>
+<%-- 			      <button id="plus_btn${status.index }"class="btn btn-outline-dark btn-sm" onclick="amount_adjust_plus(this)"  style ="width: 30px; height: 35px; font-size: 15px;">+</button> --%>
+			       		${param.order_count } 개
+			      </td>
+			      <td class ="td_cart">무료배송</td>
+			    </tr>
+		    </c:if>
+		  </tbody>
+		</table>
    
-	  <table class="table" style="border-collapse: separate; border-spacing: 0 13px;" >
-	  <input type="hidden" id="coupon_idx" >
-	  <thead>
-	    <tr>
-	      <th scope="col" colspan="6" style="font-size: x-large;">할인 혜택</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	   <tr>
-		<th colspan="2">상품 할인쿠폰</th>
-		<td colspan="6" style="margin-left:500px;"><input type="text" id="priceValue" readonly="readonly">원 할인 
-	   	<button type="button" class="btn btn-dark btn-sm" onclick="CouponCheck()">내가 보유한 쿠폰 보러가기</button>
-	   	</td>
-	   </tr>
-	   <tr>
-	    <th colspan="2">이포인트</th>
-	   	<td colspan="6"><input type="checkbox">모두사용 하기 (이포인트 *원 보유) <button type="button" class="btn btn-dark btn-sm">포인트 조회</button></td>
-	   </tr>
-	   <tr>
-	   	<th colspan="2">가격</th>
-	   	<td colspan="6"><input type="text" id="totalprice" value="${product.product_release_price }" readonly="readonly">원</td>
-	   </tr>   
-	  </tbody>
-	</table>
-	 
-	 <table class="table" id="delivery_table" style="border-collapse: separate; border-spacing: 0 13px;">
+	 <!-- 배송 정보 -->
+<table class="table" id="delivery_table" style="border-collapse: separate; border-spacing: 0 13px; font-size: 18px">
 	  <thead>
 	    <tr>
 	      <th scope="col" colspan="8" style="font-size: x-large;">배송 정보</th>
@@ -199,7 +280,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 	   <tr>
 	   	<th colspan="2">배송 메세지</th>
 	   	<td>
-	   		<select>
+	   		<select class="form-select" style="width: 300px">
 	   			<option>부재시 문 앞에 놓아주세요</option>
 	   			<option>경비실에 ㄱㄱ </option>
 	   			<option>전화 부탁 드립니다</option>
@@ -213,13 +294,73 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 	   </tr>
 	  </tbody>
 	</table>
-	 <button type="button" style="margin:auto; display:block;" class="btn btn-dark btn-sm" onclick="iamport()">구매하기</button>
+	
+<!-- 할인 정보 및 총 결제가격 표시	 -->
+
+<!-- 배송 정보 -->
+<table class="table" id="delivery_table" style="border-collapse: separate; border-spacing: 0 13px; font-size: 18px">
+  	  <input type="hidden" id="coupon_idx" >
+	  <thead>
+	    <tr>
+	      <th scope="col" colspan="6" style="font-size: x-large;">할인 금액</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	   <tr>
+		<th colspan="2">즉시 할인금액</th>
+		<td><input type="text" class="form-control" readonly="readonly" value="<fmt:formatNumber value='${cart_total_price-cart_order_total_price }'></fmt:formatNumber>" style="width: 100px; display: inline-block; text-align: right; font-size: 18px ">원 할인 
+	   	</td>
+	   </tr>
+	   <tr>
+		<th colspan="2">상품 할인쿠폰</th>
+		<td><input type="text" class="form-control" id="priceValue" readonly="readonly" value="0" style="width: 100px; display: inline-block; text-align: right; font-size: 18px">원 할인 
+	   	<button type="button" class="btn btn-outline-danger" onclick="CouponCheck()">쿠폰함</button>
+	   	</td>
+	   </tr>
+	   </tbody>
+ </table>
+   
+	 
+	 <!-- 결제금액 영역 -->
+		<div class="container px-4 text-center" id="totalResult" style="margin-top: 30px; font-size: 25px;">
+		  <div class="row gx-5" >
+		    <div class="col">
+				<div class="p-3 border bg-light" style="font-size: 25px; ">
+					<span style="margin-right: 12px">상품 금액</span> 
+					<span style="font-size: 27px;">
+						<fmt:formatNumber pattern="#,###" value="${product.product_price }"></fmt:formatNumber>
+					</span>
+					<span style="font-size: 27px; margin-right: 25px;">원</span>
+					
+					<span class="material-symbols-outlined" style="margin-right: 30px; font-size: 25px">do_not_disturb_on</span>	
+									
+					<span style="margin-right: 12px">할인 금액</span> 
+					<span style="font-size: 27px;" id="discount_area">
+						<fmt:formatNumber pattern="#,###" value="${product.product_price * (product.product_discount_price / 100)}"></fmt:formatNumber>
+					</span>
+					<span style="font-size: 27px; margin-right: 25px;">원</span>
+					
+					<span class="material-symbols-outlined" style="margin-right: 30px; font-size: 25px">equal</span>
+					
+					<span style="margin-right: 12px">총 결제금액</span> 
+					<span style="font-size: 27px; color: blue;" id="order_total_area">
+						<fmt:formatNumber pattern="#,###" value="${product.product_price - product.product_price * (product.product_discount_price / 100)}"></fmt:formatNumber>
+					</span>
+					<span style="font-size: 27px; margin-right: 25px;">원</span>
+					
+					<br>
+		      	<input type="button" id="order_button" class="btn btn-primary btn-lg" onclick="iamport()" value="결제" style="margin-top: 30px; width: 100px" >
+		      	<input type="hidden" id="order_discount_price" value="${product.product_price * (product.product_discount_price / 100)}">
+		      	<input type="hidden" id="order_total_price" value="${product.product_price - product.product_price * (product.product_discount_price / 100)}">
+				</div>	    
+		    </div>
+		  </div>
 	    </div>
 	    
-	 <footer>
-	  	<jsp:include page="../inc/footer.jsp"/>
-	  </footer>
-	   </div> 
+<!-- </footer> -->
+ <footer>
+  	<jsp:include page="../inc/footer.jsp"/>
+  </footer> 
 <!-- Newsletter Modal -->
 <div id="newsletter" class="w3-modal">
   <div class="w3-modal-content w3-animate-zoom" style="padding:32px">
@@ -332,29 +473,50 @@ function w3_close() {
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript">
 function iamport(){
-		//가맹점 식별코드
-		IMP.init('imp77718215');
-		IMP.request_pay({
-			pg : 'kakaopay',
-		    pay_method : 'card',
-		    merchant_uid : 'merchant_' + new Date().getTime(),
-		    name : '${product.product_name}' , //결제창에서 보여질 이름
-		    amount : $("#totalprice").val(), //실제 결제되는 가격
-		    buyer_name : '${sessionScope.sId}',
-		}, function(rsp) {
-			console.log(rsp);
-		    if ( rsp.success ) {
-		    	var msg = '결제가 완료되었습니다.';
-		        msg += '결제 금액 : ' + rsp.paid_amount;
-		        location.href="ProductOrderPro.po?order_category=주문완료&order_progress=배송완료&member_idx=${member_idx}&product_idx=${product.product_idx}&product_amount=${product.product_amount}&product_sell_count=${product.product_sell_count}&product_price="+rsp.paid_amount+"&coupon_idx="+$("#coupon_idx").val();
-		    } else {
-		    	 var msg = '결제에 실패하였습니다.';
-		         msg += '에러내용 : ' + rsp.error_msg;
-		         window.history.back();
-		    }
-		    alert(msg);
-		    
-		});
+	var price = Number(document.getElementById("order_total_price").value);
+	alert(price);
+	//getter
+    IMP.init('imp77718215');
+//     var money = $('input[name="cp_item"]:checked').val();
+//     console.log(money);
+    IMP.request_pay({
+        pg: 'html5_inicis',
+        pay_method : 'card',
+        merchant_uid: "order_no_"+ new Date().getTime(), // 상점에서 관리하는 주문 번호를 전달
+        name : '${product.product_name}',
+        amount : '100',
+        buyer_email : 'iamport@siot.do',
+        buyer_name : '${sessionScope.sId}',
+        buyer_tel : '010-1234-5678',
+        buyer_addr : '서울특별시 강남구 삼성동',
+        buyer_postcode : '123-456',
+    }, function(rsp) { // callback 로직
+    	console.log(rsp);
+	    if ( rsp.success ) {
+	    	var msg = '결제가 완료되었습니다.';
+	    	$.ajax({
+				type: "GET",
+				url: "ProductOrderPro.po",
+				data : {
+					"order_price":100,
+					"member_idx":${sessionScope.member_idx},
+					"product_idx":${param.product_idx},
+					"order_product_name":"${product.product_name}",
+					"order_count":${param.order_count},
+					"order_size":"${product.product_size}",
+					"order_color":"${product.product_color}",
+				}
+			})
+			.done(function(whlist) { // 요청 성공 시
+				alert(msg);
+				location.href='./main.ma';
+			})
+	    } else {
+	    	 var msg = '결제에 실패하였습니다.';
+// 	         msg += '에러내용 : ' + rsp.error_msg;
+// 	         window.history.back();
+	    }
+    });
 	}
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>

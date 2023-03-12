@@ -21,9 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.shookream.service.MemberService;
 import com.itwillbs.shookream.service.ProductService;
+import com.itwillbs.shookream.vo.BoardVo;
 import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.OrderVo;
+import com.itwillbs.shookream.vo.PageInfo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.ReviewVo;
 import com.itwillbs.shookream.vo.WishVo;
@@ -137,7 +139,6 @@ public class ProductController {
 		product = service.getProduct(product_idx);
 		image = service.getImage(product_idx);
 		member = service_member.getMemberInfo(sId);
-		
 		model.addAttribute("product", product);
 		model.addAttribute("member", member);
 		model.addAttribute("image", image);
@@ -155,12 +156,12 @@ public class ProductController {
 			@RequestParam(defaultValue = "0") int product_idx,
 			@RequestParam(defaultValue = "0") int product_price,
 			HttpSession session) {
-		
+		System.out.println(order);
 		String sId = (String)session.getAttribute("sId");		
 		int member_idx = service.getMemberIdx(sId);
-		order.setOrder_member_idx(member_idx);
-		order.setOrder_product_idx(product_idx);
-		order.setOrder_product_price(product_price);
+//		order.setOrder_member_idx(member_idx);
+//		order.setOrder_product_idx(product_idx);
+//		order.setOrder_product_price(product_price);
 		
 		// 쿠폰 임시 값 지정 (추후 수정 필요)
 		if(model.getAttribute("coupon_idx") != "") {
@@ -172,12 +173,12 @@ public class ProductController {
 		int insertOrder = service.InsertOrder(order);
 		
 		if(insertOrder > 0) {
-			int insertOrder2 = service.InsertOrderDetail(order);
+//			int insertOrder2 = service.InsertOrderDetail(order);
 			 
-			if(insertOrder2 > 0) {
+//			if(insertOrder2 > 0) {
 				service.updatePro(order);
 				service.updateMem(order);
-			}
+//			}
 			
 			return "redirect:/ProductOrderList.po?member_idx"+member_idx;
 			
@@ -197,6 +198,7 @@ public class ProductController {
 	public String CouponList(Model model, HttpSession session) {
 		
 		String sId = (String)session.getAttribute("sId");		
+		System.out.println("sid: "+sId);
 		int member_idx = service.getMemberIdx(sId);
 		
 		List<CouponVo> couponList = service.getCouponList(member_idx);
@@ -211,15 +213,34 @@ public class ProductController {
 	
 	// 회원 주문 목록
 	@GetMapping(value = "/ProductOrderList.po")
-	public String OrderList(Model model, HttpSession session) {
+	public String OrderList(Model model, HttpSession session,@RequestParam(defaultValue = "1")int pageNum) {
 		
 		String sId = (String)session.getAttribute("sId");		
 		int member_idx = service.getMemberIdx(sId);
 		
-		List<OrderVo> orderList = service.getOrderList(member_idx);
+		int listLimit = 5;
+		int startRow = (pageNum - 1) * listLimit;
+		List<OrderVo> orderList = service.getOrderList(member_idx,listLimit,startRow);
 		
+		int listCount = service.getListCount(member_idx);
+		int pageListLimit =3;
+		int maxPage = listCount / listLimit 
+				+ (listCount % listLimit == 0 ? 0 : 1); 
+
+
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+
+		int endPage = startPage + pageListLimit - 1;
+
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+		
+		
+		System.out.println(orderList);
 		model.addAttribute("orderList", orderList);
-		
+		model.addAttribute("pageInfo", pageInfo);
 		return "product/Product_orderlist";
 	}// 회원 주문 목록 끝
 			

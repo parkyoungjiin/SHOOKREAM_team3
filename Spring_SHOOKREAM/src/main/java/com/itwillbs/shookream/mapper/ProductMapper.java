@@ -42,7 +42,9 @@ public interface ProductMapper {
 
 	public List<CouponVo> selectCoupontList(int member_idx);
 
-	public List<OrderVo> selectOrderList(int member_idx);
+	public List<OrderVo> selectOrderList(@Param("member_idx")int member_idx,@Param("listLimit") int listLimit,@Param("startRow") int startRow);
+
+	public int getListCount(int member_idx);
 	
 	// ====================채휘 끝 =======================================
 
