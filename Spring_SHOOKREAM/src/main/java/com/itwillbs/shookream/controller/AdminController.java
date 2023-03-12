@@ -21,9 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.shookream.service.AdminService;
-import com.itwillbs.shookream.service.BoardService;
-import com.itwillbs.shookream.vo.BoardVo;
-import com.itwillbs.shookream.vo.PageInfo;
+
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.imageVo;
 
@@ -324,7 +322,34 @@ public class AdminController {
 
 
 				//================== 끝 =============================
-
+			
+	//---------관리자 회원 & 쿠폰관리 메인--------
+	@GetMapping("AdminMemberCoupon.ad")	
+	public String adMember() {
+		return "admin/admin_coupon_and_member";
+	}
+	
+	//--------- 회원목록------------------
+	@GetMapping("MemberList.me")
+	public String adMemberList(Model model) {
+		List<MemberVo> member = service.getMemberInfo();
+		model.addAttribute("member",member);
+		return "admin/admin_member_list";
+	}
+	
+	//----------- 쿠폰 등록 ----------------------
+	@GetMapping("CouponInsertForm.po") 
+	public String insertCouponForm() {
+		return "admin/admin_coupon_insert";
+	}
+	
+	// ------------ 쿠폰 목록 --------------------
+	@GetMapping("CouponList.po")
+	public String couponList() {
+		return "admin/admin_coupon_list";
+	}
+	
+	//------------쿠폰 수정------------------------
 }//AdminController
 		
 	

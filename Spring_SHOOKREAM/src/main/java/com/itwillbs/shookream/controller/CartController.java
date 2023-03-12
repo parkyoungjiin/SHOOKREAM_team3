@@ -130,18 +130,12 @@ public class CartController {
 				if(updateCount > 0) {
 					response.setContentType("text/html; charset=UTF-8");
 					PrintWriter out = response.getWriter();
-					
-					out.println("이미 담긴상품");
-//					out.println("alert('이미 담은 상품이 있어 추가되었습니다.");
-//					out.println("</script>");
+					out.print("이미 담긴상품");
 					
 				} else {
 					response.setContentType("text/html; charset=UTF-8");
 					PrintWriter out = response.getWriter();
-					
-					out.println("<script>");
-					out.println("alert('장바구니 추가에 실패되었습니다.')");
-					out.println("</script>");
+					out.print("장바구니 추가에 실패되었습니다.");
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -155,9 +149,7 @@ public class CartController {
 					response.setContentType("text/html; charset=UTF-8");
 					PrintWriter out = response.getWriter();
 					
-					out.println("<script>");
-					out.println("alert('장바구니에 등록되었습니다.')");
-					out.println("</script>");
+					out.print("새상품");
 					
 				} else {
 					response.setContentType("text/html; charset=UTF-8");
