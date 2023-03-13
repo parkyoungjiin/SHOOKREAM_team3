@@ -104,16 +104,7 @@
 			<version>2.11.0</version>
 		</dependency>
 		
-		<!--9.smtp 처리 라이브러리  -->
-		<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
-		<!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
-		<dependency>
-		    <groupId>com.sun.mail</groupId>
-		    <artifactId>javax.mail</artifactId>
-		    <version>1.4.7</version>
-		</dependency>
 
-		
 		
 		<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
 		<dependency>
@@ -122,6 +113,30 @@
 		    <version>1.4</version>
 		</dependency>
 		
+		<!--9.smtp 처리 라이브러리  -->
+		<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+		<!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
+		<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>javax.mail</artifactId>
+		    <version>1.4.7</version>
+		</dependency>
+		
+		<!--9. 메일처리  -->
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency>
+		
+		<!--9. 메일처리  -->
+		<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>javax.mail-api</artifactId>
+		    <version>1.4.7</version>
+		</dependency>
 		
 		<!-- AspectJ -->
 		<dependency>

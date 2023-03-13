@@ -206,13 +206,13 @@ function fn_modify() {
 				<tr>
 						<th scope="row" >이름</th>
 						<td>
-						<input type="text" name="name" value="${member.member_name }" size="20px"style="line-height: 30px; border: none;" readonly="readonly"><br>
+						<input type="text" name="member_name" value="${member.member_name }" size="20px"style="line-height: 30px; border: none;" readonly="readonly"><br>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row">아이디</th>
 						<td>
-						<input type="text" name="id" id ="id" value="${member.member_id }" size="20px" style="line-height: 30px; border: none;" readonly="readonly" onkeydown="inputIdChk()" readonly="readonly"> &nbsp;
+						<input type="text" name="id" id ="member_id" value="${member.member_id }" size="20px" style="line-height: 30px; border: none;" readonly="readonly" onkeydown="inputIdChk()" readonly="readonly"> &nbsp;
 						<br>
 						
 						</td>
@@ -236,23 +236,23 @@ function fn_modify() {
 						<th scope="row">주소</th>
 						<td>
 						<div>${member.member_address }</div><br>
-						<input type="text" name="address" id="address_kakao2"  size="30px" placeholder="변경시에만 입력" style="margin-bottom: 10px;line-height: 30px"> &nbsp;
+						<input type="text" name="address1" id="address_kakao2"  size="30px" placeholder="변경시에만 입력" style="margin-bottom: 10px;line-height: 30px"> &nbsp;
 						<button type="button" id="address_kakao" class="btn btn-dark">주소찾기</button><br>
-						<input type="text" name="address_detail"  size="30px" style="line-height: 30px"  ><br>
+						<input type="text" name="address2"  size="30px" style="line-height: 30px"  ><br>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row">휴대전화</th>
 						<td>
 						<div>${member.member_phone }</div><br>
-						<input type="text" name="phone" id="phone" size="20px" style="line-height: 30px" placeholder="변경시에만 입력" >&nbsp; <span id ="phoneCheckResult"></span><br>
+						<input type="text" name="member_phone" id="phone" size="20px" style="line-height: 30px" placeholder="변경시에만 입력" >&nbsp; <span id ="phoneCheckResult"></span><br>
 						<span style="color: gray;">("-"를 제외한 휴대전화를 입력해주세요. ex)01011111111 )</span>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row">이메일</th>
 						<td>
-						<input type="text" name="email" id="email" value="${member.member_email }" readonly="readonly" size="20px" style="line-height: 30px; border: none;"> &nbsp;
+						<input type="text" name="member_email" id="email" value="${member.member_email }" readonly="readonly" size="20px" style="line-height: 30px; border: none;"> &nbsp;
 						<span id="authEmailResult"></span>
 						</td>
 					</tr>
