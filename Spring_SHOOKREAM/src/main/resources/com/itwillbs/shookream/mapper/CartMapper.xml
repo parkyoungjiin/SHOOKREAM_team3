@@ -127,6 +127,7 @@
 	<update id="updatePorduct_Amount">
 		UPDATE product
 			SET product_amount = product_amount - #{cart_count}
+			, product_sell_count = product_sell_count + #{cart_count}
 			WHERE product_idx = #{product_idx}
 	</update>
 	<!-- 주문 수량 더하기 작업 -->

@@ -80,8 +80,13 @@ public class ProductService {
 	}
 
 	// 주문 내역 조회
-	public List<OrderVo> getOrderList(int member_idx) {
-		return mapper.selectOrderList(member_idx);
+	public List<OrderVo> getOrderList(int member_idx, int listLimit, int startRow) {
+		return mapper.selectOrderList(member_idx,listLimit,startRow);
+	}
+
+	public int getListCount(int member_idx) {
+		// TODO Auto-generated method stub
+		return mapper.getListCount(member_idx);
 	}
 
 	// ================== 채휘 끝 ====================
