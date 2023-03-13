@@ -260,8 +260,8 @@ function minus_wish_btn(cb){
 									 </c:choose>
 								</div>
 							</div>
-							<p id="product_brand" >${productList.product_brand }</p>
-							<p id="product_name" >${productList.product_name }<br></p>
+							<p id="product_brand" onclick="location.href='BrandCG.ma?cg=${productList.product_brand }'" style="cursor: pointer;">${productList.product_brand }</p>
+							<p id="product_name" onclick="location.href='ProductInfoForm.po?product_idx=${productList.product_idx }'" style="cursor: pointer;">${productList.product_name }<br></p>
 							
 							<div>
 							<c:choose>
