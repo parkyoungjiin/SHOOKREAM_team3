@@ -95,6 +95,49 @@
 	
 	</update>
 	
+	<!-- 이미 구매한 상품이 있는지 확인 작업 -->
+	<select id="getCartOrderCount" resultType="int">
+		SELECT COUNT(*)
+			From orderlist
+			WHERE product_idx = #{product_idx}
+	</select>
+	
+	<!-- 다중 구매 처리 작업 -->
+	<insert id="insertCartOrder">
+		<selectKey keyProperty="cart_order_idx" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(order_idx),0)
+			FROM orderlist
+		</selectKey>
+		INSERT INTO orderlist
+			VALUES(
+				#{cart_order_idx}+1,
+				now(),
+				#{cart_order_price},
+				'주문완료',
+				'결제완료',
+				#{member_idx},
+				#{product_idx},
+				#{cart_product_name},
+				#{cart_count},
+				#{cart_size},
+				#{cart_color}
+			)
+	</insert>
+	<!-- 상품 수량 빼기 작업 -->
+	<update id="updatePorduct_Amount">
+		UPDATE product
+			SET product_amount = product_amount - #{cart_count}
+			, product_sell_count = product_sell_count + #{cart_count}
+			WHERE product_idx = #{product_idx}
+	</update>
+	<!-- 주문 수량 더하기 작업 -->
+	<update id="updateOrder_Amount">
+		UPDATE orderlist
+			SET order_count = order_count + #{cart_count}
+			WHERE product_idx = #{product_idx}
+	</update>
+	
+	
 </mapper>
 
 

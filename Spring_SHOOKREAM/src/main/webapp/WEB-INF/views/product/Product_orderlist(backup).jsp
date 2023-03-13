@@ -22,26 +22,10 @@
           display: inline-block;
           text-align: center;
         }
-.td_cart{
-	font-size: 18px;
-	text-align: center;
-	vertical-align : middle;
-	height: 50px;
-}
-
-.th_cart{
-	font-size: 20px;
-	text-align: center;
-	background-color: #DCEBFF;
-	height: 60px;
-	vertical-align: middle;
-}t-align: center;
-}
 </style>
 <style type="text/css">
-#table {	
-	margin-top: 150px
-   	text-align: center;
+#table, {
+     text-align: center;
 }
 </style>
 <style>
@@ -67,78 +51,11 @@
 /*         color: #fff; */
 /*         background-color: #FFA7A7; */
     }
-    #delivery_table td {
-		vertical-align : middle;
-	}	
-	}
-	table th {
-		vertical-align : middle;
-		width: 200px;
-	}	
-	
-/* 	td { */
-/* 	vertical-align : baseline; */
-/* 	} */
     </style>
-
 <style>
-/* .w3-sidebar a {font-family: "Roboto", sans-serif} */
-body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;} 
+.w3-sidebar a {font-family: "Noto Sans KR", sans-serif}
+body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 </style>
-
-<style>
-    
-    .footer {
-    	padding: 50px;
-    }
-    
-    .top_circle {
-    	 
-	    border-radius: 50%;
-	    
-	    width: 100px;
-	    height: 100px;
-	    margin: 0px 7px;
-/* 	    padding-bottom: 24%; */
-	    
-	    position: relative;
-    }
-    
-    .top_circle_h {
-    	 position : absolute;
-    	 top: 20%;
-	    left : 19%;
-	    bottom :30%;
-	    
-	    font-size: 18px;
-	    text-align: center;
-	    font-weight: bold;
-    }
-    
-    #order_circle {
-    	background-color: #d2d2d2;
-    }
-    #cart_circle {
-    	background-color: #d2d2d2;
-    	
-    }
-    #com_circle {
-    	background-color: #DCEBFF;
-    }
-    
-  .cb {
-    font-size: 23px;
-    }
-    
-    #no_cart {
-    	padding: 50px 0px;
-    }
-    #form_area{
-	  height: auto;
-	  min-height: 100%;
-	  padding-bottom: 300px;
-	}
- </style>
 <script>
 	// 리뷰작성 폼 팝업 
 	function reviewForm(re_idx,re_size,re_color,re_name) {
@@ -193,90 +110,80 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
    
 
   <div class="w3-padding-64 w3-small w3-center">
- 	 <form action="ReviewWrite.me" method="post">
-	  <div id="form_area">
-		  <table class="table" style="height: 50px; padding: 40px; margin-top:20px; font-weight: bold;">
-			<thead>
-			    <tr>
-			      <th scope="col" colspan="8" style="font-size: x-large;">주문내역 목록</th>
-			    </tr>
-		   </thead>
-		  <thead  class="table-primary" >
-		    <tr>
-		      <th scope="col" class ="th_cart"colspan="2">상품명</th>
-		<!--       <th scope="col">상품명</th> -->	
-		      <th scope="col"  class ="th_cart">상품금액</th>
-		      <th scope="col"  class ="th_cart">할인금액</th>
-		      <th scope="col"  class ="th_cart">주문금액</th>
-		      <th scope="col"  class ="th_cart">수량</th>
-		      <th scope="col"  class ="th_cart">배송정보</th>
-		      <th scope="col"  class ="th_cart"></th>
-		    </tr>
-		  </thead>
-		  <tbody>
-		  	<!-- 카트 리스트가 없을 때 처리 -->
-		    <c:if test="${orderList eq null or empty orderList}">
-					<tr>
-						<td colspan="8" style="text-align: center;"><b>주문내역이 없습니다.</b></td>
-					</tr>
-			</c:if>
-			<!-- 카트 리스트가 있을 때 처리 -->
-			<c:if test="${orderList ne null and not empty orderList}">
-			<!-- 카트 목록(foreach로 처리) -->
-		    <c:forEach var="order" items="${orderList }" varStatus="status">
-			    <tr>
-			      <td><a href="ProductInfoForm.po?product_idx=${order.product_idx }"><img src="upload/${order.image_main_file }"  alt="없음!" class="img-thumbnail" width="150" height="150" ></a></td>
-			      <td class ="td_cart" style="text-align:left;">
-			      <span style="font-size: 20px; font-weight: bold;"> ${order.order_product_name }<br></span>
-			      <span style="color: #91949A;">색상 : ${order.product_color } / 사이즈 : ${order.product_size }</span>
-			      </td>
-				  <td class ="td_cart" id="cart_price"><fmt:formatNumber value="${order.product_price }" pattern="#,###원"></fmt:formatNumber></td>
-			      <td class ="td_cart" id="cart_discount_price"><fmt:formatNumber value="${order.order_price * (order.product_discount_price / 100)}" pattern="#,###원"></fmt:formatNumber></td>
-			      <td class ="td_cart" id="cart_order_price" ><fmt:formatNumber value="${order.order_price}" pattern="#,###원"></fmt:formatNumber></td> 
-			      <td class ="td_cart" style="vertical-align: middle;">
-<%-- 			      <button id="minus_btn${status.index }" class="btn btn-outline-dark btn-sm" onclick="amount_adjust_minus(this)"  style ="width: 30px; height: 35px; font-size: 15px;">-</button> --%>
-<%-- 				  <input type="text" class="form-control" id="cart_count_id${status.index }" name="cart_count" value="${cart.cart_count }" required="required" readonly="readonly" style="width: 40px; text-align: center; display: inline-block;"> --%>
-<%-- 			      <button id="plus_btn${status.index }"class="btn btn-outline-dark btn-sm" onclick="amount_adjust_plus(this)"  style ="width: 30px; height: 35px; font-size: 15px;">+</button> --%>
-			      	  ${order.order_count }개
-			      </td>
-			      <td class ="td_cart">${order.order_progress }</td>
-			      <td class ="td_cart">
-			    <input type="button" value="리뷰 작성하기" class="btn btn-primary" onclick="reviewForm(${order.product_idx },'${order.product_size }','${order.product_color }','${order.product_name }')">
-			      </td>
-			    </tr>
-		    </c:forEach>
-		    </c:if>
-		  </tbody>
-		</table>
-		<!-- 페이징 처리 -->	
-			<div class="paging">
-			        <c:choose>
-						<c:when test="${param.pageNum > 1}">
-							<a href="ProductOrderList.po?pageNum=${param.pageNum - 1 }&member_idx=${member_idx }">이전</a>
-						</c:when>
-						<c:otherwise>
-							<a href="javascript:void(0)">이전</a>
-						</c:otherwise>
-					</c:choose>
-					
-					<c:forEach var="i" begin="${pageInfo.startPage }" end="${pageInfo.endPage }">
-						<!-- 단, 현재 페이지 번호는 링크 없이 표시 -->
-								<a href="ProductOrderList.po?pageNum=${i }&member_idx=${member_idx }">${i }</a>
-					</c:forEach>
-					
-					<c:choose>
-						<c:when test="${param.pageNum < pageInfo.maxPage}">
-							<a href="ProductOrderList.po?pageNum=${param.pageNum + 1 }&member_idx=${member_idx }">다음</a>
-						</c:when>
-						<c:otherwise>
-							<a href="javascript:void(0)">다음</a>
-						</c:otherwise>
-					</c:choose>
-		    </div>
-	   	</div>
-	</form>
-	</div>
+  <form action="ReviewWrite.me" method="post">
+  <table class="table">
+  <thead  class="table-dark" >
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">image</th>
+      <th scope="col">product name</th>
+      <th scope="col">size</th>
+      <th scope="col">color</th>
+      <th scope="col">price</th>
+      <th scope="col">order status</th>
+<!--       <th scope="col">id</th> -->
+      <th scope="col">date</th>
+      <th scope="col" colspan="2">manage</th>
+    </tr>
+  </thead>
+  <tbody id="tableList">
+    <c:forEach var="order" items="${orderList }">
+    <tr>
+      <td>${order.order_idx }</td>
+      <td><img src="upload/${order.image_main_file }"  alt="없음!" class="img-thumbnail" width="150" height="150"></td>
+      <td>${order.product_name }</td>
+      <td>${order.product_size }</td>
+      <td>${order.product_color }</td>
+      <td>${order.order_price }</td>
+      <td>${order.order_category }</td>
+<%--       <td>${order.order_member_id }</td> --%>
+      <td><fmt:formatDate value="${order.order_date }" pattern="yyyy-MM-DD"/></td>
+	  <td><input type="button" value="리뷰 작성하기" class="btn btn-dark" onclick="reviewForm(${order.product_idx },'${order.product_size }','${order.product_color }','${order.product_name }')">
+<%--       <button type="button" class="btn btn-dark" onclick="deleteOrder(${order.order_idx})">삭제</button></td> --%>
+    </tr>
+    </c:forEach>
+  </tbody>
+</table>
+</form>
+<div class="paging">
+        <c:choose>
+			<c:when test="${param.pageNum > 1}">
+				<a href="ProductOrderList.po?pageNum=${param.pageNum - 1 }&member_idx=${member_idx }">이전</a>
+			</c:when>
+			<c:otherwise>
+				<a href="javascript:void(0)">이전</a>
+			</c:otherwise>
+		</c:choose>
+		
+		<c:forEach var="i" begin="${pageInfo.startPage }" end="${pageInfo.endPage }">
+			<!-- 단, 현재 페이지 번호는 링크 없이 표시 -->
+			<c:choose>
+				<c:when test="${param.pageNum eq i}">
+					${i }
+				</c:when>
+				<c:otherwise>
+					<a href="ProductOrderList.po?pageNum=${i }&member_idx=${member_idx }">${i }</a>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+		
+		<c:choose>
+			<c:when test="${param.pageNum < pageInfo.maxPage}">
+				<a href="ProductOrderList.po?pageNum=${param.pageNum + 1 }&member_idx=${member_idx }">다음</a>
+			</c:when>
+			<c:otherwise>
+				<a href="javascript:void(0)">다음</a>
+			</c:otherwise>
+		</c:choose>
+<!--         <a class="select" href="#">1</a> -->
+<!--         <a href="#">2</a> -->
+<!--         <a href="#">3</a> -->
+<!--         <a href="#">4</a> -->
+<!--         <a href="#">5</a> -->
+    </div>
 </div>
+
+  </div>
 <!-- 로그인 화면 폼 -->
   <!-- End page content -->
 

@@ -576,8 +576,6 @@ function w3_close() {
 
 <script type="text/javascript">
 
-/
-
 
 // $(document).ready(function(){
 // 	let listArr = new Array();

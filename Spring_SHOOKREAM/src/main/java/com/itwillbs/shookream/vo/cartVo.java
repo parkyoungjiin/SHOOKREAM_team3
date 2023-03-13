@@ -14,10 +14,12 @@ public class cartVo {
 	private String cart_color; //select
 	private String cart_product_name; //hidden
 	private String cart_product_image; //hidden
-	
+	private int cart_order_idx;
 	
 	//-------setter, getter--------
-
+	
+	
+	
 	public int getMember_idx() {
 		return member_idx;
 	}
@@ -85,26 +87,20 @@ public class cartVo {
 	public void setCart_product_image(String cart_product_image) {
 		this.cart_product_image = cart_product_image;
 	}
+	public int getCart_oder_idx() {
+		return cart_order_idx;
+	}
+	public void setCart_oder_idx(int cart_order_idx) {
+		this.cart_order_idx = cart_order_idx;
+	}
 	//-----------------toString--------------------
 	@Override
 	public String toString() {
-		return "cartBean [member_idx=" + member_idx + ", product_idx=" + product_idx + ", cart_idx=" + cart_idx
+		return "cartVo [member_idx=" + member_idx + ", product_idx=" + product_idx + ", cart_idx=" + cart_idx
 				+ ", cart_price=" + cart_price + ", cart_discount=" + cart_discount + ", cart_order_price="
 				+ cart_order_price + ", cart_count=" + cart_count + ", cart_size=" + cart_size + ", cart_color="
 				+ cart_color + ", cart_product_name=" + cart_product_name + ", cart_product_image=" + cart_product_image
-				+ "]";
+				+ ", cart_order_idx=" + cart_order_idx + "]";
 	}
-
-
-
-
-
-	
-	
-
-
-
-
-
 
 }

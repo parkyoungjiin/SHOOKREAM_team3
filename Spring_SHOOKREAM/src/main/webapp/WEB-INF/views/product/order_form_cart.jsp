@@ -200,9 +200,6 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 </header>
    <hr size="25px">
 <!-- 상품 정보 -->
-<div id="form_area">
-
-
 <form action="" style="padding: padding: 40px; margin-top:20px; font-weight: bold; ">
   <table class="table" style="height: 50px;">
   <thead>
@@ -229,6 +226,14 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 	<!-- 카트 리스트가 없을 때 처리 -->
 	<c:if test="${cart_order_total_price gt 0}">
     <c:forEach var="cart" items="${cartOrderList }" varStatus="status">
+    <input type="hidden" value="${cart.product_idx }" name="cart_paroduct_idx" class="cart_paroduct_idx">
+    <input type="hidden" value="${cart.member_idx }" name="cart_member_idx">
+    <input type="hidden" value="${cart.cart_order_price }" name="cart_order_price">
+    <input type="hidden" value="${cart.cart_count }" name="cart_count">
+    <input type="hidden" value="${cart.cart_size }" name="cart_size">
+    <input type="hidden" value="${cart.cart_color }" name="cart_color">
+    <input type="hidden" value="${cart.cart_product_name }" name="cart_product_name">
+    <input type="hidden" value="${cart.cart_idx }" name="cart_idx">
     <tr>
 	 <td><a href="ProductInfoForm.po?product_idx=${cart.product_idx }"><img src="upload/${cart.cart_product_image }"  alt="없음!" class="img-thumbnail" width="150" height="150" ></a></td>
       <td class ="td_cart">${cart.cart_product_name }<br><span style="color: #91949A;">색상 : ${cart.cart_color }</span></td>
@@ -244,6 +249,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
     </c:if>
   </tbody>
 </table>
+</form>
 <!-- 배송 정보 -->
 <table class="table" id="delivery_table" style="border-collapse: separate; border-spacing: 0 13px; font-size: 18px">
 	  <thead>
@@ -306,18 +312,18 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
   	  <input type="hidden" id="coupon_idx" >
 	  <thead>
 	    <tr>
-	      <th scope="col" colspan="8" style="font-size: x-large;">할인 금액</th>
+	      <th scope="col" colspan="6" style="font-size: x-large;">할인 금액</th>
 	    </tr>
 	  </thead>
 	  <tbody>
 	   <tr>
 		<th colspan="2">즉시 할인금액</th>
-		<td colspan="6" ><input type="text" class="form-control" readonly="readonly" value="<fmt:formatNumber value='${cart_total_price-cart_order_total_price }'></fmt:formatNumber>" style="width: 100px; display: inline-block; text-align: right; font-size: 18px ">원 할인 
+		<td><input type="text" class="form-control" readonly="readonly" value="<fmt:formatNumber value='${cart_total_price-cart_order_total_price }'></fmt:formatNumber>" style="width: 100px; display: inline-block; text-align: right; font-size: 18px ">원 할인 
 	   	</td>
 	   </tr>
 	   <tr>
 		<th colspan="2">상품 할인쿠폰</th>
-		<td colspan="6"><input type="text" class="form-control" id="priceValue" readonly="readonly" value="0" style="width: 100px; display: inline-block; text-align: right; font-size: 18px">원 할인 
+		<td><input type="text" class="form-control" id="priceValue" readonly="readonly" value="0" style="width: 100px; display: inline-block; text-align: right; font-size: 18px">원 할인 
 	   	<button type="button" class="btn btn-outline-danger" onclick="CouponCheck()">쿠폰함</button>
 	   	</td>
 	   </tr>
@@ -353,19 +359,19 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 					<span style="font-size: 27px; margin-right: 25px;">원</span>
 					
 					<br>
-		      	<input type="button" class="btn btn-primary btn-lg" onclick="iamport()" value="결제" style="margin-top: 30px; width: 100px" >
+		      	<input type="button" id="order_button" class="btn btn-primary btn-lg" onclick="iamport()" value="결제" style="margin-top: 30px; width: 100px" >
 		      	<input type="hidden" id="order_discount_price" value="${cart_total_price-cart_order_total_price }">
 		      	<input type="hidden" id="order_total_price" value="${cart_order_total_price }">
-		      	<input type="hidden" id="order_total_price_pay" value="${cart_order_total_price }">
 		      	
 				</div>	    
 		    </div>
 		  </div>
 	    </div>
-  	<jsp:include page="../inc/footer.jsp"/>
-  	</form>
-  </div>
+	    
 <!-- </footer> -->
+ <footer>
+  	<jsp:include page="../inc/footer.jsp"/>
+  </footer> 
 
 
 
@@ -463,43 +469,191 @@ function w3_close() {
   });
 </script>
 
+<script type="text/javascript">
+//----------------------장바구니 체크박스 선택 여부에 따라 카트 금액 증가, 감소 작업 -------------------------
+function removeCheck(cb) {
+// 	alert(cb.id);
+// 	let cartCheckBox = cb.id.replace("cartCheckBox", ""); // id값의 index값을 가져옴
+	let cart_idx = cb.value; // id값의 index값을 가져옴
+// 	alert(cart_idx);
+	
+	//체크박스 상태 판별(true이면 체크된 상태, false이면 체크가 풀린 상태)
+	let ischeck = cb.checked;
+	
+	//check가 true일 때
+	if(ischeck == true){
+		$.ajax({
+			type: "get",
+			url: "CartPlusPro.ca",
+			data: {
+				cart_idx: cart_idx
+			},
+			dataType: "html",
+			success: function() {
+				 $("#totalResult").load(window.location.href + " #totalResult");
+			}
+		});
+	//check가 false일 때
+	}else if(ischeck == false){
+		$.ajax({
+			type: "get",
+			url: "CartMinusPro.ca",
+			data: {
+				cart_idx: cart_idx
+			},
+			dataType: "html",
+			success: function() {
+				 $("#totalResult").load(window.location.href + " #totalResult");
+			}
+		});
+	}
+	
+};
+	
+</script>
+<script type="text/javascript">
 
-<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+// 체크된 cart_idx 값을 넘기는 작업
+function goOrder() {
+		var check = $('input[name=cartCheckBox]:checked');
+		let chk_arr = new Array();
+		$('input[name=cartCheckBox]:checked').each(function(i) {
+			chk_arr.push($(this).val());
+		});
+// 	
+		//체크된 상품 개수만큼 반복
+		for(var i =0; i<chk_arr.length; i++){
+                 alert("배열값 = "+ chk_arr);
+			
+		}
+		location.href = "CartOrderDetailProAtion.ca?cart_idx=" + chk_arr + "&member_idx=" + ${sessionScope.member_idx};
+}
+
+
+
+// $(document).ready(function(){
+// 	let listArr = new Array();
+//     let list = $("input[name='cartCheckBox']:checked");
+    
+//     for(var i = 0; i < list.length; i++){
+//         if(list[i].checked){
+//            listArr.push(list[i].value);
+//            alert("배열값 = "+ listArr);
+//         }
+//      }
+// }); 
+</script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript">
 function iamport(){
-	// 	
-	var total = $("#order_total_price_pay").val();
-	alert(total)
-		//가맹점 식별코드
-		IMP.init('imp77718215');
-		IMP.request_pay({
-		    pg : 'kakaopay',
-		    pay_method : 'cart',
-		    merchant_uid : 'merchant_' + new Date().getTime(),
-		    name : 'SHOOKREAM' , //결제창에서 보여질 이름
-		    amount : total, //실제 결제되는 가격
-		    buyer_name : '${sessionScope.sId}',
-		}, function(rsp) {
-			console.log(rsp);
-		    if ( rsp.success ) {
-		    	var msg = '결제가 완료되었습니다.';
-		        msg += '고유ID : ' + rsp.imp_uid;
-		        msg += '상점 거래ID : ' + rsp.merchant_uid;
-		        msg += '결제 금액 : ' + rsp.paid_amount;
-		        msg += '카드 승인번호 : ' + rsp.apply_num;
-		        location.href="ProductOrderPro.po?order_category=주문완료&order_progress=배송완료&member_idx=${member_idx}&product_idx=${product.product_idx}&product_amount=${product.product_amount}&product_sell_count=${product.product_sell_count}&product_price="+rsp.paid_amount+"&coupon_idx="+$("#coupon_idx").val();
-		    } else {
-		    	 var msg = '결제에 실패하였습니다.';
-		         msg += '에러내용 : ' + rsp.error_msg;
-// 		         window.history.back();
-		    }
-		    alert(msg);
-		    
-		});
-	}
-
+	//----주문 외 몇건 처리---- 
+	let list_count ="${cartOrderList[0].cart_product_name} 외"+" ${cartOrderList.size()-1}건";
+	//----주문 외 몇건 처리 ---- 
 	
+	//----member_idx 배열에 담기----	
+	let member_idx_arr = new Array();
+	$('input[name="cart_member_idx"]').each(function(i) {
+		member_idx_arr.push($(this).val());
+	});
+	//----member_idx끝----
+	
+	//----product_idx 배열에 담기----	
+	let product_idx_arr = new Array();
+	$('input[name="cart_paroduct_idx"]').each(function(i) {
+		product_idx_arr.push($(this).val());
+	});
+	
+	//----order_price 배열에 담기----------
+	let cart_order_price_arr = new Array();
+	$('input[name="cart_order_price"]').each(function(i) {
+		cart_order_price_arr.push($(this).val());
+	});
+	//----order_price 끝----------
+	
+	//----cart_count 배열에 담기----------
+	let cart_count_arr = new Array();
+	$('input[name="cart_count"]').each(function(i) {
+		cart_count_arr.push($(this).val());
+	});
+	//----cart_count 끝----------
+	
+	//----cart_count 배열에 담기----------
+	let cart_size_arr = new Array();
+	$('input[name="cart_size"]').each(function(i) {
+		cart_size_arr.push($(this).val());
+	});
+	//----cart_count 끝----------
+	
+	//----cart_color 배열에 담기----------
+	let cart_color_arr = new Array();
+	$('input[name="cart_color"]').each(function(i) {
+		cart_color_arr.push($(this).val());
+	});
+	//----cart_count 끝----------
+	
+	//----cart_color 배열에 담기----------
+	let cart_product_name_arr = new Array();
+	$('input[name="cart_product_name"]').each(function(i) {
+		cart_product_name_arr.push($(this).val());
+	});
+	//----cart_color 끝----------
+	
+	//----cart_idx 배열에 담기----------
+	let cart_idx_arr = new Array();
+	$('input[name="cart_idx"]').each(function(i) {
+		cart_idx_arr.push($(this).val());
+	});
+	//----cart_idx 끝----------
+	alert(cart_idx_arr);
+	
+	
+	
+	
+	//getter
+    IMP.init('imp77718215');
+//     var money = $('input[name="cp_item"]:checked').val();
+//     console.log(money);
+    IMP.request_pay({
+        pg: 'html5_inicis',
+        pay_method : 'card',
+        merchant_uid: "order_no_"+ new Date().getTime(), // 상점에서 관리하는 주문 번호를 전달
+        name : list_count,
+        amount : '${cart_order_total_price }',
+        buyer_email : 'iamport@siot.do',
+        buyer_name : '${sessionScope.sId}',
+        buyer_tel : '010-1234-5678',
+        buyer_addr : '서울특별시 강남구 삼성동',
+        buyer_postcode : '123-456',
+    }, function(rsp) { // callback 로직
+    	console.log(rsp);
+	    if ( rsp.success ) {
+	    	var msg = '결제가 완료되었습니다.';
+	    	$.ajax({
+				type: "GET",
+				url: "CartOrderDetailPro.ca",
+				data : {
+					"member_idxArr":member_idx_arr,
+					"product_idxArr":product_idx_arr,
+					"cart_order_priceArr":cart_order_price_arr,
+					"cart_countArr":cart_count_arr,
+					"cart_sizeArr":cart_size_arr,
+					"cart_colorArr":cart_color_arr,
+					"cart_product_nameArr":cart_product_name_arr,
+					"cart_idxArr":cart_idx_arr
+				},
+			})
+			.done(function(whlist) { // 요청 성공 시
+				alert(msg);
+				location.href='./main.ma';
+			})
+	    } else {
+	    	 var msg = '결제에 실패하였습니다.';
+// 	         msg += '에러내용 : ' + rsp.error_msg;
+// 	         window.history.back();
+	    }
+    });
+}
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>
