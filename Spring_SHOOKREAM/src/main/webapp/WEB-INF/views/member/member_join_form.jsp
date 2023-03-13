@@ -203,7 +203,7 @@ $(function() {
 					<tr>
 						<th scope="row">아이디</th>
 						<td>
-						<input type="text" name="id" id ="id" required size="20px" style="line-height: 30px" onkeydown="inputIdChk()" > &nbsp;
+						<input type="text" name="member_id" id ="id" required size="20px" style="line-height: 30px" onkeydown="inputIdChk()" > &nbsp;
 						<button class="btn btn-dark" name="dbCheckId" id="dbCheckId" onclick="fn_dbCheckId()">중복 확인</button>
 <!-- 						<button type="button" class="btn btn-secondary" name="dbCheckId" id="dbCheckId" onclick="fn_dbCheckId()">ID check</button> -->
 						<input type="hidden" name="isCheckId" value="idUncheck"/>		
@@ -215,7 +215,7 @@ $(function() {
 					<tr>
 						<th scope="row">비밀번호</th>
 						<td>
-						<input type="password" name="pass" id ="pass" required size="20px" style="line-height: 30px" onkeyup="checkPasswd(this.value)">&nbsp; <span id="checkPasswdResult"></span><br>
+						<input type="password" name="member_pass" id ="pass" required size="20px" style="line-height: 30px" onkeyup="checkPasswd(this.value)">&nbsp; <span id="checkPasswdResult"></span><br>
 						<span style="color: gray;">(영문 대 소문자/숫자/특수문자(!@#$%) 중 2가지 이상 조합, 8~16자)</span>
 						
 						</td>
@@ -230,7 +230,7 @@ $(function() {
 					<tr>
 						<th scope="row">이름</th>
 						<td>
-						<input type="text" name="name" required size="20px"style="line-height: 30px" ><br>
+						<input type="text" name="member_name" required size="20px"style="line-height: 30px" ><br>
 						<span style="color: gray;">(성함을 입력해주세요.)</span>
 					
 						
@@ -239,16 +239,16 @@ $(function() {
 					<tr>
 						<th scope="row">주소</th>
 						<td>
-						<input type="text" name="address" id="address_kakao2" required size="30px" style="margin-bottom: 10px;line-height: 30px"> &nbsp;
+						<input type="text" name="address1" id="address_kakao2" required size="30px" style="margin-bottom: 10px;line-height: 30px"> &nbsp;
 						<button id="address_kakao" class="btn btn-dark">주소찾기</button><br>
-						<input type="text" name="address_detail"  size="30px" style="line-height: 30px" ><br>
+						<input type="text" name="address2"  size="30px" style="line-height: 30px" ><br>
 						<span style="color: gray;">(상세 주소를 입력해주세요.)</span>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row">휴대전화</th>
 						<td>
-						<input type="text" name="phone" id="phone" required size="20px" style="line-height: 30px" >&nbsp; <span id ="phoneCheckResult"></span><br>
+						<input type="text" name="member_phone" id="phone" required size="20px" style="line-height: 30px" >&nbsp; <span id ="phoneCheckResult"></span><br>
 						<span style="color: gray;">("-"를 제외한 휴대전화를 입력해주세요. ex)01011111111 )</span>
 						</td>
 					</tr>
@@ -375,7 +375,8 @@ function reCheckPasswd(pass2) {//재입력 확인
 
 	if(pass == pass2){
 		spanRecheckResult.innerHTML = "동일한 패스워드 입니다";
-		spanRecheckResult.style.color = "BLUE";    		
+		spanRecheckResult.style.color = "BLUE";
+		passwdStatus = true;		
 	}else{
 		spanRecheckResult.innerHTML = "일치하지 않는 패스워드 입니다";
 		spanRecheckResult.style.color = "RED";  
@@ -434,7 +435,7 @@ function inputIdChk(){
 		});
 		
 			$("#checkEmail").on("click", function() {
-				
+
 				$.ajax({
 					type: "get",
 		            url: "CheckEmailAddress.me",
@@ -444,13 +445,14 @@ function inputIdChk(){
 		               email1: $("#email1").val(),
 		               email2: $("#email2").val()
 		            }
-				                   
+				    
 		         });
 			});
 			
 		/* 이메일 인증 2 */
 		$("#checkEmail2").on("click", function() {
-				
+				/* var chkAuth = $("#authCode").val();
+				alert(chkAuth); */
 				$.ajax({
 					type: "get",
 		            url: "CompareEmailAddress.me",

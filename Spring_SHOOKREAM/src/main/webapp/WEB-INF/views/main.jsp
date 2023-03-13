@@ -424,8 +424,8 @@ localStorage.setItem("z","11");
 									 </c:choose>
 								</div>
 							</div>
-							<p id="product_brand" >${productBestList.product_brand }</p>
-							<p id="product_name" >${productBestList.product_name }<br></p>
+							<p id="product_brand" onclick="location.href='BrandCG.ma?cg=${productBestList.product_brand }'" style="cursor: pointer;">${productBestList.product_brand }</p>
+							<p id="product_name" onclick="location.href='ProductInfoForm.po?product_idx=${productBestList.product_idx }'" style="cursor: pointer;">${productBestList.product_name }<br></p>
 							<div>
 							<c:choose>
 								<c:when test="${productBestList.product_discount_price gt 0}">
@@ -499,8 +499,8 @@ localStorage.setItem("z","11");
 									 </c:choose>
 								</div>	
 							</div>
-							<p id="product_brand" >${productNewList.product_brand }</p>
-							<p id="product_name" >${productNewList.product_name }<br></p>
+							<p id="product_brand" onclick="location.href='BrandCG.ma?cg=${productNewList.product_brand }'" style="cursor: pointer;">${productNewList.product_brand }</p>
+							<p id="product_name" onclick="location.href='ProductInfoForm.po?product_idx=${productNewList.product_idx }'" style="cursor: pointer;">${productNewList.product_name }<br></p>
 							
 							<div id="price">
 							<c:choose>

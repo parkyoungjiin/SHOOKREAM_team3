@@ -33,6 +33,26 @@
 	</bean>
 	<!-- Mybatis 연동에 사용될 객체들의 패키지 위치 지정(기본 루트 패키지 지정) -->
 	<mybatis-spring:scan base-package="com.itwillbs.shookream"/>
+	
+	<!-- 메일 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="jcw3241@gmail.com" />
+		<property name="password" value="dhbovpzvxpzejbts" />
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.debug">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtps.ssl.checkserveridentity">true</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtps.ssl.trust">*</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+			</props>
+	</property>
+</bean>
+	
 </beans>
 
 

@@ -14,8 +14,9 @@ import com.itwillbs.shookream.vo.WishVo;
 public class MemberService {
 	@Autowired
 	private MemberMapper mapper;
+	
 	// 로그인을 위한 패스워드 조회
-	public MemberVo getSelectPass(String id) {
+	public String getSelectPass(String id) {
 		return mapper.getSelectPass(id);
 	}
 	// 로그아웃
@@ -32,29 +33,39 @@ public class MemberService {
 		return mapper.insertMember(member);
 	}
 
+	// 회원가입 : 회원번호 
+	public int selectIdx() {
+		return mapper.selectIdx();
+	}
+
 	// 회원가입 : id 중복체크
 	public int idCheck(String id) {
 		return mapper.selectAllId(id);
 	}
 
-	// 회원가입 : 이메일 인증1 - 이메일 전
+	// 회원가입 : 이메일 인증1 - 인증번호 전송 : 이메일 전송
 	public boolean isAuthUser(AuthVo auth) {
 		return mapper.selectAuth(auth);
 	}
 
-	// 이메일 인증1 - 가입한 회원
+	// 이메일 인증1 - 인증번호 전송 : 재인증
 	public String isMember(AuthVo auth) {
 		return mapper.updateAuth(auth);
 	}
 
-	//이메일 인증1 - 새로운 회원
-	public String isNewMem(AuthVo auth) {
+	// 이메일 인증1 - 인증번호 전송 : 최초 인증
+	public String isNewAuth(AuthVo auth) {
 		return mapper.insertAuth(auth);
+	}
+	
+	// 이메일 인증2 - 인증코드 비교
+	public String selectMember(String authCode, String id) {
+		return mapper.selectMember(authCode, id);
 	}
 
 	// 회원 정보 수정 
-	public int modifyMember(MemberVo member, String newpass1, String id) {
-		return mapper.updateMember(member,newpass1, id);
+	public int modifyMember(MemberVo member, String newpass1, String id, String member_address) {
+		return mapper.updateMember(member,newpass1, id, member_address);
 	}
 
 	// 회원 탈퇴
@@ -83,19 +94,7 @@ public class MemberService {
 		return mapper.selectWish(member_idx);
 	}
 
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

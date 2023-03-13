@@ -10,7 +10,8 @@ public class GoogleMailAuthenticator extends Authenticator {
 
 	// 기본 생성자 정의
 	public GoogleMailAuthenticator() {
-		passwordAuthentication = new PasswordAuthentication("hz0123hz", "xlsrtxkydybsbayw");
+		passwordAuthentication = new PasswordAuthentication("jcw3241","dhbovpzvxpzejbts");
+		//("hz0123hz", "xlsrtxkydybsbayw");
 	}
 	// 인증 정보를 관리하는 PasswordAuthentication 객체를 외부로 리턴하는 
 	// getPasswordAuthentication() 메서드 정의
