@@ -1,5 +1,6 @@
 package com.itwillbs.shookream.controller;
 
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.shookream.service.MemberService;
 import com.itwillbs.shookream.vo.AuthVo;
@@ -39,35 +41,37 @@ public class MemberController {
 	//---------로그인 폼-----------
 	@GetMapping(value = "LoginMember.me")
 	public String LoginForm() {
-		return "member/MemberLoginForm";
+		return "member/member_login_form";
 	}// LoginForm 끝 
 	
 	//-------------로그인 작업-----------------
 	@PostMapping(value = "LoginMemberPro.me")
 	public String LoginPro(
-			@RequestParam("id") String id,
-			@RequestParam("pass") String pass,
+//			@RequestParam("id") String id,
+//			@RequestParam("pass") String pass,
+			@ModelAttribute MemberVo member,
 			Model model, 
 			HttpSession session
 			) {
-		//암호화 되어있지 않아서 우선 주석처리 
-//			BCryptPasswordEncoder passwdEncoder = new BCryptPasswordEncoder();
-		
+		// 파라미터로 받은 패스워드 암호화작업
+		BCryptPasswordEncoder passwdEncoder = new BCryptPasswordEncoder();
+//		String chk = passwdEncoder.encode(member.getMember_pass());
 		//비밀번호 일치 여부 확인을 위해 비밀번호 가져오기
-		MemberVo member = service.getSelectPass(id); // DB저장된 비밀번호 (PASSWD)
+		String passwd = service.getSelectPass(member.getMember_id()); // DB저장된 비밀번호 (PASSWD)
 		//로그인 작업(비밀번호 일치여부 판별)
-		if(member.getMember_pass() == null || !member.getMember_pass().equals(pass)) { // 실패
+		// 
+		
+//		System.out.println("DB저장 passwd : " + passwd + ", 암호화 : " + chk);
+		if(passwd == null || !passwdEncoder.matches(member.getMember_pass(), passwd)) { // 실패
 			// Model 객체에 "msg" 속성명으로 "로그인 실패!" 메세지 저장 후
 			// fail_back.jsp 페이지로 포워딩
 				model.addAttribute("msg", "로그인 실패(아이디 또는 비밀번호를 확인해주세요.)");
 				return "fail_back";
 		}else { // 성공
 			//성공 시 세션아이디, member_idx 저장
-			session.setAttribute("sId", id);
+			session.setAttribute("sId", member.getMember_id());
 			session.setAttribute("member_idx", member.getMember_idx());
-			
-			
-				return "redirect:/";
+			return "redirect:/";
 		}
 	}//LoginPro 끝 
 	
@@ -87,22 +91,33 @@ public class MemberController {
 	} // joinForm 끝
 	
 	// --------------- 회원가입 비즈니스 로직 ---------------------
+	@ResponseBody
 	@PostMapping("MemberJoinPro.me") 
-	public String joinPro(MemberVo member, Model model) {
+	public String joinPro(@ModelAttribute MemberVo member, Model model,
+			@RequestParam("email1") String email1, @RequestParam("email2") String email2,
+			@RequestParam("address1") String address1, @RequestParam("address2") String address2) {
 		
 		// 비밀번호 암호화 작업
 		BCryptPasswordEncoder passwdEncoder = new BCryptPasswordEncoder();
 		String securePasswd = passwdEncoder.encode(member.getMember_pass());
+		System.out.println("평문 암호 : " + member.getMember_pass());
 		member.setMember_pass(securePasswd);
 		
 		// 이메일 결합
-		String [] member_emailArr = member.getMember_email().split(",");
-		for(int i=0; i< member_emailArr.length; i++) {
-			String member_email = member_emailArr[i].join("@", member_emailArr);
-//			System.out.println(EMP_EMAIL);
-			member.setMember_email(member_email);
-		}
-		
+		String member_email = email1 + "@" + email2;
+		member.setMember_email(member_email);
+		// 주소 결합
+		String member_address = address1 + " " + address2;
+		member.setMember_address(member_address);
+//		System.out.println("파라미터 확인 : " + member);
+		// 폼파라미터로 전송된 정보들을 해당되는 VO 객체에 바인딩 시키기 위해서는 뷰페이지내의 name 속성이 vo객체의 변수명과 일치해야 함!
+		// => 뷰페이지 name속성 변경했음
+
+		// 회원번호 
+		int member_idx = service.selectIdx();
+		// 회원번호 기존 최대번호 + 1
+		member.setMember_idx(member_idx + 1);
+//		System.out.println("멤버인덱스 확인 : " + member.getMember_idx());
 		boolean joinMember = service.joinMember(member);
 		
 		if(joinMember) {
@@ -124,12 +139,13 @@ public class MemberController {
 	
 	// -------------------- 이메일 인증1 : 메일 전송 ------------------------------------
 	@GetMapping("CheckEmailAddress.me")
-	public String authEmail(
-			@RequestParam("member_id") String id,
+	public void authEmail(
+			@RequestParam(value="id", required=false) String id,
 			@RequestParam("authCode") String authCode,
 			@RequestParam("email1") String email1, @RequestParam("email2") String email2,
-			AuthVo auth) {
+			@ModelAttribute AuthVo auth) {
 		String email = email1 + "@" + email2;
+//		System.out.println("인증 아이디확인 : " + id);
 		StringBuilder authCd = new  StringBuilder();
 		String[] ch = {"0","1","2","3","4","5","6","7","8","9"};
 		
@@ -140,13 +156,17 @@ public class MemberController {
 
 		auth.setAuth_id(id);
 		auth.setAuth_authCode(authCd.toString());
-		boolean isRightAuth = service.isAuthUser(auth);
+		boolean isRightAuth = service.isAuthUser(auth); //service.isAuthUser(auth);
 		
 		if(isRightAuth) {
 			String userExist = service.isMember(auth);
 		} else {
-			String newMember = service.isNewMem(auth);
+			String newMember = service.isNewAuth(auth);
 		}
+		
+		String content = "회원가입창으로 돌아가 인증번호를 입력해 주세요.";
+		content += "<hr>";
+		content += "<b>"+authCd.toString() +"</b>";
 		
 		String mailServer = "smtp.gmail.com";
 		Properties properties = new Properties();
@@ -155,50 +175,44 @@ public class MemberController {
 		properties.put("mail.smtp.port", "587"); 
 		properties.put("mail.smtp.starttls.enable", "true");  
 		properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
-//		Authenticator authenticator = new GoogleMailAuthenticator();
+		Authenticator authenticator = new GoogleMailAuthenticator();
+		Session mailSession = Session.getDefaultInstance(properties, authenticator);
 		
-		/*
-		
-			String content = "회원가입창으로 돌아가 인증번호를 입력해 주세요.";
-			content += "<hr>";
-			content += "<b>"+authCd.toString() +"</b>";
-		
-			
-			String mailServer = "smtp.gmail.com"; // 메일 서버 지정하기
-			Properties properties = new Properties();
-			properties.put("mail.smtp.host", mailServer);
-			properties.put("mail.smtp.auth", true);
-			properties.put("mail.smtp.port", "587"); 
-			properties.put("mail.smtp.starttls.enable", "true");  
-			properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
-			Authenticator authenticator = new GoogleMailAuthenticator(); // 메일서버에서 인증받은 계정 + 비번
-			Session mailSession = Session.getDefaultInstance(properties, authenticator); // 메일서버, 계정, 비번이 유효한지 검증
-			try {
-				InternetAddress address = new InternetAddress(email); 		// 받는사람 이메일 주소
-				Message msg = new MimeMessage(mailSession);					// 메일 관련 정보 작성
-				msg.setRecipient(Message.RecipientType.TO, address);		// 받는 사람
-				msg.setFrom(new InternetAddress("hz0123hz@gmail.com"));		// 보내는 사람
-				msg.setSubject("[SHOOKREAM] 이메일 인증코드입니다.");		// 메일 제목
-				msg.setContent(content, "text/html; charset=UTF-8");		// 데이터 처리
-				msg.setSentDate(new Date());								// 보낸 날짜
-				Transport.send(msg);
-			} catch (AddressException e) {
-				e.printStackTrace();
-			} catch (MessagingException e) {
-				e.printStackTrace();
-			}
-	
-		return forward;
-		 
-		 */
-		
-		return "forward:/";
+		try {
+			InternetAddress address = new InternetAddress(email); 		// 받는사람 이메일 주소
+			Message msg = new MimeMessage(mailSession);					// 메일 관련 정보 작성
+			msg.setRecipient(Message.RecipientType.TO, address);		// 받는 사람
+			msg.setFrom(new InternetAddress("jcw3241@gmail.com"));		// 보내는 사람(root-context.xml에 맞게 변경해놓은 상태)
+			msg.setSubject("[SHOOKREAM] 이메일 인증코드입니다.");		// 메일 제목
+			msg.setContent(content, "text/html; charset=UTF-8");		// 데이터 처리
+			msg.setSentDate(new Date());								// 보낸 날짜
+			Transport.send(msg);
+		} catch (AddressException e) {
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		} 
+
 	} // authEmail 
 	
 	// -------------------- 이메일 인증2 : 전송코드 일치여부 확인 ----------------------------------
+	@ResponseBody
 	@GetMapping("CompareEmailAddress.me")
-	public String authCodeChk() {
-		return "forward:/";
+	public String authCodeChk(
+			@RequestParam(value="id", required=false) String id,
+			@RequestParam("authCode") String authCode,
+			Model model,
+			@ModelAttribute AuthVo auth) {
+//		System.out.println("authCode 확인 : " + authCode);
+		String code = service.selectMember(authCode, id);
+				
+//		System.out.println("결과 : " + code);
+		if(code.equals(authCode)) {
+			return "true";
+		} else {
+			model.addAttribute("msg","인증코드가 일치하지 않습니다!");
+			return "false";
+		}
 	} // authCodeChk 끝
 	//<<===================================== 회원가입 끝=================================================>>
 	
@@ -210,20 +224,19 @@ public class MemberController {
 	
 	//------------------- 회원 정보수정 비밀번호 확인 비즈니스 로직 ---------------------------------
 	@PostMapping("MemberPassCheck.me")
-	public String passCheck(@RequestParam("id") String id, @RequestParam("pass") String pass, Model model) {
+	public String passCheck(@ModelAttribute MemberVo member, Model model) {
 
-		//암호화 되어있지 않아서 우선 주석처리 
-//		BCryptPasswordEncoder passwdEncoder = new BCryptPasswordEncoder();
+		BCryptPasswordEncoder passwdEncoder = new BCryptPasswordEncoder();
 			
 		//비밀번호 일치 여부 확인을 위해 비밀번호 가져오기
-		MemberVo member = service.getSelectPass(id); // DB저장된 비밀번호 (PASSWD)
+		String passwd = service.getSelectPass(member.getMember_id()); // DB저장된 비밀번호 (PASSWD)
 			//로그인 작업(비밀번호 일치여부 판별)
-		if(member.getMember_pass() == null || !member.getMember_pass().equals(pass)) { // 실패
+		if(passwd == null || !passwdEncoder.matches(member.getMember_pass(), passwd)) { // 실패
 			model.addAttribute("msg", "비밀번호를 확인해주세요");
 			return "fail_back";
 		}else { // 성공
 			//성공 시 세션아이디, member_idx 저장
-			return "redirect:/MemberModifyForm.me?id=" + id;
+			return "redirect:/MemberModifyForm.me?id=" + member.getMember_id();
 		}	
 	}
 	
@@ -239,12 +252,20 @@ public class MemberController {
 	
 	// ------------------ 회원 정보수정 비즈니스 로직-------------------------
 	@PostMapping("MemberModifyPro.me")
-	public String modifyPro(@ModelAttribute MemberVo member, @RequestParam("id") String id, @RequestParam String newpass1, Model model) {
-//		BCryptPasswordEncoder passwdEncoder = new BCryptPasswordEncoder();
-//		if(newpass1 != null && !newpass1.equals("")) {
-//			newpass1 = passwdEncoder.encode(newpass1);
-//		}
-		int updateCount = service.modifyMember(member, newpass1, id);
+	public String modifyPro(@ModelAttribute MemberVo member, @RequestParam("id") String id, @RequestParam String newpass1, 
+			@RequestParam("address1") String address1, @RequestParam("address2") String address2, Model model) {
+		BCryptPasswordEncoder passwdEncoder = new BCryptPasswordEncoder();
+		if(newpass1 != null && !newpass1.equals("")) {
+			newpass1 = passwdEncoder.encode(newpass1);
+		}
+		
+		//주소 변경 시 결합
+		String member_address = "";
+		if(address1 != null && !address1.equals("")) {
+			member_address = address1 + " " + address2;
+		}
+		
+		int updateCount = service.modifyMember(member, newpass1, id, member_address);
 		
 		if(updateCount > 0) { // 성공
 			return "redirect:/MemberMyPage.me";
@@ -262,17 +283,15 @@ public class MemberController {
 	
 	// 회원 탈퇴 비밀번호 확인
 	@PostMapping("MemberDeleteFormCheck.me")
-	public String deleteFormChk(@RequestParam("id") String id, 
-			@RequestParam("pass") String pass,
+	public String deleteFormChk(@ModelAttribute MemberVo member,
 			HttpSession session, Model model) {
 		
-		//암호화 되어있지 않아서 우선 주석처리 
-//		BCryptPasswordEncoder passwdEncoder = new BCryptPasswordEncoder();
+		BCryptPasswordEncoder passwdEncoder = new BCryptPasswordEncoder();
 			
 		//비밀번호 일치 여부 확인을 위해 비밀번호 가져오기
-		MemberVo member = service.getSelectPass(id); // DB저장된 비밀번호 (PASSWD)
+		String passwd = service.getSelectPass(member.getMember_id()); // DB저장된 비밀번호 (PASSWD)
 			//로그인 작업(비밀번호 일치여부 판별)
-		if(member.getMember_pass() == null || !member.getMember_pass().equals(pass)) { // 실패
+		if(passwd == null || !passwdEncoder.matches(member.getMember_pass(), passwd)) { // 실패
 			model.addAttribute("msg", "비밀번호를 확인해주세요");
 			return "fail_back";
 		}else { 

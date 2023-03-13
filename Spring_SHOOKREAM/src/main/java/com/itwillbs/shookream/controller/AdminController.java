@@ -483,9 +483,9 @@ public class AdminController {
 	//--------- 회원목록------------------
 	@GetMapping("MemberList.me")
 	public String adMemberList(Model model) {
-		List<MemberVo> member = service.getMemberInfo();
-		model.addAttribute("member",member);
-		return "admin/admin_Member_List";
+		List<MemberVo> memberList = service.getMemberInfo();
+		model.addAttribute("memberList", memberList);
+		return "admin/admin_member_list";
 	}
 	
 	
