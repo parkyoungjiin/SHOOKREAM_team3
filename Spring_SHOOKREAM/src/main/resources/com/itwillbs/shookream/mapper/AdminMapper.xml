@@ -38,8 +38,8 @@
 		INSERT 
 			INTO image (image_idx, product_idx, image_main_file, image_real_file1)
 			VALUES (
-				(#{image_idx} + 1)
-				,#{product_idx}
+				#{image_idx} + 1
+				,#{product_idx} + 1
 				,#{image.image_main_file}
 				,#{image.image_real_file1}
 <!-- 				,#{image.image_real_file2} -->
@@ -52,21 +52,46 @@
 	<update id="modifyProduct">
 		UPDATE product
   			SET
+ 			product_name = #{product.product_name}
+<!--   			,product_brand = #{product.product_brand} -->
+			,product_brand = 
+            <choose>
+                <when test="product.product_brand != null">
+                    #{product.product_brand}
+                </when>
+                <otherwise>
+                    #{product_brand}
+                </otherwise>
+            </choose>
+	        , product_price = #{product.product_price}
+	        , product_discount_price = #{product.product_discount_price}
+	        , product_release_price = #{product.product_release_price}
+<!--        		, product_size = #{product.product_size} -->
+			,product_size = 
+            <choose>
+                <when test="product.product_size != null">
+                    #{product.product_size}
+                </when>
+                <otherwise>
+                    #{product_size}
+                </otherwise>
+            </choose>
 
-  			<if test="product_name == null"> 
- 				product_name = #{product.product_name}
- 			</if>
-  			,product_brand = #{product_brand}
-	        , product_price = #{product_price}
-	        , product_discount_price = #{product_discount_price}
-	        , product_release_price = #{product_release_price}
-       		, product_size = #{product_size}
-	        , product_amount = #{product_amount}
-	        , product_color = #{product_color}
-	        , product_exp = #{product_exp}
-	        , product_detail_exp = #{product_detail_exp}
+	        , product_amount = #{product.product_amount}
+<!-- 	        , product_color = #{product.product_color} -->
+			,product_color = 
+            <choose>
+                <when test="product.product_color != null">
+                    #{product.product_color}
+                </when>
+                <otherwise>
+                    #{product_color}
+                </otherwise>
+            </choose>
+	        , product_exp = #{product.product_exp}
+	        , product_detail_exp = #{product.product_detail_exp}
 	    WHERE 
-	        product_idx = #{product_idx}
+	        product_idx = #{product.product_idx}
 
 	</update>
 	
@@ -79,10 +104,10 @@
  				, image_real_file1 = #{image_real_file1}
  			</if>
 	    WHERE 
-	        product_idx = #{product_idx}
+	        product_idx = #{product.product_idx}
 	</update>
 	
-
+	
 	
 	<!-- 상품 삭제 -->
 	<delete id="removeProduct">
@@ -105,7 +130,7 @@
 			 , i.image_main_file
 			FROM product AS p JOIN image AS i 
 				ON p.product_idx = i.product_idx
-				ORDER BY product_date DESC
+				ORDER BY p.product_date DESC, p.product_idx DESC
 	</select>
 	
 	
