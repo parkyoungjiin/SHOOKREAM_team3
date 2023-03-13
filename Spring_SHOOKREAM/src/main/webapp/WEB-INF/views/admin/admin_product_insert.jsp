@@ -101,12 +101,12 @@ $(function() {
 						<td width="100px" align="left" class="table-secondary">상품명</td>
 						<td width="300px">
 						<input class="w3-input w3-border"
-							type="text" placeholder="Product Name" name="product_name" id = "product_name" required ></td>
+							type="text" placeholder="Product Name" name="product_name" id = "product_name" required style="width:200px"></td>
 					</tr>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품 브랜드</td>
 						<td width="300px">
-						<select name="product_brand" id ="product_brand">
+						<select name="product_brand" id ="product_brand" style="width:200px">
 								<option value="" selected>브랜드를 선택하세요</option>
 								<option value="나이키">나이키</option>
 								<option value="뉴발란스">뉴발란스</option>
@@ -118,7 +118,7 @@ $(function() {
 					</tr>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품 가격</td>
-						<td><input type="text" id="testPrice" name ="product_price" placeholder="상품 가격을 입력하세요" ><span>&nbsp;원</span> 
+						<td><input type="text" id="testPrice" name ="product_price" placeholder="상품 가격을 입력하세요" style="width:200px"><span>&nbsp;원</span> 
 						</td>
 						
 					</tr>
@@ -155,7 +155,7 @@ $(function() {
 
 						<td width="100px" align="left" class="table-secondary">상품 사이즈</td>
 						<td width="300px">
-						<select name="product_size" id ="product_size">
+						<select name="product_size" id ="product_size" style="width:200px">
 								<option value="" selected>사이즈를 선택해주세요.</option>
 								<option value="220">220</option>
 								<option value="230">230</option>
@@ -169,12 +169,12 @@ $(function() {
 						</select></td>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품 재고량</td>
-						<td width="300px"><input class="w3-input w3-border" type="number" min="0" max="100" placeholder="수량" name="product_amount" onkeyup="inputNumberFormat(this);" required></td>
+						<td width="300px"><input class="w3-input w3-border" type="number" min="0" max="100" placeholder="수량" name="product_amount" onkeyup="inputNumberFormat(this);" required style="width:200px"></td>
 					</tr>
 
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품 색상</td>
-						<td width="300px"><select name="product_color" id ="product_color">
+						<td width="300px"><select name="product_color" id ="product_color" style="width:200px">
 								<option value="" selected>색상을 선택해주세요.</option>
 								<option value="black">BLACK</option>
 								<option value="white">WHITE</option>
@@ -228,12 +228,12 @@ $(function() {
         <!-- plugin -->
             
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="admin/js/scripts.js"></script>
+        <script src="${path}/resources/admin/js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="admin/assets/demo/chart-area-demo.js"></script>
-        <script src="admin/assets/demo/chart-bar-demo.js"></script>
+        <script src="${path}/resources/admin/assets/demo/chart-area-demo.js"></script>
+        <script src="${path}/resources/admin/assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script src="admin/js/datatables-simple-demo.js"></script>
+        <script src="${path}/resources/admin/js/datatables-simple-demo.js"></script>
 <!--         <script src="../js/jquery-3.6.3.js"></script> -->
         
 		

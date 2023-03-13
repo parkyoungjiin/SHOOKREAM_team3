@@ -104,30 +104,31 @@
 				<table class="table">
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품명</td>
-						<td width="300px"><input class="w3-input w3-border"
-
-							type="text" placeholder="Product Name" name="product_name" id="product_name" value ="${product.product_name }" >
-							<input type="hidden" name="product_name" value="${product.product_name}">
+						<td width="300px">
+						<input class="w3-input w3-border"type="text" placeholder="Product Name" name="product_name" id="product_name" value ="${product.product_name }" style="width:200px">
+<%-- 							<input type="hidden" name="product_name" value="${product.product_name}"> --%>
 							</td>
 
 					</tr>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품 브랜드</td>
 						<td width="300px">
-						<select name="brand" >
-								<option value="" selected style="color: red">기존 브랜드 : ${product.product_brand }</option>
-								<option value="나이키">나이키</option>
-								<option value="뉴발란스">뉴발란스</option>
-								<option value="컨버스">컨버스</option>
-								<option value="아디다스">아디다스</option>
-								<option value="반스">반스</option>
-						</select>
-						
+							<select name="product_brand" style="width:200px">
+							    <c:choose>
+							        <c:when test="${not empty product.product_brand}" >
+							            <option value="${product.product_brand}" selected="selected" style="color: red">기존 브랜드 : ${product.product_brand }</option>
+							        </c:when>
+							    </c:choose>
+							    <option value="나이키" <c:if test="${product.product_brand eq '나이키' }"></c:if>>나이키</option>
+							    <option value="뉴발란스" <c:if test="${product.product_brand eq '뉴발란스' }"></c:if>>뉴발란스</option>
+							    <option value="컨버스" <c:if test="${product.product_brand eq '컨버스' }"></c:if>>컨버스</option>
+							    <option value="아디다스" <c:if test="${product.product_brand eq '아디다스' }"></c:if>>아디다스</option>
+							    <option value="반스" <c:if test="${product.product_brand eq '반스' }"></c:if>>반스</option>
+							</select>
 						</td>
-					</tr>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품 가격</td>
-						<td><input type="text" id="testPrice" name ="price" placeholder="원래 가격을 입력하세요" value ="${product.product_price }"><span>&nbsp;원</span> 
+						<td><input type="text" id="testPrice" name ="product_price" placeholder="원래 가격을 입력하세요" value ="${product.product_price }" style="width:200px"><span>&nbsp;원</span> 
 						</td>
 						
 					</tr>
@@ -144,8 +145,8 @@
 						</div>
 						<div class="form-check">
 							<input class="form-check-input" type="radio" name="saleRadio" id="saleRadio2"  checked="checked"> 
-							<label class="form-check-label" for="flexRadioDefault1">할인 적용 
-							<input type="number" id="testRate" name ="discount" value ="${product.product_discount_price }" size = "1" min = "0" max ="100" style = "text-align:center;" readonly="readonly"> <!-- 할인율 입력칸 -->
+							<label class="form-check-label" for="flexRadioDefault1">할인 적용
+							<input type="number" id="testRate" name ="product_discount" value ="${product.product_discount_price }" size = "1" min = "0" max ="100" style = "text-align:center;" readonly="readonly" > <!-- 할인율 입력칸 -->
 							<span>%</span>
 							<button type="button" id="testCalBtn">&nbsp;계산하기&nbsp;</button>
 							</label>
@@ -163,7 +164,7 @@
 						<div class="form-check">
 							<input class="form-check-input" type="radio" name="saleRadio" id="saleRadio2" > 
 							<label class="form-check-label" for="flexRadioDefault1">할인 적용 
-							<input type="number" id="testRate" name ="discount" value ="${product.product_discount_price }" size = "1" min = "0" max ="100" style = "text-align:center;" readonly="readonly"> <!-- 할인율 입력칸 -->
+							<input type="number" id="testRate" name ="product_discount_price" value ="${product.product_discount_price }" size = "1" min = "0" max ="100" style = "text-align:center; width:80px;" readonly="readonly"> <!-- 할인율 입력칸 -->
 							<span>%</span>
 							<button type="button" id="testCalBtn">&nbsp;계산하기&nbsp;</button>
 							</label>
@@ -182,40 +183,54 @@
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품 사이즈</td>
 						<td width="300px">
-						<select name="size">
-								<option value ="" selected="selected" style="color: red">기존 사이즈 : ${product.product_size }</option>
-								<option value="220">220</option>
-								<option value="230">230</option>
-								<option value="240">240</option>
-								<option value="250">250</option>
-								<option value="260">260</option>
-								<option value="270">270</option>
-								<option value="280">280</option>
-								<option value="290">290</option>
-								<option value="300">300</option>
-						</select></td>
+						<select name="product_size" style="width:200px">
+							<c:choose>
+								<c:when test="${not empty product.product_size }">
+									<option value="${product.product_size }" selected="selected" style="color: red">기존 사이즈 : ${product.product_size }</option>
+								</c:when>
+							</c:choose>
+								<option value="220" <c:if test="${product.product_size eq '220' }"></c:if>>220</option>
+								<option value="230" <c:if test="${product.product_size eq '230' }"></c:if>>230</option>
+								<option value="240" <c:if test="${product.product_size eq '240' }"></c:if>>240</option>
+								<option value="250" <c:if test="${product.product_size eq '250' }"></c:if>>250</option>
+								<option value="260" <c:if test="${product.product_size eq '260' }"></c:if>>260</option>
+								<option value="270" <c:if test="${product.product_size eq '270' }"></c:if>>270</option>
+								<option value="280" <c:if test="${product.product_size eq '280' }"></c:if>>280</option>
+								<option value="290" <c:if test="${product.product_size eq '290' }"></c:if>>290</option>
+								<option value="300" <c:if test="${product.product_size eq '300' }"></c:if>>300</option>
+						</select>
+						</td>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품 재고량</td>
-						<td width="300px"><input class="w3-input w3-border" type="number" min="0" max="100" placeholder="수량" name="amount" onkeyup="inputNumberFormat(this);"  value ="${product.product_amount }" required></td>
+						<td width="300px"><input class="w3-input w3-border" type="number" min="0" max="100" placeholder="수량" name="product_amount" onkeyup="inputNumberFormat(this);"  value ="${product.product_amount }" required style="width:200px"> 개</td>
 					</tr>
 
 					<tr>
-						<td width="100px" align="left" class="table-secondary">상품색상</td>
-						<td width="300px"><select name="color">
-								<option value="" style="color: red">기존 색상 : ${product.product_color}</option>
-								<option value="black">BLACK</option>
-								<option value="white">WHITE</option>
-								<option value="navy">NAVY</option>
-								<option value="red">RED</option>
-								<option value="blue">BLUE</option>
-								<option value="gray">GRAY</option>
-						</select></td>
+						<td width="100px" align="left" class="table-secondary">상품 색상</td>
+						<td width="300px">
+							<select name="product_color" style="width:200px">
+								<c:choose>
+									<c:when test="${not empty product.product_color }">
+										<option value="${product.product_color }" selected="selected" style="color: red">기존 색상 : ${product.product_color }</option>
+									</c:when>
+								</c:choose>
+									<option value="black" <c:if test="${product.product_color eq 'black' }"></c:if>>BLACK</option>
+									<option value="white" <c:if test="${product.product_color eq 'white' }"></c:if>>WHITE</option>
+									<option value="navy" <c:if test="${product.product_color eq 'navy' }"></c:if>>NAVY</option>
+									<option value="gray" <c:if test="${product.product_color eq 'gray' }"></c:if>>GRAY</option>
+									<option value="red" <c:if test="${product.product_color eq 'red' }"></c:if>>RED</option>
+									<option value="blue" <c:if test="${product.product_color eq 'blue' }"></c:if>>BLUE</option>
+									<option value="pink" <c:if test="${product.product_color eq 'pink' }"></c:if>>PINK</option>
+									<option value="yellow" <c:if test="${product.product_color eq 'yellow' }"></c:if>>YELLOW</option>
+									<option value="green" <c:if test="${product.product_color eq 'green' }"></c:if>>GREEN</option>
+							</select>
+						</td>
 					</tr>
 
 					<tr>
 						<td width="100px" align="left" class="table-secondary">요약 설명</td>
 						<td><textarea class="w3-input w3-border" style="resize: none"
-								rows="5" cols="40" placeholder="Product summary" name="exp"
+								rows="5" cols="40" placeholder="Product summary" name="product_exp"
 								required="required">${product.product_exp }</textarea></td>
 						<!--           <td width="300px"><input class="w3-input w3-border" type="" placeholder="Product summary" name="Product summary" required></td> -->
 					</tr>
@@ -224,57 +239,37 @@
 						<td width="100px" align="left" class="table-secondary">상세 설명</td>
 						<td><textarea class="w3-input w3-border" style="resize: none"
 								rows="10" cols="150" placeholder="Product detail"
-								name="detail_exp" required="required">${product.product_detail_exp }</textarea></td>
+								name="product_detail_exp" required="required">${product.product_detail_exp }</textarea></td>
 					</tr>
 
-
 					<tr>
-<!-- 					<td> -->
-<%-- 						<c:set var="arrRealFile" value="${fn:split(image.image_real_file1, '/') }"/> --%>
-<%-- 				        <a href="upload/${image.image_real_file1 }" download="${image.image_main_file }"> --%>
-<%-- 				            ${image.image_main_file } --%>
-<!-- 				        </a> -->
-<!-- 					</td> -->
-<%-- 							<c:set var="arrRealFile" value="${fn:split(image.board_real_file, '/') }"/> --%>
-<%-- 						 		<c:forEach var="realFile" items="${arrRealFile}"> --%>
-<%-- 						 			<c:set var="nameLength" value="${fn:length(realFile) }"/> --%>
-<%-- 						 			<c:set var="indexOf_" value="${fn:indexOf(realFile, '_') }"/> --%>
-<%-- 						 			<c:set var="fileName" value="${fn:substring(realFile, indexOf_ + 1, nameLength) }"/> --%>
-<%-- 									컨텍스트 경로/resources/upload 디렉토리 내의 파일 지정 --%>
-<%-- 									<a href="${pageContext.request.contextPath }/resources/upload/${realFile }"> --%>
-<%-- 										${fileName }<br> --%>
-<!-- 									</a> -->
-<%-- 						 	</c:forEach> --%>
-					
 						<td width="100px" align="left" class="table-secondary">메인 이미지</td>
 <%-- 						<td><input type="file" name="file" >기존 메인 파일: <input type="text" value="${image.image_main_file }" width="100" name ="origin_file" readonly></td> --%>
 						<td>
-
 						<input type="file" name="files" >
 <%-- 						 ${image.image_main_file } --%>
 						<c:set var="imagePathArray" value="${fn:split(image.image_main_file, '/')}" />
-							기존 메인 파일  :  <input type="text" value="${imagePathArray[0]}" name="origin_file_1" readonly size="30">
-<%-- 						기존 파일 : <c:set var="arrRealFile" value="${fn:split(image.image_real_file1, '/') }"/> --%>
-<%-- 				        <a href="upload/${image.image_real_file1 }" download="${image.image_main_file }"> --%>
-<%-- 				            ${image.image_main_file } --%>
-<!-- 				        </a> -->
+							기존 메인 파일 : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" value="${imagePathArray[0]}" name="product_origin_file_1" readonly size="30">
 
 						</td>
 					</tr>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">제품 이미지1</td>
-						<td><input type="file" name="file2" >
+						<td><input type="file" name="files" >
 						<c:set var="imagePathArray" value="${fn:split(image.image_main_file, '/')}" />
-							기존 제품 이미지1 : <input type="text" value="${imagePathArray[1]}" name="origin_file_2" readonly size="30">
+							기존 제품 이미지1 : &nbsp;<input type="text" value="${imagePathArray[1]}" name="product_origin_file_2" readonly size="30">
 <%-- 						<input type="text" value="${image.image_real_file1 }" width="100" name ="origin_file2" readonly></td>					</tr> --%>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">제품 이미지2</td>
-						<td><input type="file" name="file3"> 
+						<td><input type="file" name="files"> 
 						<c:set var="imagePathArray" value="${fn:split(image.image_main_file, '/')}" />
-						기존 제품 이미지2 : <input type="text" value="${imagePathArray[2]}" name="origin_file_3" readonly size="30"></td>					</tr>
+						기존 제품 이미지2 : &nbsp;<input type="text" value="${imagePathArray[2]}" name="product_origin_file_3" readonly size="30"></td></tr>
 
 					<tr>
-						<td colspan="2"><button type="submit" class="w3-button w3-block w3-black">수정하기</button></td>
+						
+						<td colspan="2">
+						<button type="submit" class="w3-button w3-block w3-black">수정하기</button>
+						</td>
 						
 					</tr>
 				</table>

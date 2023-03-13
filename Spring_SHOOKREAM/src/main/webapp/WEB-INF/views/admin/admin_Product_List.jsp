@@ -101,7 +101,7 @@
                                     <tbody>
                                       <c:forEach var="product" items="${productList }">
 										<tr>
-										<td name="product_idx">${product.product_idx }</td>
+										<td id="product_idx">${product.product_idx }</td>
 										<td>${product.product_name } <br>(색상 : ${product.product_color })</td>   
 										<td><img src="${path}/resources/upload/${product.image_main_file }" class="img-thumbnail" onError="this.onerror=null; this.src='resources/images/noImg.JPG';" alt="..." style="width:100px; height:100px;"></td>
 <%-- 										<td><img src="${path}/resources/upload/${product.image_main_file }" class="img-thumbnail" onError="this.onerror=null; this.src='resources/images/noImg.JPG';" alt="..." style="width:100px; height:100px;"></td> --%>
