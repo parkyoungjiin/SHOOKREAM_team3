@@ -30,7 +30,7 @@
       <jsp:include page="./inc2/top.jsp"></jsp:include>
          
             
-      <jsp:include page="./inc2/side.jsp"></jsp:include>             
+<%--       <jsp:include page="./inc2/side.jsp"></jsp:include>              --%>
            <div id="layoutSidenav_content">
                <main>
                    <div class="container-fluid px-4">
@@ -50,18 +50,18 @@
                            </div>
                            <div class="col-xl-3 col-md-6">
                                <div class="card text-white mb-4" style="background-color: #787878">
-                                   <div class="card-body" onclick="location.href='AdminNoticeManage.ad?pageNum=1'">공지사항 관리</div>
+                                   <div class="card-body" onclick="location.href='AdminBoard.ad?pageNum=1'">공지사항 관리</div>
                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                       <a class="small text-white stretched-link" href="AdminNoticeManage.ad?pageNum=1">View Details</a>
+                                       <a class="small text-white stretched-link" href="AdminBoard.ad?pageNum=1">View Details</a>
                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                    </div>
                                </div>
                            </div>
                            <div class="col-xl-3 col-md-6">
                                <div class="card text-white mb-4" style="background-color: #787878">
-                                   <div class="card-body" onclick="location.href='AdminFAQManage.ad?pageNum=1'">FAQ관리</div>
+                                   <div class="card-body" onclick="location.href='AdminFAQ.ad?pageNum=1'">FAQ관리</div>
                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                       <a class="small text-white stretched-link" href="AdminFAQManage.ad?pageNum=1">View Details</a>
+                                       <a class="small text-white stretched-link" href="AdminFAQ.ad?pageNum=1">View Details</a>
                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                    </div>
                                </div>

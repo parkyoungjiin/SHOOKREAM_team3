@@ -49,6 +49,11 @@ public class AdminController {
 		public String adminProd() {
 			return "admin/admin_product";
 	}
+	//게시판 관리 상세 페이지로 포워딩 
+	@GetMapping(value="AdminBoardManage.ad")
+	public String adminmanage() {
+		return "admin/admin_board";
+	}
 	
 	//게시판 관리(공지사항) 페이지로 포워딩 
 	@GetMapping(value ="AdminBoard.ad")
