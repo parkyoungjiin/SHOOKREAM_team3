@@ -29,7 +29,7 @@ public class MemberService {
 	}
 
 	// 회원가입
-	public boolean joinMember(MemberVo member) {
+	public int joinMember(MemberVo member) {
 		return mapper.insertMember(member);
 	}
 

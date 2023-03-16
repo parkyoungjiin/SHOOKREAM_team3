@@ -118,9 +118,9 @@ public class MemberController {
 		// 회원번호 기존 최대번호 + 1
 		member.setMember_idx(member_idx + 1);
 //		System.out.println("멤버인덱스 확인 : " + member.getMember_idx());
-		boolean joinMember = service.joinMember(member);
+		int joinMember = service.joinMember(member);
 		
-		if(joinMember) {
+		if(joinMember > 0) {
 			return "member/member_join_result";
 		} else {
 			model.addAttribute("msg","회원가입에 실패하였습니다!");

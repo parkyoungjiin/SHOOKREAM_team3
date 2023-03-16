@@ -63,6 +63,11 @@ public class BoardService {
 	}
 	//공지 삭제 끝 
 
+	// 공지 카테고리 선택 ajax
+	public List<BoardVo> getBoardJson(String notice_category) {
+		return mapper.selectBoardJson(notice_category);
+	}
+
 
 
 }

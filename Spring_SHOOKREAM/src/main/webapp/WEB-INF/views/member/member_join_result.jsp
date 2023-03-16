@@ -53,7 +53,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
  <div style="padding-top: 200px;">
   <footer class="w3-padding-64 w3-small w3-center" id="footer" >
     <div id = "sform">
-        <h4>회원가입에 성공했습니다 💕</h4>
+        <h4>회원가입에 성공했습니다 <i class="fa fa-heart" style="font-size:10px;color:FC66B8"></i></h4>
         <br>
         <h6>회원가입 감사 쿠폰이 발급되었습니다!</h6>
 

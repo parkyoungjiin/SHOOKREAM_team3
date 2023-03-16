@@ -37,7 +37,46 @@
 	#border_content {
 		padding: 130px;
 	}
+	
+	#selectCategory {
+		width: 200px;
+		text-align: right;
+	}
 </style>
+<script type="text/javascript">
+
+	// 카테고리 선택
+	function selectCategory() {
+		var urlParam = new URL(location.href).searchParams;
+		var pageNum = urlParam.get('pageNum');
+		alert("pageNum");
+		let category = $("#selectCategory > option:selected").val();
+//		alert(category);
+		$.ajax({
+			type:"GET",
+			url: "BoardListJson.bo?notice_category=" + category,
+			dataType: "json"
+			
+		})
+		.done(function(boardList) {
+			$("#table > tbody").html("");
+			$("#list").empty();
+			for(let board of boardList) {
+				let result = "<tr>"
+							+ "<th scope='row' style='text-align:center'>" + board.notice_idx + "</th>"
+							+ "<td style='text-align:center'><b>" + board.notice_category + "</b></td>"
+							+ "<td><a href='BoardInfo.bo?notice_idx=" + board.notice_idx + "&pageNum=" + pageNum + "' style='text-decoration:none'>"+ board.notice_subject + "</a></td>"
+							+ "<td style='text-align:center'>" + board.notice_date + "</td>"
+							+ "</tr>"
+				$("table > tbody").append(result);
+			}
+		})
+		.fail(function() {
+			$("#table > tbody").before("<h5>해당 카테고리 게시글이 없습니다.</h5>")
+		});
+	}
+	
+</script>
 </head>
 	<body class="w3-content" style="max-width:95%">
 	
@@ -65,6 +104,14 @@
 		
 		<div id="border_content">
 			<h3 style="padding: 20px;">공지사항</h3>
+			<div id="category">
+				<select id="selectCategory" name="selectCategory" class="form-select" onclick="selectCategory()">
+					<option>카테고리를 선택하세요</option>
+					<option value="EVENT">EVENT</option>
+					<option value="DELIVERY">DELIVERY</option>
+					<option value="NOTICE">NOTICE</option>
+				</select>
+			</div>
 			<hr style="border:solid 2px black;">
 			<table class="table">
 			  <c:choose>
@@ -84,7 +131,7 @@
 			    </tr>
 			  </thead>
 			 <c:forEach var="board" items="${boardList }">
-			  <tbody>
+			  <tbody id="list">
 			    <tr>
 			      <th scope="row" style="text-align: center">${board.notice_idx }</th>
 			      <td style="text-align: center"><b>${board.notice_category }</b></td>
@@ -96,7 +143,6 @@
 			  </tbody>
 			 </c:forEach> 
 			</table>
-			
 			
 			<c:choose>
 		    	<c:when test="${sessionScope.sId eq 'admin' }">
