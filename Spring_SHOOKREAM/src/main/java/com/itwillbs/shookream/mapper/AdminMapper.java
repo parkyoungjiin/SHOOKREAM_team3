@@ -2,7 +2,6 @@ package com.itwillbs.shookream.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.shookream.vo.CouponVo;
@@ -25,16 +24,13 @@ public interface AdminMapper {
 	// 3. 상품 수정
 	public int modifyProduct(
 			@Param("product_idx")int product_idx, 
-//			@Param("product_name") String product_name,
-//			@Param("product_brand") String product_brand,
-//			@Param("product_size") String product_size,
-			ProductVo product);
+			@Param("product") ProductVo product);
 	
 	// 3-1. 상품 수정 시 이미지 수정
 	public int modifyImage(
 			@Param("product_idx") int product_idx,
-			ProductVo product,
-			imageVo image);
+			@Param("product") ProductVo product,
+			@Param("image") imageVo image);
 
 	// 4. 상품 삭제
 	public int removeProduct(int product_idx);

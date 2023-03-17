@@ -30,9 +30,6 @@ public class AdminService {
 		}
 		
 		// 상품 수정 updateProduct() 메서드
-//		public int updateProduct(int product_idx, String product_name,String product_brand,String product_size, ProductVo product, imageVo image) {
-//			return mapper.modifyProduct(product_idx, product_name,product_brand,product_size, product, image);
-//		}
 		public int updateProduct(int product_idx, ProductVo product) {
 			return mapper.modifyProduct(product_idx, product);
 		}

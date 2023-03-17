@@ -8,11 +8,15 @@ private String member_id; // 회원아이디
 private String member_name; // 회원 이름
 private String member_pass; // 회원 비밀번호
 private String member_email; // 회원 이메일
+private String email1;
+private String email2;
 private Date member_date; // 회원 가입 날짜
 private String member_phone; // 회원 전화번호
 private int member_dec; // 회원 신고수
 private int member_point; // 회원 적립금
 private String member_address; // 회원 주소
+private String address1;
+private String address2;
 private String authStatus; // 회원 인증 여부
 
 //-------------------------------------------
@@ -47,6 +51,18 @@ public String getMember_email() {
 public void setMember_email(String member_email) {
 	this.member_email = member_email;
 }
+public String getEmail1() {
+	return email1;
+}
+public void setEmail1(String email1) {
+	this.email1 = email1;
+}
+public String getEmail2() {
+	return email2;
+}
+public void setEmail2(String email2) {
+	this.email2 = email2;
+}
 public Date getMember_date() {
 	return member_date;
 }
@@ -78,6 +94,18 @@ public void setMember_address(String member_address) {
 	this.member_address = member_address;
 }
 
+public String getAddress1() {
+	return address1;
+}
+public void setAddress1(String address1) {
+	this.address1 = address1;
+}
+public String getAddress2() {
+	return address2;
+}
+public void setAddress2(String address2) {
+	this.address2 = address2;
+}
 public String getAuthStatus() {
 	return authStatus;
 }

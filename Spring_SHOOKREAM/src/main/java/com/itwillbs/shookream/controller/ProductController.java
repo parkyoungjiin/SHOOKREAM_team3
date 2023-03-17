@@ -84,8 +84,12 @@ public class ProductController {
 		image = service.getImage(product_idx);
 		System.out.println("image 조회 : " + image);
 		
+		session.setAttribute("product", product);
+		session.setAttribute("image", image);
+		
 		model.addAttribute("product", product);
 		model.addAttribute("image", image);
+		
 		// ======================================================
 		
 		
@@ -98,6 +102,7 @@ public class ProductController {
 		//이미지 리스트 출력
 		List<imageVo> imagelist = service.getImageList(product.getProduct_name());
 		System.out.println(imagelist);
+		
 		
 		model.addAttribute("categorylist", categorylist);
 		model.addAttribute("colorlist", colorlist);

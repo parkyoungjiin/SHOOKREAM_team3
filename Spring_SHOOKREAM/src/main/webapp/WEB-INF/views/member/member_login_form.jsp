@@ -69,10 +69,10 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
         <form action="LoginMemberPro.me" method="post">
           <table>
           <tr>
-          <td width="300px"><input class="w3-input w3-border" type="text" placeholder="아이디" name="id" required></td>
+          <td width="300px"><input class="w3-input w3-border" type="text" placeholder="아이디" name="member_id" required></td>
           </tr>
           <tr>
-          <td width="300px"><input class="w3-input w3-border" type="password" placeholder="비밀번호" name="pass" required></td>
+          <td width="300px"><input class="w3-input w3-border" type="password" placeholder="비밀번호" name="member_pass" required></td>
           </tr>
           <tr>
           <td><button type="submit" class="w3-button w3-block w3-black">로그인</button></td>

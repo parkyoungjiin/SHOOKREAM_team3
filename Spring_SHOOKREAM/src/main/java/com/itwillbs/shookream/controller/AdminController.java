@@ -49,6 +49,11 @@ public class AdminController {
 		public String adminProd() {
 			return "admin/admin_product";
 	}
+	//게시판 관리 상세 페이지로 포워딩 
+	@GetMapping(value="AdminBoardManage.ad")
+	public String adminmanage() {
+		return "admin/admin_board";
+	}
 	
 	//게시판 관리(공지사항) 페이지로 포워딩 
 	@GetMapping(value ="AdminBoard.ad")
@@ -284,8 +289,8 @@ public class AdminController {
 			System.out.println("*** image.getImage_main_file() : " + image.getImage_main_file());
 			// ------------------- 이미지 수정 -----------------------------
 			// 경로 설정
-			String uploadDir = "/resources/upload";
-			String saveDir = session.getServletContext().getRealPath(uploadDir);
+			String uploadDir = "/resources/upload"; // 가상의 업로드 경로
+			String saveDir = session.getServletContext().getRealPath(uploadDir); 
 			System.out.println("실제 업로드 경로 : " + saveDir);
 			
 			// -------------- java.nio 패키지(Files, Path, Paths) 객체 활용 ---------------------------
@@ -298,7 +303,7 @@ public class AdminController {
 			//----------------------------------------
 			
 			// 기존 파일명 설정
-//			String image_main_file = image.getImage_main_file();
+			String image_main_file = image.getImage_main_file();
 			
 			MultipartFile[] mFiles = image.getFiles();
 			 
@@ -345,13 +350,19 @@ public class AdminController {
 			
 			// 등록 성공/실패에 따른 포워딩 작업 수행
 			if(updateCount > 0) { // 성공시
+				System.out.println("품목 수정 완료");
+				System.out.println("이미지 수정왜안됨ㅠㅠㅠ");
+				System.out.println("idx:" + product.getProduct_idx());
 				
 				// 파일을 새로 등록한 경우
 				if(file != null) { //file 객체가 null이 아닌 경우에만 처리
 					if(!file.isEmpty()) { // 파일을 선택한 경우
+						
 				//이미지 저장
-				int updateImage = service.updateImage(updateCount, product, image);
-//						System.out.println(image);
+				int updateImage = service.updateImage(product.getProduct_idx(), product, image);
+						System.out.println("image : " + image);
+						System.out.println("이미지 수정됨안됨????");
+						
 				if(updateImage > 0) { // 성공
 					try {
 						for(int i = 0; i < image.getFiles().length; i++) {
@@ -371,11 +382,13 @@ public class AdminController {
 					}
 				}
 					} else { // 파일을 선택하지 않은 경우
-						String image_main_file = product.getImage_main_file(); // 기존 파일명으로 유지
+						image_main_file = product.getImage_main_file(); // 기존 파일명으로 유지
+						System.out.println("else1111111!!");
 					}
 					
 				} else { // file 객체가 null인 경우
-					String image_main_file = product.getImage_main_file(); // 기존 파일명으로 유지
+					image_main_file = product.getImage_main_file(); // 기존 파일명으로 유지
+					System.out.println("else2222222!!");
 				}
 				
 				// 메인페이지로 리다이렉트
@@ -483,9 +496,9 @@ public class AdminController {
 	//--------- 회원목록------------------
 	@GetMapping("MemberList.me")
 	public String adMemberList(Model model) {
-		List<MemberVo> member = service.getMemberInfo();
-		model.addAttribute("member",member);
-		return "admin/admin_Member_List";
+		List<MemberVo> memberList = service.getMemberInfo();
+		model.addAttribute("memberList", memberList);
+		return "admin/admin_member_list";
 	}
 	
 	
