@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.shookream.service.MemberService;
 import com.itwillbs.shookream.vo.AuthVo;
+import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.WishVo;
 
@@ -91,7 +92,6 @@ public class MemberController {
 	} // joinForm 끝
 	
 	// --------------- 회원가입 비즈니스 로직 ---------------------
-	@ResponseBody
 	@PostMapping("MemberJoinPro.me") 
 	public String joinPro(@ModelAttribute MemberVo member, Model model,
 			@RequestParam("email1") String email1, @RequestParam("email2") String email2,
@@ -115,12 +115,22 @@ public class MemberController {
 
 		// 회원번호 
 		int member_idx = service.selectIdx();
+		int new_member_idx = member_idx + 1;
 		// 회원번호 기존 최대번호 + 1
-		member.setMember_idx(member_idx + 1);
+		member.setMember_idx(new_member_idx);
 //		System.out.println("멤버인덱스 확인 : " + member.getMember_idx());
 		boolean joinMember = service.joinMember(member);
 		
 		if(joinMember) {
+			
+			// ======= 회원가입 쿠폰 지급 =========
+			
+			// 회원가입 쿠폰 조회
+			CouponVo welcomeCoupon = service.getWelCouponInfo();
+			
+			// 회원가입 쿠폰 지급
+			int insertCoupon = service.insertWelCoupon(welcomeCoupon, new_member_idx);
+			
 			return "member/member_join_result";
 		} else {
 			model.addAttribute("msg","회원가입에 실패하였습니다!");
