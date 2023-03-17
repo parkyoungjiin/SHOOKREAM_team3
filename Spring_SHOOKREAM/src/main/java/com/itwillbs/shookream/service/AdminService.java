@@ -81,29 +81,6 @@ public class AdminService {
 			return mapper.delectOrder(order_idx);
 		}
 
-		//쿠폰목록
-		public List<CouponVo> getCouponList() {
-			return mapper.selectCouponList();
-		}
-
-		//쿠폰수정폼
-		public CouponVo getCouponInfo(int coupon_idx) {
-			return mapper.selectCoupon(coupon_idx);
-		}
-
-		//쿠폰수정
-		public int updateCoupon(int coupon_idx, CouponVo coupon) {
-			return mapper.updateCoupon(coupon_idx, coupon);
-		}
-
-		//쿠폰삭제
-		public int deleteCoupon(int coupon_idx) {
-			return mapper.deletCoupon(coupon_idx);
-		}
-
-		//쿠폰등록
-		public int insertCoupon(CouponVo coupon) {
-			return mapper.insertCoupon(coupon);
-		}
+		
 	
 }

@@ -10,8 +10,8 @@
 <title>SHOOKREAM</title>
 <meta charset="UTF-8">
 <!-- 네이버 아이디 로그인 -->
-<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<!-- <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script> -->
+<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script> -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <%-- <link href="${path}/resources/css/main.css" rel="stylesheet"> --%>
@@ -19,8 +19,15 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"> -->
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+<script src="${path}/resources/js/jquery-3.6.3.js"></script>
 <!-- slick 슬라이드 작업, jquery -->
 <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script> 
@@ -29,7 +36,7 @@
 <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
 <script src="https://kit.fontawesome.com/498a54c4c7.js"
 	crossorigin="anonymous"></script>
-<script src="../js/jquery-3.6.3.js"></script>	
+<!-- <script src="../js/jquery-3.6.3.js"></script>	 -->
 <script type="text/javascript">
 $(function() {
 	$('.post-wrapper').slick({
@@ -44,9 +51,9 @@ $(function() {
 });
 
 </script>
-<script type="text/javascript">
-local
-</script>
+<!-- <script type="text/javascript"> -->
+<!-- // local -->
+<!-- </script> -->
 
 
 <style>
@@ -335,13 +342,31 @@ function new_minus_wish_btn(cb){
 } // function plus_wish_btn() 끝
 
 
+// 쿠폰 window 열기
+function openModal(coupon_content) {
+	
+	$("#modal_coupon").modal("show");
+	 	var sId = '<%=(String)session.getAttribute("sId")%>' 
+	
+ 	if( sId == 'null'){
+ 		alert("로그인 후 이용 가능합니다.");
+ 		location.href="LoginMember.me";
+ 	} else {
+ // 		url = "CouponMainList.po?member_idx="+member_idx+"&coupon_content="+coupon_content; 
+ 		url = "CouponMainList.po?coupon_content="+coupon_content; 
+ 		let name = "Coupon List";
+ 		let attr = "width=600px, height=400px, top=50%, left=50%";
+ 		window.open(url, name, attr);
+ 	}
+}
+
+
 </script>
 
 </head>
 <script type="text/javascript">
 localStorage.setItem("z","11");
 </script>
-
 
 
 <body class="w3-content" style="max-width:95%; margin-top: 20px;">
@@ -370,16 +395,15 @@ localStorage.setItem("z","11");
 
   <!-- ./images header -->
   <div class ="post-wrapper" style="margin-top: 18px;">
-  	<div><img src="${path}/resources/images/banner(nike).jpg" height="600" width="100%" onclick="location.href='BrandCG.MAIN?cg=나이키'" style="cursor: pointer;"></div>
+  	<div><img src="${path}/resources/images/banner(nike).jpg" height="600" width="100%"  onclick="location.href='BrandCG.MAIN?cg=나이키'" style="cursor: pointer;"></div>
 <!--   	<div><a href="CouponMainList.po?coupon_content=banner_1"><img src="images/banner_1.jpg" height="700" width="900"></a></div> -->
   	<div><img src="${path}/resources/images/banner(newbalance).png" height="600" width="100%" onclick="location.href='BrandCG.MAIN?cg=뉴발란스'" style="cursor: pointer;"></div>
   	<div><img src="${path}/resources/images/banner(adidas).png" height="600" width="100%" onclick="location.href='BrandCG.MAIN?cg=아디다스'" style="cursor: pointer;"></div>
-  	<div><img id="banner_1" src="${path}/resources/images/banner_1.jpg"  height="600" width="100%" style="cursor: pointer;" onclick="couponDown(this.id)"></div>
-  	<div><img id="banner_2" src="${path}/resources/images/banner_2-001 (4).jpg" height="600" width="100%" style="cursor: pointer;" onclick="couponDown(this.id)"></div>
+  	<div>
+  	
+  	<img id="banner_1" src="${path}/resources/images/banner_1.jpg"  height="600" width="100%" style="cursor: pointer;" onclick="openModal(this.id)" ></div>
+  	<div><img id="banner_2" src="${path}/resources/images/banner_2-001 (4).jpg" height="600" width="100%" style="cursor: pointer;" onclick="openModal(this.id)"></div>
   </div>
-<!--   <div class="w3-container w3-text-grey" id="jeans"> -->
-<!--     <p>BEST</p> -->
-<!--   </div> -->
 
 	<div id="main_category">
 		<p>BEST</p>
@@ -540,21 +564,7 @@ localStorage.setItem("z","11");
 <script>
 
 
-function couponDown(coupon_content) {
-	
-	var sId = '<%=(String)session.getAttribute("sId")%>'
-	
-	if( sId == 'null'){
-		alert("로그인 후 이용 가능합니다.");
-		location.href="LoginMember.me";
-	} else {
-// 		url = "CouponMainList.po?member_idx="+member_idx+"&coupon_content="+coupon_content; 
-		url = "CouponMainList.po?coupon_content="+coupon_content; 
-		let name = "Coupon List";
-		let attr = "width=350px, height=400px, top=200, left=510"
-		window.open(url, name, attr);
-	}
-}
+
 
 // Accordion 
 function myAccFunc() {
