@@ -79,10 +79,11 @@
 			if($("#dataCheck").is(":checked")){
 				$("#start_date").prop("readonly", true);
 				$("#end_date").prop("readonly", true);
-				$("#end_date").val("");
+				$("#end_date").val("9999-12-31");
 			} else {
 				$("#start_date").prop("readonly", false);
 				$("#end_date").prop("readonly", false);
+				$("#end_date").val("");
 			}
 		});	
 		

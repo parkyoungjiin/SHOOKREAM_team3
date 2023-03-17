@@ -62,4 +62,9 @@ public class CouponService {
 	public int couponCheck(int coupon_idx, int member_idx) {
 		return mapper.selectCouponCheck(coupon_idx, member_idx);
 	}
+
+	//마이페이지 쿠폰
+	public List<CouponVo> getMyCouponList(int member_idx) {
+		return mapper.selectMyCouponList(member_idx);
+	}
 }

@@ -144,7 +144,7 @@
 				,#{coupon.coupon_benefit_unit}
 				,0
 				,#{coupon.coupon_start}
-				,#{coupon.coupon_end}
+				,date_add(now(),interval 30 day)
 			)
 	</insert>
 </mapper>
