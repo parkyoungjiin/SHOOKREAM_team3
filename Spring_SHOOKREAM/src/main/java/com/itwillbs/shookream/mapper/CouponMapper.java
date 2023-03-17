@@ -37,5 +37,8 @@ public interface CouponMapper {
 
 	int selectCouponCheck(@Param("coupon_idx") int coupon_idx, @Param("member_idx") int member_idx);
 
+	// 마이페이지 쿠폰
+	List<CouponVo> selectMyCouponList(int member_idx);
+
 
 }

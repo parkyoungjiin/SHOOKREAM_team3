@@ -67,7 +67,6 @@ public class CouponController {
 			coupon.setCoupon_content(coupon_banner + " / " + coupon.getCoupon_content());
 		}
 		
-			
 			int updateCount = service.updateCoupon(coupon);
 			
 			if(updateCount > 0) {
@@ -186,7 +185,7 @@ public class CouponController {
 	
 	// 쿠폰 다운 - 중복 검사
 	@RequestMapping(value = "/CouponDownCheck.po", method= {RequestMethod.GET, RequestMethod.POST})
-	public void CouponDownCheck(HttpSession session, HttpServletResponse response,
+	public void CouponDownCheck(HttpSession session, HttpServletResponse response,Model model,
 			@RequestParam(defaultValue = "0")int coupon_idx) {
 		
 		String sId = (String)session.getAttribute("sId");
@@ -202,6 +201,21 @@ public class CouponController {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	// 마이페이지 쿠폰함
+	@RequestMapping(value = "/CouponListMypage.po", method= {RequestMethod.GET, RequestMethod.POST})
+	public String CouponListMypage(HttpSession session, HttpServletResponse response,Model model
+			) {
+		String sId = (String)session.getAttribute("sId");
+		
+		int member_idx = service_product.getMemberIdx(sId);
+		List<CouponVo> couponList = service.getMyCouponList(member_idx);
+		
+		model.addAttribute("couponList", couponList);
+		
+		
+		return "member/my_couponlist";
 	}
 	
 	

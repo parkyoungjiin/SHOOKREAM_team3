@@ -110,4 +110,10 @@
            	FROM member_coupon 
             WHERE coupon_idx = #{coupon_idx} AND member_idx = #{member_idx}
   	</select>
+  	
+  	<select id="selectMyCouponList" resultType="com.itwillbs.shookream.vo.CouponVo">
+  		SELECT *
+  			FROM member_coupon
+  			WHERE member_idx = #{member_idx} AND isUse = 0
+  	</select>
 </mapper>
