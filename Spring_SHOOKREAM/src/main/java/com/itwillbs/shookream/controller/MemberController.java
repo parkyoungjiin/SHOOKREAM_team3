@@ -69,9 +69,10 @@ public class MemberController {
 				model.addAttribute("msg", "로그인 실패(아이디 또는 비밀번호를 확인해주세요.)");
 				return "fail_back";
 		}else { // 성공
+			MemberVo member2 = service.getMemberInfo(member.getMember_id()); // DB저장된 비밀번호 (PASSWD)
 			//성공 시 세션아이디, member_idx 저장
 			session.setAttribute("sId", member.getMember_id());
-			session.setAttribute("member_idx", member.getMember_idx());
+			session.setAttribute("member_idx", member2.getMember_idx());
 			return "redirect:/";
 		}
 	}//LoginPro 끝 
