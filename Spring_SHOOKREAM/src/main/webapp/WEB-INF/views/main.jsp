@@ -350,7 +350,8 @@ function openModal(coupon_content) {
 	
  	if( sId == 'null'){
  		alert("로그인 후 이용 가능합니다.");
- 		location.href="LoginMember.me";
+//  		location.href="LoginMember.me";
+		return;
  	} else {
  // 		url = "CouponMainList.po?member_idx="+member_idx+"&coupon_content="+coupon_content; 
  		url = "CouponMainList.po?coupon_content="+coupon_content; 

@@ -97,11 +97,11 @@ function downCoupon(cb){
 	var idx = cb.id.replace("couponImg","");
 	var coupon_idx = $("#coupon_idx"+ idx).val();
 	
-// 	alert(coupon_idx);
-	// 쿠폰 중복 검사
+	
+	//쿠폰 수량 검사
 	$.ajax({
 			type: "post", 
-			url: "CouponDownCheck.po?coupon_idx="+coupon_idx, 
+			url: "CouponCountCheck.po?coupon_idx="+coupon_idx, 
 			data: { 
 				member_idx: '${sessionScope.member_idx}',
 // 				coupon_idx: coupon_idx
@@ -109,39 +109,64 @@ function downCoupon(cb){
 			dataType: "html", 
 			success: function(data) { 
 				
-				if(data == 1){
-				alert("이미 발급된 쿠폰입니다!");
-				
-				idx = null;
+				if(data < 0){
+					alert("쿠폰이 모두 소진되었습니다.");
+					
+					idx = null;
 				
 				} else {
-					
+					// 쿠폰 중복 검사
 					$.ajax({
-						type: "post", 
-						url: "CouponDownPro.po?coupon_idx="+coupon_idx, 
-						data: { 
-							member_idx: '${sessionScope.member_idx}',
-// 							coupon_idx: coupon_idx
-						},	
-						dataType: "html", 
-						success: function(data) { 
-							if(data == 1){
-							alert("쿠폰이 발급되었습니다");
-							
-							idx = null;
+							type: "post", 
+							url: "CouponDownCheck.po?coupon_idx="+coupon_idx, 
+							data: { 
+								member_idx: '${sessionScope.member_idx}',
+//				 				coupon_idx: coupon_idx
+							},	
+							dataType: "html", 
+							success: function(data) { 
+								
+								if(data == 1){
+								alert("이미 발급된 쿠폰입니다!");
+								
+								idx = null;
+								
+								} else {
+									
+									$.ajax({
+										type: "post", 
+										url: "CouponDownPro.po?coupon_idx="+coupon_idx, 
+										data: { 
+											member_idx: '${sessionScope.member_idx}',
+//				 							coupon_idx: coupon_idx
+										},	
+										dataType: "html", 
+										success: function(data) { 
+											if(data == 1){
+											alert("쿠폰이 발급되었습니다");
+											
+											idx = null;
+											}
+										}, 
+										error: function(xhr, textStatus, errorThrown) {
+											alert("쿠폰 발급 실패"); 
+										}
+									});
+									
+								}
+							}, 
+							error: function(xhr, textStatus, errorThrown) {
+								alert("오류가 발생했습니다. 다시 시도해주세요."); 
 							}
-						}, 
-						error: function(xhr, textStatus, errorThrown) {
-							alert("쿠폰 발급 실패"); 
-						}
-					});
-					
+						});
 				}
+	
 			}, 
 			error: function(xhr, textStatus, errorThrown) {
 				alert("오류가 발생했습니다. 다시 시도해주세요."); 
 			}
 		});
+	
 }
 </script>
 </head>

@@ -173,6 +173,10 @@ public class CouponController {
 		
 		int insertCount = service.downCoupon(member_idx, coupon);
 		
+		if(insertCount > 0) {
+			service.updateCouponCount(coupon_idx);
+		}
+		
 		try {
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().print(insertCount);
@@ -193,6 +197,23 @@ public class CouponController {
 		int member_idx = service_product.getMemberIdx(sId);
 		
 		int checkCount = service.couponCheck(coupon_idx, member_idx);
+		
+		try {
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().print(checkCount);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	// 쿠폰 다운 - 수량 검사
+	@RequestMapping(value = "/CouponCountCheck.po", method= {RequestMethod.GET, RequestMethod.POST})
+	public void CouponCountCheck(HttpSession session, HttpServletResponse response,Model model,
+			@RequestParam(defaultValue = "0")int coupon_idx) {
+		
+		
+		int checkCount = service.couponCountCheck(coupon_idx);
 		
 		try {
 			response.setCharacterEncoding("UTF-8");
