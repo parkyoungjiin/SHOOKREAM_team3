@@ -28,26 +28,77 @@
 			}
 		</style>
 		<script type="text/javascript">
-		//할인 버튼에 따른 처리
+		// 시작일
 		$(function() {
-			$('input:radio[id="saleRadio1"]').on("click", function() {
-				$('#testRate').attr('readonly', true);
-			});
-			$('input:radio[id="saleRadio2"]').on("click", function() {
-				$('#testRate').attr('readonly', false);
-			});
 			
+			var today = new Date();
+
+			var year = today.getFullYear();
+			var month = ('0' + (today.getMonth() + 1)).slice(-2);
+			var day = ('0' + today.getDate()).slice(-2);
+
+			var dateString = year + '-' + month  + '-' + day;
+
+			$("#start_date").val(dateString);
 			
 		});
 		
-		//할인율 숫자만 입력
+		
 		$(function() {
-			$('input:number[id="discount"]').on("change", function() {
-				var discount = $('#testRate').val();
+			
+			// 사용 혜택
+			$("#selectBenefit").on("change", function() {
 				
-				alert(discount);
+				if($("#selectBenefit").val() == "배송비 무료") {
+					$("#discountInput").prop("readonly", true);
+					$("#discountInput").val("3000");
+					$("#discountSelect").prop("disabled", true);
+					$("#discountSelect").val("원");
+					$("#maxDiscount").prop("readonly", true);
+				} else if($("#selectBenefit").val() == "금액 할인"){
+					$("#discountInput").prop("readonly", false);
+					$("#discountSelect").prop("disabled", false);
+					$("#maxDiscount").prop("readonly", false);
+					$("#discountSelect").val("원");
+				}
 			});
+			
+			
+			$("#discountSelect").on("change", function() {
+				
+				if($("#discountSelect").val() == "%") {
+					$("#maxDiscount").prop("readonly", false);
+				} else if($("#discountSelect").val() == "원"){
+					$("#maxDiscount").prop("readonly", true);
+				}
+			});
+			
+			
+			// 사용 기간
+		$("#dataCheck").click(function() {
+			if($("#dataCheck").is(":checked")){
+				$("#start_date").prop("readonly", true);
+				$("#end_date").prop("readonly", true);
+				$("#end_date").val("9999-12-31");
+			} else {
+				$("#start_date").prop("readonly", false);
+				$("#end_date").prop("readonly", false);
+				$("#end_date").val("");
+			}
+		});	
+		
+			// 발행 수량
+		$("#amountCheck").click(function() {
+			if($("#amountCheck").is(":checked") == true){
+				$("#amountInput").prop("readonly", true);
+				$("#amountInput").val("");
+			} else {
+				$("#amountInput").prop("readonly", false);
+			}
 		});
+			
+		});
+		
 		
 		
 		
@@ -81,8 +132,8 @@
        <jsp:include page="./inc2/side.jsp"></jsp:include>             
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">쿠폰 수정</h1>
+                    <div class="container-fluid">
+                       <h2 style="padding-top: 20px;">쿠폰 수정</h2>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active"></li>
                         </ol>
@@ -91,47 +142,122 @@
                 	 
           
 			<form action="CouponModifyPro.po?coupon_idx=${coupon.coupon_idx}" method="post">
-				<table class="table">
+				<table class="table" class="table" style="width: 1000px;">
 					<tr>
-						<td width="100px" align="left" class="table-secondary">쿠폰명</td>
-						<td width="300px"><input class="w3-input w3-border"
-							type="text" placeholder="Coupon Name" name="coupon_name" value="${coupon.coupon_name }" required ></td>
+						<td width="20px" align="left" class="table-secondary">쿠폰명</td>
+						<td width="100px"><input class="form-control" type="text" value="${coupon.coupon_name }"
+							name="coupon_name" required></td>
 					</tr>
 					
+					
 					<tr>
-						<td width="100px" align="left" class="table-secondary">쿠폰 내용</td>
-						<td><textarea class="w3-input w3-border" style="resize: none"
-								rows="5" cols="40" placeholder="Coupon summary" name="coupon_content"
-								required="required" >${coupon.coupon_content }</textarea></td>
+						<td width="20px" align="left" class="table-secondary">쿠폰 내용</td>
+						<td>
+						
+						<div class="form-check">
+						  <input class="form-check-input" type="radio" name="coupon_banner" id="flexRadioDefault1" value="banner_1">
+						  <label class="form-check-label" for="flexRadioDefault1">
+						    banner_1
+						  </label>
+						</div>
+						<div class="form-check">
+						  <input class="form-check-input" type="radio" name="coupon_banner" id="flexRadioDefault2" value="banner_2">
+						  <label class="form-check-label" for="flexRadioDefault2">
+						    banner_2
+						  </label>
+						</div>
+						
+						
+						<textarea class="form-control" style="resize: none"
+								rows="5" cols="40" 
+								name="coupon_content" required="required">${coupon.coupon_content }</textarea></td>
 						<!--           <td width="300px"><input class="w3-input w3-border" type="" placeholder="Product summary" name="Product summary" required></td> -->
 					</tr>
 					
 					<tr>
-						<td width="100px" align="left" class="table-secondary">할인 가격</td>
-						<td><input type="text" id="testPrice" value="${coupon.coupon_price }" name ="coupon_price" placeholder="할인 가격을 입력하세요"><span>&nbsp;원</span> 
+						<td width="20px" align="left" class="table-secondary">사용 혜택</td>
+						<td width="30px">
+							<div class="row g-2">
+								<div class="col-md">
+									<select class="form-select" name="coupon_benefit" id="selectBenefit" aria-label="size 1 select example" style="width: 200px;">
+										<option <c:if test="${coupon.coupon_benefit eq '금액 할인'}">selected</c:if> value="금액 할인">금액 할인</option>
+										<option <c:if test="${coupon.coupon_benefit eq '배송비 무료'}">selected</c:if> value="배송비 무료">배송비 무료</option>
+									</select>
+								</div>
+								<div class="col-md">
+									<input class="form-control" type="number" value="${coupon.coupon_benefit_price }" id="discountInput" placeholder="금액 또는 할인율" name="coupon_benefit_price" style="text-align: right; ">
+								</div>
+								<div class="col-md-2">
+									<select class="form-select" id="discountSelect" name="coupon_benefit_unit" size="1" id="discountSelect" aria-label="size 1 select example">
+										<option <c:if test="${coupon.coupon_benefit_unit eq '원'}">selected</c:if> value="원">원</option>
+										<option <c:if test="${coupon.coupon_benefit_unit eq '%'}">selected</c:if> value="%">%</option>
+									</select>
+								</div>
+							</div>
 						</td>
-						
 					</tr>
 					
-						
-				
-						
 					<tr>
-						<td width="150px" align="left" class="table-secondary">쿠폰 시작일</td>
-						<td><input type="date" name="coupon_start" value="${coupon.coupon_start}"></td>
-						
-					</tr>
-					<tr>
-						<td width="150px" align="left" class="table-secondary">쿠폰 만료일</td>
-						<td><input type="date" name="coupon_end" value="${coupon.coupon_end}"></td>
+						<td width="20px" align="left" class="table-secondary">최소주문금액</td>
+						<td><input class="form-control" type="number" value="${coupon.coupon_min_price }"
+							name="coupon_min_price" required style="width: 200px;"></td>
 					</tr>
 					
-
-					
-
 					<tr>
-						<td colspan="2"><button type="submit"
-								class="w3-button w3-block w3-black" >수정하기</button></td>
+						<td width="20px" align="left" class="table-secondary">최대할인금액</td>
+						<td width="100px"><input class="form-control" type="number" value="${coupon.coupon_max_discount }" name="coupon_max_discount" id="maxDiscount" readonly required style="width: 200px;"> </td>
+					</tr>
+						
+						
+				    <tr>
+						<td width="20px" align="left" class="table-secondary">사용 기간</td>
+						<td>
+						<div class="row g-2">
+							  <div class="col-md" style="float: right;">
+							  <div class="form-check"  style="width: 200px;">
+								  <input class="form-check-input" type="checkbox" value="" id="dataCheck">
+								  <label class="form-check-label" for="flexCheckIndeterminate">
+								    기간제한 없음
+								  </label>
+								</div>
+								</div>
+							<div class="col-md">
+							  <input type="date" id="start_date" class="form-control" name="coupon_start" value="${coupon.coupon_start}">
+							 </div>
+							 <div class="col-md-1" style="text-align: center;"> ~ </div>
+							  <div class="col-md">
+							  <input type="date" id="end_date" class="form-control" name="coupon_end" value="${coupon.coupon_end}">
+							  </div>
+							   <div class="col-md">  </div>
+						</div>
+						</td>
+					</tr>
+					
+					<tr>
+						<td width="20px" align="left" class="table-secondary">발행 수량</td>
+						<td>
+						<div class="row g-2">
+							  <div class="col-md" style="float: right;">
+							  <div class="form-check" style="width: 200px;" >
+								  <input class="form-check-input" type="checkbox" id="amountCheck">
+								  <label class="form-check-label" for="flexCheckIndeterminate">
+								    개수제한 없음
+								  </label>
+								</div>
+								</div>
+							 <div class="col-md-2">
+							 <input class="form-control" type="number" id="amountInput" name="coupon_amount" value="${coupon.coupon_amount}" style="width: 80px;">
+							  </div>
+							  <div class="col-md"> </div>
+							  <div class="col-md"> </div>
+							  <div class="col-md"> </div>
+						</div>
+						</td>
+					</tr>
+					
+					
+			<tr>
+						<td colspan="2"><button type="submit" class="btn btn-secondary" style="float: right;">수정하기</button></td>
 					</tr>
 				</table>
 			</form>

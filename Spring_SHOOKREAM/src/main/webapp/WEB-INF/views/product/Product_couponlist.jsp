@@ -34,12 +34,12 @@
     <tr>
       <th scope="row" id="idx">${coupon.coupon_idx }</th>
       <td>${coupon.coupon_name }</td>
-      <td id="price">${coupon.coupon_price }</td>
+      <td id="price">${coupon.coupon_benefit_price }</td>
       <td>사용 가능</td>
       <td>${coupon.coupon_start }</td>
       <td>${coupon.coupon_end }</td>
       <td>
-      <button type="button" class="btn btn-dark" id="useCoupon" value="${coupon.coupon_price}" onclick="useCoupon(${coupon.coupon_price},${coupon.coupon_idx})">적용하기</button>
+      <button type="button" class="btn btn-dark" id="useCoupon" value="${coupon.coupon_benefit_price}" onclick="useCoupon(${coupon.coupon_benefit_price},${coupon.coupon_idx})">적용하기</button>
     </tr>
     	</c:when>
       </c:choose>
@@ -49,13 +49,14 @@
 <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
 <script type="text/javascript">
 	function useCoupon(price,idx) {
+		alert("쿠폰이 적용 되었습니다");
 		// 부모창(주문 / 결제페이지)에서 값 가져오기 
 		//1. 할인 금액
 		var discount_price = parseInt(opener.$("#order_discount_price").val());
 
 		//2. 총 결제금액
 		var order_total_price = parseInt(opener.$("#order_total_price").val());
-		window.opener.document.getElementById("order_total_price").value = order_total_price - price;
+		if(order_total_price - price > 0){
 		//3. 쿠폰 적용한 할인금액
 		 discount_price = (discount_price + price).toLocaleString("en-US");
 		//4. 쿠폰 적용한 총 결제금액
@@ -72,7 +73,12 @@
 		 window.opener.document.getElementById( "discount_area" ).innerText = discount_price;
 		 window.opener.document.getElementById( "order_total_area" ).innerText = order_total_price;
 // 		 window.opener.document.getElementById( "order_total_price_pay" ).value = order_total_price;
+		 window.opener.document.getElementById("order_total_price").value = parseInt(order_total_price) * 1000;
 		 window.close();
+		}else {
+			alert("쿠폰을 적용 할 수 없습니다");
+			history.back();
+		}
 	}
 	
 

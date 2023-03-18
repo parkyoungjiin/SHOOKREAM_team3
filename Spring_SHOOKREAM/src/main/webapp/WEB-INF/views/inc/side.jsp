@@ -55,6 +55,15 @@
  
 
 <!--  <h5>최근 본 상품</h5> -->
-
+<%
+session =request.getSession();
+if(session.getAttribute("product") != null){
+	out.print("product name :" + session.getAttribute("product"));
+	 if(session.getAttribute("product") != null){
+	    	out.print("방금본 상품 <br>");
+	    	out.print("아이디 : " + session.getAttribute("product") + "<br>");
+	    }
+}
+%>
   </div>
 </nav>
