@@ -40,7 +40,7 @@ public interface ProductMapper {
 
 	public void updateMember(OrderVo order);
 
-	public List<CouponVo> selectCoupontList(int member_idx);
+	public List<CouponVo> selectCoupontList(@Param("member_idx")int member_idx, @Param("product_price")int product_price);
 
 	public List<OrderVo> selectOrderList(@Param("member_idx")int member_idx,@Param("listLimit") int listLimit,@Param("startRow") int startRow);
 

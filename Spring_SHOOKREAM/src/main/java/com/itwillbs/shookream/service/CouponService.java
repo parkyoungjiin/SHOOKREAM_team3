@@ -67,4 +67,14 @@ public class CouponService {
 	public List<CouponVo> getMyCouponList(int member_idx) {
 		return mapper.selectMyCouponList(member_idx);
 	}
+
+	// 수량 변경
+	public void updateCouponCount(int coupon_idx) {
+		mapper.updateCouponCount(coupon_idx);
+	}
+
+	// 수량 체크
+	public int couponCountCheck(int coupon_idx) {
+		return mapper.couponCountCheck(coupon_idx);
+	}
 }

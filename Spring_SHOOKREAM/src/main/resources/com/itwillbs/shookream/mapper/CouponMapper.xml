@@ -39,6 +39,8 @@
 				,#{coupon.coupon_benefit}
 				,#{coupon.coupon_benefit_price}
 				,#{coupon.coupon_benefit_unit}
+				,#{coupon.coupon_min_price}
+				,#{coupon.coupon_max_discount}
 				,0
 				,#{coupon.coupon_start}
 				,#{coupon.coupon_end}
@@ -115,5 +117,17 @@
   		SELECT *
   			FROM member_coupon
   			WHERE member_idx = #{member_idx} AND isUse = 0
+  	</select>
+  	
+  	<update id="updateCouponCount">
+  		UPDATE coupon
+  			SET coupon_amount = coupon_amount - 1
+  			WHERE coupon_idx = #{coupon_idx}
+  	</update>
+  	
+  	<select id="couponCountCheck" resultType="int">
+  		SELECT coupon_amount
+  			FROM coupon
+  			WHERE coupon_idx = #{coupon_idx}
   	</select>
 </mapper>

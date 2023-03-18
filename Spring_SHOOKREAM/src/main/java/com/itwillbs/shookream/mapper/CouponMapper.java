@@ -40,5 +40,9 @@ public interface CouponMapper {
 	// 마이페이지 쿠폰
 	List<CouponVo> selectMyCouponList(int member_idx);
 
+	void updateCouponCount(int coupon_idx);
+
+	int couponCountCheck(int coupon_idx);
+
 
 }
