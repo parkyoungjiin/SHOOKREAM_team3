@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.shookream.service.ProductService;
 import com.itwillbs.shookream.service.WishService;
 import com.itwillbs.shookream.vo.PageInfo;
 import com.itwillbs.shookream.vo.ProductVo;
@@ -29,15 +31,21 @@ public class WishController {
 	
 	@Autowired 
 	private WishService service;
+	@Autowired 
+	private ProductService service_product;
 	
 	//========좋아요 중복 검사 ============
 	@RequestMapping(value = "/LikeInsertCheck.ca", method= {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
-	public void LikeInsertCheck(@RequestParam(defaultValue = "1")int member_idx,
+	public void LikeInsertCheck(
+//			@RequestParam(defaultValue = "1")int member_idx,
 			@RequestParam(defaultValue = "1")int product_idx,
-			HttpServletResponse response
+			HttpServletResponse response, HttpSession session
 			) {
 		
+		String sId = (String)session.getAttribute("sId");
+		
+		int member_idx = service_product.getMemberIdx(sId);
 		
 		int result = service.wishCheck(member_idx, product_idx);
 		
@@ -52,10 +60,16 @@ public class WishController {
 	
 	//========좋아요 등록 하기============
 	@RequestMapping(value = "/LikeInsertPro.ca", method= {RequestMethod.GET, RequestMethod.POST})
-	public void likeInsert(@RequestParam(defaultValue = "1")int member_idx,
+	public void likeInsert(
+//			@RequestParam(defaultValue = "1")int member_idx,
 			@RequestParam(defaultValue = "1")int product_idx,
-			HttpServletResponse response
+			HttpServletResponse response, HttpSession session
 			) {
+		String sId = (String)session.getAttribute("sId");
+		
+		int member_idx = service_product.getMemberIdx(sId);
+		
+		
 		boolean isSuccess = service.InsertLike(member_idx, product_idx);
 		try {
 			if(isSuccess) {//등록 성공 시
@@ -84,10 +98,15 @@ public class WishController {
 	
 	//========좋아요 삭제 하기============
 	@RequestMapping(value = "/LikeDeletePro.ca", method= {RequestMethod.GET, RequestMethod.POST})
-	public String likedelete(@RequestParam(defaultValue = "1")int member_idx,
+	public String likedelete(
+//			@RequestParam(defaultValue = "1")int member_idx,
 			@RequestParam(defaultValue = "1")int product_idx,
-			HttpServletResponse response
+			HttpServletResponse response, HttpSession session
 			) {
+		
+		String sId = (String)session.getAttribute("sId");
+		
+		int member_idx = service_product.getMemberIdx(sId);
 		
 		boolean isSuccess = service.DeleteWish(member_idx, product_idx);
 		try {
@@ -118,9 +137,13 @@ public class WishController {
 	
 	//========좋아요 리스트 출력============
 	@GetMapping(value = "LikeList.ca")
-	public String likeList(@RequestParam(defaultValue = "1")int member_idx,
+	public String likeList(
+//						@RequestParam(defaultValue = "1")int member_idx,
 						@RequestParam(defaultValue = "1")int pageNum,
-						Model model) {
+						Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		
+		int member_idx = service_product.getMemberIdx(sId);
 		
 		//========페이징 처리 ============
 		// 페이징 처리를 위한 변수 선언

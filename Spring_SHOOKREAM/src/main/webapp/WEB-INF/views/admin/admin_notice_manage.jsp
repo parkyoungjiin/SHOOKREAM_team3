@@ -46,6 +46,7 @@
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">공지사항 관리</li>
                         </ol>
+                          </div>
                             <div class="card-body">
                            	<form method="post">
                                 <table id="datatablesSimple">
@@ -67,6 +68,7 @@
                                             <th>게시물 관리</th>
                                         </tr>
                                     </thead>
+                                    <tbody>
                                     <c:forEach var="board" items="${boardList }">
                                         <tr>
                                             <th>${board.notice_type }</th>
@@ -79,7 +81,8 @@
 												<a href="BoardDeletePro.bo?notice_idx=${board.notice_idx }&pageNum=${param.pageNum}&board_type=${board.notice_type }"><input type="button" value="삭제" class="btn btn-outline-secondary btn-sm"></a>
 										    </th>
                                         </tr>
-                                     </c:forEach>   
+                                     </c:forEach>  
+                                     </tbody> 
                                 </table>
 							 </form>
 							 <input type="button" onclick="location.href='BoardWriteForm.bo'" value="글쓰기" style="text-align:center">
@@ -117,7 +120,7 @@
 									</c:choose>
 								</section>	
                        		 </div>
-                    </div>
+                  
                 </main>
 				<jsp:include page="./inc2/footer.jsp"></jsp:include>
             </div>

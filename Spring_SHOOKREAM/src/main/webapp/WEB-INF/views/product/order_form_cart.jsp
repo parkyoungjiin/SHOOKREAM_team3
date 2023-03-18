@@ -548,9 +548,14 @@ function goOrder() {
 <script type="text/javascript">
 function iamport(){
 	//----주문 외 몇건 처리---- 
-	let list_count ="${cartOrderList[0].cart_product_name} 외"+" ${cartOrderList.size()-1}건";
-	//----주문 외 몇건 처리 ---- 
 	
+	let list_count = "";
+	if("${cartOrderList.size()}" == '1'){
+		list_count = "${cartOrderList[0].cart_product_name}";
+	//----주문 외 몇건 처리 ---- 
+	}else {
+		list_count ="${cartOrderList[0].cart_product_name} 외"+" ${cartOrderList.size()-1}건";
+	}
 	//----member_idx 배열에 담기----	
 	let member_idx_arr = new Array();
 	$('input[name="cart_member_idx"]').each(function(i) {
@@ -605,11 +610,8 @@ function iamport(){
 		cart_idx_arr.push($(this).val());
 	});
 	//----cart_idx 끝----------
-	alert(cart_idx_arr);
-	
-	
-	
-	
+	var price = document.getElementById("order_total_price").value;
+	alert(price);
 	//getter
     IMP.init('imp77718215');
 //     var money = $('input[name="cp_item"]:checked').val();
@@ -619,7 +621,7 @@ function iamport(){
         pay_method : 'card',
         merchant_uid: "order_no_"+ new Date().getTime(), // 상점에서 관리하는 주문 번호를 전달
         name : list_count,
-        amount : '${cart_order_total_price }',
+        amount : "100",
         buyer_email : 'iamport@siot.do',
         buyer_name : '${sessionScope.sId}',
         buyer_tel : '010-1234-5678',
@@ -645,7 +647,8 @@ function iamport(){
 			})
 			.done(function(whlist) { // 요청 성공 시
 				alert(msg);
-				location.href='./main.ma';
+				var id = '${sessionScope.sId}';
+				location.href="./ProductOrderList.po?id="+id+"&member_idx="+${sessionScope.member_idx}+"&pageNum="+1;
 			})
 	    } else {
 	    	 var msg = '결제에 실패하였습니다.';

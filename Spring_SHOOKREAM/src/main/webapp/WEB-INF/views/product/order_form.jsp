@@ -473,7 +473,7 @@ function w3_close() {
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript">
 function iamport(){
-	var price = Number(document.getElementById("order_total_price").value);
+	var price = parseInt(document.getElementById("order_total_price").value) * 1000;
 	alert(price);
 	//getter
     IMP.init('imp77718215');
@@ -484,7 +484,7 @@ function iamport(){
         pay_method : 'card',
         merchant_uid: "order_no_"+ new Date().getTime(), // 상점에서 관리하는 주문 번호를 전달
         name : '${product.product_name}',
-        amount : '100',
+        amount : "100",
         buyer_email : 'iamport@siot.do',
         buyer_name : '${sessionScope.sId}',
         buyer_tel : '010-1234-5678',
@@ -498,7 +498,7 @@ function iamport(){
 				type: "GET",
 				url: "ProductOrderPro.po",
 				data : {
-					"order_price":100,
+					"order_price":price,
 					"member_idx":${sessionScope.member_idx},
 					"product_idx":${param.product_idx},
 					"order_product_name":"${product.product_name}",

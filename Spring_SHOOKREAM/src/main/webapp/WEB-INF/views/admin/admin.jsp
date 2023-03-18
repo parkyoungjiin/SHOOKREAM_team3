@@ -68,9 +68,9 @@
                            
                             <div class="col-xl-3 col-md-6">
                                 <div class="card text-white mb-4" style="background-color: #787878">
-                                    <div class="card-body">게시판 관리</div>
+                                    <div class="card-body" onclick="location.href='AdminBoardManage.ad'">게시판 관리</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="AdminBoard.ad">View Details</a>
+                                        <a class="small text-white stretched-link" href="AdminBoardManage.ad">View Details</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                     </div>
                                 </div>
