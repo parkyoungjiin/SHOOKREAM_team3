@@ -15,8 +15,34 @@ public interface CouponMapper {
 
 	List<CouponVo> selectMainCouponList(String coupon_content);
 
-	CouponVo selectCoupon(String coupon_content);
+	CouponVo selectMemberCoupon(String coupon_content);
 
-	int insertCoupon(@Param("member_idx")int member_idx, @Param("coupon")CouponVo coupon);
+	int insertMemberCoupon(@Param("member_idx")int member_idx, @Param("coupon")CouponVo coupon);
+	
+	
+	// 쿠폰목록
+	public List<CouponVo> selectCouponList();
+
+	// 쿠폰수정폼
+	public CouponVo selectCoupon(int coupon_idx);
+
+	// 쿠폰수정
+	public int updateCoupon(CouponVo coupon);
+
+	// 쿠폰삭제
+	public int deletCoupon(int coupon_idx);
+
+	// 쿠폰등록
+	public int insertCoupon(CouponVo coupon);
+
+	int selectCouponCheck(@Param("coupon_idx") int coupon_idx, @Param("member_idx") int member_idx);
+
+	// 마이페이지 쿠폰
+	List<CouponVo> selectMyCouponList(int member_idx);
+
+	void updateCouponCount(int coupon_idx);
+
+	int couponCountCheck(int coupon_idx);
+
 
 }

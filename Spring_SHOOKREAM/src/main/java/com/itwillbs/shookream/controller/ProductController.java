@@ -84,8 +84,12 @@ public class ProductController {
 		image = service.getImage(product_idx);
 		System.out.println("image 조회 : " + image);
 		
+		session.setAttribute("product", product);
+		session.setAttribute("image", image);
+		
 		model.addAttribute("product", product);
 		model.addAttribute("image", image);
+		
 		// ======================================================
 		
 		
@@ -98,6 +102,7 @@ public class ProductController {
 		//이미지 리스트 출력
 		List<imageVo> imagelist = service.getImageList(product.getProduct_name());
 		System.out.println(imagelist);
+		
 		
 		model.addAttribute("categorylist", categorylist);
 		model.addAttribute("colorlist", colorlist);
@@ -193,15 +198,15 @@ public class ProductController {
 	
 	
 	
-	// 회원별 쿠폰 리스트
+	// 회원별(주문시) 쿠폰 리스트
 	@GetMapping(value = "/CouponListForm.po")
-	public String CouponList(Model model, HttpSession session) {
+	public String CouponList(Model model, HttpSession session,@RequestParam(defaultValue = "0")int product_price ) {
 		
 		String sId = (String)session.getAttribute("sId");		
-		System.out.println("sid: "+sId);
+//		System.out.println("sid: "+sId);
 		int member_idx = service.getMemberIdx(sId);
 		
-		List<CouponVo> couponList = service.getCouponList(member_idx);
+		List<CouponVo> couponList = service.getCouponList(member_idx, product_price);
 		
 		model.addAttribute("couponList", couponList);
 		

@@ -83,11 +83,13 @@
                                             <th>번호</th>
                                             <th>쿠폰명</th>
                                             <th>쿠폰내용</th>
-                                            <th>할인가격</th>
+                                            <th>사용 혜택</th>
+                                            <th>금액 또는 할인율</th>
                                             <th>시작일</th>
                                             <th>만료일</th>
                                             <th>등록일</th>
-                                            <th>수정</th>
+                                            <th>수량</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -106,10 +108,12 @@
 										<td>${couponList.coupon_idx }</td>
 										<td>${couponList.coupon_name }</td>
 										<td>${couponList.coupon_content }</td>
-										<td>${couponList.coupon_price }</td>
+										<td>${couponList.coupon_benefit }</td>
+										<td>${couponList.coupon_benefit_price } ${couponList.coupon_benefit_unit }</td>
 										<td>${couponList.coupon_start }</td>
 										<td>${couponList.coupon_end }</td>
 										<td><fmt:formatDate value="${couponList.coupon_date}" pattern="yyyy-MM-dd"/></td>
+										<td>${couponList.coupon_amount }</td>
 										<td>
 										
 										<button type="button" class="btn btn-light" onclick="location.href ='CouponModifyForm.po?coupon_idx=${couponList.coupon_idx}'">수정</button>

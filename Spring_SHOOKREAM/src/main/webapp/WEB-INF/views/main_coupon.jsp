@@ -73,43 +73,104 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 	font-size: big; 
 	float: right;
 }
+
+/* .img-div { */
+/* 	position: relative; */
+/* } */
+
+/* .text-div { */
+/* z-index: -1; */
+/* } */
 </style>
 <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
 <script type="text/javascript">
 
-function downCoupon(){
+function downCoupon(cb){
+	
 	var checkLogin = '<%=(String)session.getAttribute("sId")%>';
 	
 	if( checkLogin == "null"){
 		alert("로그인 후 이용 가능합니다.");
-		location.href="LoginMember.me";
+		return;
+	}
 		
-	}else {
-		
-		$.ajax({
+	var idx = cb.id.replace("couponImg","");
+	var coupon_idx = $("#coupon_idx"+ idx).val();
+	
+	
+	//쿠폰 수량 검사
+	$.ajax({
 			type: "post", 
-			url: "CouponDownPro.po", 
+			url: "CouponCountCheck.po?coupon_idx="+coupon_idx, 
 			data: { 
 				member_idx: '${sessionScope.member_idx}',
-				coupon_content: $("#coupon_content").val()
+// 				coupon_idx: coupon_idx
 			},	
 			dataType: "html", 
 			success: function(data) { 
-// 				alert("쿠폰이 발급되었습니다");
-				if(data == 1) {
-				$(".coupon").html('<img id="coupondown" alt="" src="${path}/resources/images/coupon_down.png" style="width: 300px;"/>');
-				$("#btnDown").attr("disabled", true);
+				
+				if(data < 0){
+					alert("쿠폰이 모두 소진되었습니다.");
+					
+					idx = null;
+				
+				} else {
+					// 쿠폰 중복 검사
+					$.ajax({
+							type: "post", 
+							url: "CouponDownCheck.po?coupon_idx="+coupon_idx, 
+							data: { 
+								member_idx: '${sessionScope.member_idx}',
+//				 				coupon_idx: coupon_idx
+							},	
+							dataType: "html", 
+							success: function(data) { 
+								
+								if(data == 1){
+								alert("이미 발급된 쿠폰입니다!");
+								
+								idx = null;
+								
+								} else {
+									
+									$.ajax({
+										type: "post", 
+										url: "CouponDownPro.po?coupon_idx="+coupon_idx, 
+										data: { 
+											member_idx: '${sessionScope.member_idx}',
+//				 							coupon_idx: coupon_idx
+										},	
+										dataType: "html", 
+										success: function(data) { 
+											if(data == 1){
+											alert("쿠폰이 발급되었습니다");
+											
+											idx = null;
+											}
+										}, 
+										error: function(xhr, textStatus, errorThrown) {
+											alert("쿠폰 발급 실패"); 
+										}
+									});
+									
+								}
+							}, 
+							error: function(xhr, textStatus, errorThrown) {
+								alert("오류가 발생했습니다. 다시 시도해주세요."); 
+							}
+						});
 				}
+	
 			}, 
 			error: function(xhr, textStatus, errorThrown) {
-				alert("쿠폰 발급 실패"); 
+				alert("오류가 발생했습니다. 다시 시도해주세요."); 
 			}
 		});
-	}
+	
 }
 </script>
 </head>
-<body class="w3-content" style="max-width:95%" >
+<body class="w3-content" style="max-width:95%; background-color: #dcdcdc;" >
 
 <!-- Sidebar/menu -->
 
@@ -126,46 +187,64 @@ function downCoupon(){
   
 
 	<div id="main_category">
-		<p>Coupon Download</p>
+<!-- 		<p>Coupon Download</p> -->
 	</div>
 	
 	
   <!-- Product grid -->
-<div class="w3-row w3-grayscale"  >
-		<c:forEach var="couponList" items="${couponList }">
-			<div class="w3-col l3 s6" style="width: 320px">
-				<div class="w3-container" >
-							<div class="w3-display-container"  >
+<div class="w3-row w3-grayscale"  id="coupon_list">
+<%-- 		<c:forEach var="couponList" items="${couponList }" varStatus="status"> --%>
+<!-- 			<div class="w3-col l3 s6" style="width: 320px"> -->
+<!-- 				<div class="w3-container" > -->
+<!-- 							<div class="w3-display-container img-div"  > -->
 							
-							<c:choose>
-								<c:when test="${member_coupon.coupon_content eq couponList.coupon_content }">
-									<span class="coupon">
-									<img src="${path}/resources/images/coupon_down.png" alt="..." style="width:300px">
-									</span>
-								</c:when>
-								<c:otherwise>
-									<span class="coupon">
-									<img src="${path}/resources/images/coupon.png" alt="..." style="width:300px">
-									</span>
-									<div class="w3-display-middle w3-display-hover">
-									<button id="btnDown" class="w3-button w3-black" onclick="downCoupon()">
-									다운로드 <i class="fa-regular fa-circle-down"></i>
-									</button>
-									</div>
-								</c:otherwise>
-							</c:choose>
+<%-- 							<c:choose> --%>
+<%-- 								<c:when test="${member_coupon.coupon_content eq couponList.coupon_content }"> --%>
+<!-- 									<span class="coupon"> -->
+<%-- 									<img src="${path}/resources/images/coupon_down.png" alt="..." style="width:300px"> --%>
+<!-- 									</span> -->
+<%-- 								</c:when> --%>
+<%-- 								<c:otherwise> --%>
+<!-- 									<span class="coupon"> -->
+<%-- 									<img src="${path}/resources/images/coupon.png" alt="..." style="width:300px"> --%>
+<!-- 									</span> -->
+<!-- 									<div class="w3-display-middle w3-display-hover"> -->
+<%-- 									<button id="btnDown${status.index }" class="w3-button w3-black" onclick="downCoupon()"> --%>
+<!-- 									다운로드 <i class="fa-regular fa-circle-down"></i> -->
+<!-- 									</button> -->
+<!-- 									</div> -->
+<%-- 								</c:otherwise> --%>
+<%-- 							</c:choose> --%>
 							
-								
+						  <div class="w3-row w3-grayscale" id="coupon_list">
+							  <c:forEach var="couponList" items="${couponList}" varStatus="status">
+							    <div class="w3-col l3 s6" style="width: 320px">
+							      <div class="w3-container">
+							        <div class="w3-display-container img-div" style="position: relative;">
+							          <img src="${path}/resources/images/coupon_new.png" id="couponImg${status.index}" alt="..." style="width: 350px; cursor: pointer;" onclick="downCoupon(this)">
+							          <div class="text-div" style="position: absolute; top: 25px; left: 40px;  ">
+							            <span style="font-weight: bold; font-size: 13px;">${couponList.coupon_name}</span>
+							            <input type="hidden" id="coupon_content${status.index}" value="${couponList.coupon_content}">
+							            <input type="hidden" id="coupon_idx${status.index}" value="${couponList.coupon_idx}">
+							          </div>
+							          <div class="text-div" style="position: absolute; top: 25px; left: 188px; ">
+							            <span style="font-weight: bold; font-size: 12px;">${couponList.coupon_benefit}</span>
+							          </div>
+							          <div class="text-div" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); ">
+							            <span style="font-weight: bold; font-size: 40px;"><fmt:formatNumber value="${couponList.coupon_benefit_price}" pattern="#,###" /> ${couponList.coupon_benefit_unit}</span>
+							          </div>
+							          <div class="text-div" style="position: absolute; top: 135px; left: 40px; ">
+							            <span style="font-weight: bold; font-size: 12px;"><fmt:formatNumber value="${couponList.coupon_min_price}" pattern="#,###" /> 원 이상 구매시 사용 가능</span>
+							          </div>
+							        </div>
+							      </div>
+							    </div>
+							  </c:forEach>
 							</div>
-							<div>
-							<span id="product_brand" >${couponList.coupon_name }</span>
-							<span id="product_discount_price" ><fmt:formatNumber value="${couponList.coupon_price }" pattern="#,###" /> 원 할인</span>
-							<input type="hidden" id="coupon_content" value="${couponList.coupon_content }">
-							</div>
 							
-						</div>
-					</div>
-				</c:forEach>
+<!-- 						</div> -->
+<!-- 					</div> -->
+<%-- 				</c:forEach> --%>
 			</div>
   
    	 </div>

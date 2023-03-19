@@ -118,4 +118,33 @@
 			FROM wish
 			WHERE member_idx = #{member_idx}
 	</select>
+	
+	<!-- 회원가입 쿠폰 조회 -->
+	<select id="selectWelCoupon" resultType="com.itwillbs.shookream.vo.CouponVo">
+		SELECT *
+			FROM coupon
+			WHERE coupon_name 
+			LIKE '%회원가입%'
+	</select>
+	
+	<!-- 회원가입 쿠폰 지급 -->
+	<insert id="insertWelCoupon">
+		<selectKey keyProperty="member_coupon_idx" resultType="int" order="BEFORE">
+			SELECT MAX(member_coupon_idx) FROM member_coupon
+		</selectKey>
+		
+		INSERT INTO member_coupon 
+			VALUES (
+				(#{member_coupon_idx} + 1)
+				,#{member_idx}
+				,#{coupon.coupon_idx}
+				,#{coupon.coupon_name}
+				,#{coupon.coupon_benefit}
+				,#{coupon.coupon_benefit_price}
+				,#{coupon.coupon_benefit_unit}
+				,0
+				,#{coupon.coupon_start}
+				,date_add(now(),interval 30 day)
+			)
+	</insert>
 </mapper>
