@@ -124,6 +124,8 @@
 			 , p.product_brand
 			 , p.product_name
 			 , p.product_price
+			 , p.product_release_price
+			 , p.product_discount_price
 			 , p.product_date
 			 , p.product_amount
 			 , p.product_color

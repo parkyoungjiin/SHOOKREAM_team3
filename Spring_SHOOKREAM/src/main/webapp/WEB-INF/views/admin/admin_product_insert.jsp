@@ -16,7 +16,15 @@
 <%-- <link href="${path}/admin/css/styles.css" rel="stylesheet" /> --%>
 <link href="${path}/resources/css/styles.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="${path}/resources/admin/js/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="${path}/resources/admin/assets/demo/chart-area-demo.js"></script>
+<script src="${path}/resources/admin/assets/demo/chart-bar-demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+<script src="${path}/resources/admin/js/datatables-simple-demo.js"></script>
+        
  <script type="text/javascript">
 	<%
 		String sId = (String)session.getAttribute("sId");
@@ -41,26 +49,126 @@
 <script type="text/javascript">
 //할인 버튼에 따른 처리
 $(function() {
+	// 1. saleRadio1 버튼 : 할인 미선택
+	// - 할인 미선택 시 상품가격이 입력되어 있는 지 판별
+	// - 입력 : 가격을 그대로 표시 
+	// - 미입력 : 라디오버튼 체크 해제 , 상품가격으로 focus
+	
 	$('input:radio[id="saleRadio1"]').on("click", function() {
-		$('#testRate').attr('readonly', true);
+		// 할인율 
+		$('#testRate').prop('disabled', true);
+// 		$('#testRate_0').prop('disabled', false);
+		$('#testRate').val('0');
+		
+		var product_price = $("#prod_price").val();
+		if(product_price < 0 || product_price == ""){
+			alert("상품 가격을 입력하세요.")
+			$('input:radio[id="saleRadio1"]').prop('checked',false);
+			$("#prod_price").focus();
+			document.querySelector('#testResultBox02').innerText = '';
+		}else{
+			document.querySelector('#testResultBox02').innerText = product_price + "원";
+		}
+		
 	});
+	
+	// 2. saleRadio2 버튼 : 할인 선택
+	// - 할인 선택 시 상품가격이 입력되어 있는 지 판별
+	// - 입력 : 할인율 입력 칸을 readonly 해제 
+	// - 미입력 : 라디오버튼 체크 해제 , 상품가격으로 focus
 	$('input:radio[id="saleRadio2"]').on("click", function() {
-		$('#testRate').attr('readonly', false);
+		$('#testRate').prop('disabled', false);
+// 		$('#testRate_0').prop('disabled', true);
+		$('#testRate').val('');
+		var product_price = $("#prod_price").val();
+		if(product_price < 0 || product_price == ""){
+			alert("상품 가격을 입력하세요.")
+			$('input:radio[id="saleRadio2"]').prop('checked',false);
+			$("#prod_price").focus();
+		}
 	});
 	
 	
 });
 
-//할인율 숫자만 입력
-$(function() {
-	$('input:number[id="discount"]').on("change", function() {
-		var discount = $('#testRate').val();
-		
-		alert(discount);
-	});
-});
+
 </script>
 
+	<!-- 숫자 에 "," 처리를 위한 함수 -->
+        <script type="text/javascript">
+		    function comma(str) {
+		        str = String(str);
+		        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+		    }
+		
+		    function uncomma(str) {
+		        str = String(str);
+		        return str.replace(/[^\d]+/g, '');
+		    } 
+		    
+		    function inputNumberFormat(obj) {
+		        obj.value = comma(uncomma(obj.value));
+		    }
+		    
+		    function inputOnlyNumberFormat(obj) {
+		        obj.value = onlynumber(uncomma(obj.value));
+		    }
+		    
+		    function onlynumber(str) {
+			    str = String(str);
+			    return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g,'$1');
+			}
+		    
+		    function inputNumberFormat_price(obj) {
+		        obj.value = comma(uncomma(obj.value));
+		        var uncomma_price = uncomma(obj.value)
+// 		        alert(uncomma_price)
+		        $("#prod_price_uncomma").val(uncomma_price);
+		    }
+		  	//할인율 숫자만 입력
+		    function inputOnlyNumberFormats(str) {
+		  		var discountRate = $("#testRate").val();
+		  		if(discountRate > 100 || discountRate < 1){
+		  			alert("할인율 범위를 벗어났습니다. ")
+		  			$('#testRate').val('')
+					document.querySelector('#testResultBox02').innerText ='';
+
+	
+		  		}
+		  		// 콤마 붙이기
+		    	str.value = onlynumber(uncomma(str.value));
+		  		
+		  		// 할인율 입력할 때마다 판매가격에 할인율을 적용한 가격을 표시.
+			    var originPrice = document.querySelector('#prod_price').value;
+				if(originPrice == "" || originPrice == null){
+					alert('할인율을 입력하세요.')
+				}
+				//할인율 계산을 위해 콤마 제거 
+				var uncommaOriginPrice = originPrice.replace(/[^\d]+/g, '')
+				//할인율 값 가져오기. 
+			    var discountRate = document.querySelector('#testRate').value;
+			 	//연산결과에 따른 처리
+			    if(! uncommaOriginPrice || !discountRate) {
+			        return false;
+			    //할인율 계산식
+			    } else {
+			    	//할인율에 따른 계산
+			        var discounted = Math.round(uncommaOriginPrice * (discountRate / 100));	// 정수로 출력하기 위해 소수점 아래 반올림 처리
+			        //판매가격 - 할인율 계산
+			        var releasePrice = uncommaOriginPrice - discounted;
+			        //콤마를 붙이기 위해 문자열로 변환
+			        releasePrice = String(releasePrice)
+			        // 할인율 적용 가격에 콤마를 붙여서 출력 
+			        var commaReleasePrice = releasePrice.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			        document.querySelector('#testResultBox02').innerText = commaReleasePrice + '원'
+			    //할인된 가격을 cart_discountprice 라는 id 값의 value에 넣음.
+				    document.getElementById('product_release_price').value = releasePrice;	 
+			        
+			    }
+			 	
+
+		    }
+		</script>
 
 
 <style type="text/css">
@@ -75,6 +183,7 @@ $(function() {
     
 <body class="sb-nav-fixed">
     
+    
     <!-- TOP -->
        <jsp:include page="./inc2/top.jsp"></jsp:include>
           
@@ -85,7 +194,7 @@ $(function() {
                     <div class="container-fluid px-4">
                         <h1 class="mt-4" >상품 등록</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active"></li>
+                            <li class="breadcrumb-item"><a href="admin.ad">Dashboard</a></li>
                         </ol>
                 	 
                 	 </div>
@@ -95,7 +204,7 @@ $(function() {
 			<form action="ProductInsertPro.po" method="post" id="product_insert"enctype="multipart/form-data">
 				<!-- 상품가격과 할인적용 가격에 ,를 붙이기에 hidden으로 파라미터 넘김 => 우선 할인적용 가격만 넘겨서 처리할 예정-->
 <!-- 				<input type="hidden" id = "price" name = "price"> -->
-				<input type="hidden" id ="product_release_price" name ="release_price" value="">
+				<input type="hidden" id ="product_release_price" name ="product_release_price" value="0">
 				<table class="table">
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품명</td>
@@ -118,7 +227,10 @@ $(function() {
 					</tr>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품 가격</td>
-						<td><input type="text" id="testPrice" name ="product_price" placeholder="상품 가격을 입력하세요" style="width:200px"><span>&nbsp;원</span> 
+						<td>
+						<input type="text" id="prod_price" placeholder="상품 가격을 입력하세요" style="width:200px;" onkeyup="inputNumberFormat_price(this)">
+						<input type="hidden" id="prod_price_uncomma" name ="product_price" value="">
+						<span>&nbsp;원</span> 
 						</td>
 						
 					</tr>
@@ -130,13 +242,13 @@ $(function() {
 						<div class="form-check">
 							<input class="form-check-input" type="radio" name="saleRadio" id="saleRadio1" >
 							<label class="form-check-label" for="flexRadioDefault2">할인 미선택</label>
+<!-- 							<input type="hidden" id ="testRate_0" name ="product_discount_price" value="0" disabled="disabled"> -->
 						</div>
 						<div class="form-check">
 							<input class="form-check-input" type="radio" name="saleRadio" id="saleRadio2" > 
 							<label class="form-check-label" for="flexRadioDefault1">할인 적용 
-							<input type="number" id="testRate" name ="product_discount_price" value = "0" size="1" min = "0" max ="100" style = "text-align:center;" readonly="readonly"> <!-- 할인율 입력칸 -->
+							<input type="number" id="testRate" name ="product_discount_price" size="1" min = "0" max ="100" style = "text-align:center;" disabled="disabled" onchange="inputOnlyNumberFormats(this)"> <!-- 할인율 입력칸 -->
 							<span>%</span>
-							<button type="button" id="testCalBtn">&nbsp;계산하기&nbsp;</button>
 							</label>
 						</div>
 						
@@ -145,9 +257,9 @@ $(function() {
 						</td>
 						
 					<tr>
-						<td width="150px" align="left" class="table-secondary">할인율 적용가격</td>
+						<td width="150px" align="left" class="table-secondary">판매가격</td>
 						
-						<td><p id = "testResultBox02" name="product_release_price"></p></td>
+						<td><p id = "testResultBox02"></p></td>
 						
 					</tr>
 	
@@ -169,7 +281,7 @@ $(function() {
 						</select></td>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품 재고량</td>
-						<td width="300px"><input class="w3-input w3-border" type="number" min="0" max="100" placeholder="수량" name="product_amount" onkeyup="inputNumberFormat(this);" required style="width:200px"></td>
+						<td width="300px"><input class="w3-input w3-border" type="number" min="0" max="100" placeholder="수량" id="amount" name="product_amount" onkeyup="inputNumberFormat(this);" required style="width:200px"></td>
 					</tr>
 
 					<tr>
@@ -188,7 +300,7 @@ $(function() {
 					<tr>
 						<td width="100px" align="left" class="table-secondary">요약 설명</td>
 						<td><textarea class="w3-input w3-border" style="resize: none"
-								rows="5" cols="40" placeholder="Product summary" name="product_exp"
+								rows="5" cols="40" placeholder="Product summary" id ="exp" name="product_exp"
 								required="required"></textarea></td>
 						<!--           <td width="300px"><input class="w3-input w3-border" type="" placeholder="Product summary" name="Product summary" required></td> -->
 					</tr>
@@ -197,7 +309,7 @@ $(function() {
 						<td width="100px" align="left" class="table-secondary">상세 설명</td>
 						<td><textarea class="w3-input w3-border" style="resize: none"
 								rows="10" cols="150" placeholder="Product detail"
-								name="product_detail_exp" required="required"></textarea></td>
+								id="detail_exp" name="product_detail_exp" required="required"></textarea></td>
 					</tr>
 
 
@@ -216,7 +328,7 @@ $(function() {
 
 					<tr>
 						<td colspan="2"><button type="submit"
-								class="w3-button w3-block w3-black" onclick="valueCheck(this)">등록하기</button></td>
+								class="btn btn-secondary" onclick="valueCheck(this)">등록하기</button></td>
 					</tr>
 				</table>
 			</form>
@@ -226,45 +338,10 @@ $(function() {
 				<jsp:include page="./inc2/footer.jsp"></jsp:include>
             </div>
         <!-- plugin -->
-            
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="${path}/resources/admin/js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="${path}/resources/admin/assets/demo/chart-area-demo.js"></script>
-        <script src="${path}/resources/admin/assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script src="${path}/resources/admin/js/datatables-simple-demo.js"></script>
-<!--         <script src="../js/jquery-3.6.3.js"></script> -->
         
-		
-
-
-
+        
     </body>
-	<!-- 할인율 -->
-		<script type="text/javascript">
-			document.querySelector('#testCalBtn').addEventListener('click', function() {
-				//상품가격의 값 가져오기.
-			    var originPrice = document.querySelector('#testPrice').value;
-				//할인율 값 가져오기. 
-			    var discountRate = document.querySelector('#testRate').value;
-			 	//연산결과에 따른 처리
-			    if(! originPrice || !discountRate) {
-			        return false;
-			    //할인율 계산식
-			    } else {
-			    	//할인율에 따른 계산
-			        var discounted = Math.round(originPrice * (discountRate / 100));	// 정수로 출력하기 위해 소수점 아래 반올림 처리
-			        //판매가격 - 할인율 계산
-			        var releasePrice = originPrice - discounted;
-			        document.querySelector('#testResultBox02').innerText = releasePrice + '원'
-			    //할인된 가격을 cart_discountprice 라는 id 값의 value에 넣음.
-				    document.getElementById('product_release_price').value = releasePrice;	 
-			        
-			    }
-			 	
-			});
-		</script>
+
 		
 	
 		<!-- SELECT 박스 값 변경에 따라 TRUE, FALSE 처리 -->
@@ -272,7 +349,7 @@ $(function() {
 		var BrandStatus = false;
 		var SizeStatus = false;
 		var ColorStatus = false;
-
+		var SaleStatus = false;
 		$(function() {
 			$("#product_brand").on("change", function() {
 				var BrandVal = $("#product_brand").val();
@@ -307,9 +384,30 @@ $(function() {
 			});//color 판별 끝
 		});	//함수 끝
 		
-	
+		// 할인여부 판별
+		$(function() {
+			$("input[name=saleRadio]").on("change", function() {
+				var ischecked = $("#saleRadio1").is(':checked');
+				var ischecked2 = $("#saleRadio2").is(':checked');
+				// 할인 미선택, 할인 적용 라디오버튼을 하나라도 선택하지 않았을 경우 false로 상태를 변경.
+				if(!ischecked && !ischecked2){
+		            SaleStatus = false;
+		         }else{
+		            SaleStatus = true;
+		         }
+			});//brand 판별 끝
+		});//함수 끝
 		//색상, 사이즈 미선택 시 못넘어가게 하는 구문
 		function valueCheck(){
+			var prod_name = $("#product_name").val()
+			var prod_price = $("#prod_price").val()
+			var prod_amount = $("#amount").val()
+			var prod_exp = $("#exp").val()
+			var prod_detail = $("#detail_exp").val()
+			alert($("input[name=product_discount_price]").val())
+			alert($("#testRate_0").val())
+			
+			
 			if(BrandStatus == false){
 				alert("브랜드를 선택 해주세요")
 				event.preventDefault(); // submit 기능 막기
@@ -319,36 +417,33 @@ $(function() {
 			}else if(ColorStatus == false){
 				alert("색상을 선택 해주세요");
 				event.preventDefault(); // submit 기능 막기
+			}else if(SaleStatus == false){
+				alert("할인여부를 선택 해주세요");
+				event.preventDefault(); // submit 기능 막기
+			}else if(prod_name == ""){
+				alert("상품명을 입력하세요");
+				event.preventDefault(); // submit 기능 막기
+			}else if(prod_price == ""){
+				alert("상품가격을 입력하세요");
+				event.preventDefault(); // submit 기능 막기
+			}else if(prod_price == ""){
+				alert("상품가격을 입력하세요");
+				event.preventDefault(); // submit 기능 막기
+			}else if(prod_amount == ""){
+				alert("상품 재고량을 입력하세요");
+				event.preventDefault(); // submit 기능 막기
+			}else if(prod_exp == ""){
+				alert("상품 요약설명을 입력하세요");
+				event.preventDefault(); // submit 기능 막기
+			}else if(prod_detail == ""){
+				alert("상품 상세설명을 입력하세요");
+				event.preventDefault(); // submit 기능 막기
 			}
 			
 
 		}// valueCheck 끝
 		
 		</script>
-	<!-- 숫자 에 "," 처리를 위한 함수 -->
-        <script type="text/javascript">
-		    function comma(str) {
-		        str = String(str);
-		        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
-		    }
-		
-		    function uncomma(str) {
-		        str = String(str);
-		        return str.replace(/[^\d]+/g, '');
-		    } 
-		    
-		    function inputNumberFormat(obj) {
-		        obj.value = comma(uncomma(obj.value));
-		    }
-		    
-		    function inputOnlyNumberFormat(obj) {
-		        obj.value = onlynumber(uncomma(obj.value));
-		    }
-		    
-		    function onlynumber(str) {
-			    str = String(str);
-			    return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g,'$1');
-			}
-		</script>
+
      	
 </html>
