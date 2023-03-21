@@ -45,9 +45,9 @@ public class BoardController {
 			model.addAttribute("msg", "글쓰기 실패");
 			return "admin/admin_notice_manage";
 		}else if(notice_type.equals("Notice")){
-		
+			return "redirect:/BoardList.bo?notice_idx="+board.getNotice_idx();
 		}
-		return "redirect:/BoardList.bo?notice_idx="+board.getNotice_idx();
+		return "redirect:/FAQList.bo?notice_idx="+board.getNotice_idx();
 	}// 게시판 등록 작업 끝
 	//-------------공지 목록 -----------
 	@GetMapping("/BoardList.bo")
