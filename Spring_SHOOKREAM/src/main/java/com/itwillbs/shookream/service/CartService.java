@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.shookream.mapper.CartMapper;
+import com.itwillbs.shookream.vo.OrderdeliveryVo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.cartVo;
 import com.itwillbs.shookream.vo.cartVoArr;
@@ -73,5 +74,9 @@ public class CartService {
 	public void updateOrder_Amount(cartVo vo2) {
 		mapper.updateOrder_Amount(vo2);		
 	}
+	public int InsertOrderDetail(cartVo vo2, OrderdeliveryVo delivery) {
+		return mapper.insertCartOrderDetail(vo2,delivery);
+	}
+	
 
 }

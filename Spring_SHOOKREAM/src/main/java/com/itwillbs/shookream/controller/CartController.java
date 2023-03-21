@@ -29,7 +29,11 @@ import org.springframework.web.servlet.resource.HttpResource;
 
 import com.itwillbs.shookream.service.BoardService;
 import com.itwillbs.shookream.service.CartService;
+import com.itwillbs.shookream.service.MemberService;
+import com.itwillbs.shookream.service.ProductService;
 import com.itwillbs.shookream.vo.BoardVo;
+import com.itwillbs.shookream.vo.MemberVo;
+import com.itwillbs.shookream.vo.OrderdeliveryVo;
 import com.itwillbs.shookream.vo.PageInfo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.cartVo;
@@ -41,6 +45,8 @@ public class CartController {
 	@Autowired
 	private CartService service;
 	
+	@Autowired
+	private MemberService service_member;
 	//장바구니 이동
 	@GetMapping(value = "CartList.ca")
 	public String cartList(
@@ -237,6 +243,10 @@ public class CartController {
 			cart_order_total_price += cartOrderList.get(i).getCart_order_price();
 		}
 		System.out.println(cartOrderList);
+		String sId = (String)session.getAttribute("sId");
+		MemberVo member = service_member.getMemberInfo(sId);
+		
+		model.addAttribute("member", member);
 		model.addAttribute("cartOrderList", cartOrderList);
 		model.addAttribute("cart_total_price", cart_total_price);
 		model.addAttribute("cart_order_total_price", cart_order_total_price);
@@ -381,7 +391,7 @@ public class CartController {
 	
 		//------구매페이지에서 다중 구매 처리 -------
 		@GetMapping(value = "CartOrderDetailPro.ca")
-		public String cartOrderForm(HttpSession session,Model model,cartVoArr vo) {
+		public String cartOrderForm(HttpSession session,Model model,cartVoArr vo,OrderdeliveryVo delivery) {
 			if(session.getAttribute("sId") == null || session.getAttribute("member_idx") == null ) {
 				model.addAttribute("msg", "로그인이 필요한 페이지입니다.");
 				model.addAttribute("url", "LoginMember.me");
@@ -402,18 +412,20 @@ public class CartController {
 				int orderSelectCount = service.getCartOrderCount(vo2);// db에 이미 주문 한 상품 있는지 확인
 				
 				if(orderSelectCount > 0) { //이미 주문한 상품이 있을 시
+					int insertOrder2 = service.InsertOrderDetail(vo2,delivery);
 					service.updatePorduct_Amount(vo2); //상품 수량 빼기 작업 
 					service.updateOrder_Amount(vo2); // 주문 수량 더하기 작업
 					service.getCartDelete(vo2.getCart_idx(), vo2.getMember_idx()); // 주문 성공시 카트에 담긴 상품 삭제 작업
 				
 				}else {//이미 주문한 상품이 없을 시
+					int insertOrder2 = service.InsertOrderDetail(vo2,delivery);
 					int insertCount = service.insertCartOrder(vo2);// insert 작업
-					
 					if(insertCount > 0) {//insert 성공 시
 						service.updatePorduct_Amount(vo2); // 상품 수량 빼기 작업
 						service.getCartDelete(vo2.getCart_idx(), vo2.getMember_idx());// 주문 성공시 카트에 담긴 상품 삭제 작업
 					} 
 				}
+				
 			}
 			return "product/order_form_cart";
 		}// 다중 주문 끝
