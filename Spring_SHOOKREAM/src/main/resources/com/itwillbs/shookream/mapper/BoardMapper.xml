@@ -78,7 +78,10 @@
 	<select id="selectBoardJson" resultType="com.itwillbs.shookream.vo.BoardVo">
 		SELECT *
 			FROM notice
-			WHERE notice_category = #{notice_category}
+			WHERE notice_type = #{notice_type}
+			<if test='notice_category neq null and notice_category neq""'>		
+				AND notice_category = #{notice_category}
+			</if>
 	</select>
 
 

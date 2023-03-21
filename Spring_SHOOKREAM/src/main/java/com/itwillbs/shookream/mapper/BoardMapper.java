@@ -28,7 +28,7 @@ public interface BoardMapper {
 		boolean deleteBoard(int notice_idx);
 		
 		// 공지 카테고리별 모아보기
-		List<BoardVo> selectBoardJson(String notice_category);
+		List<BoardVo> selectBoardJson(@Param("notice_type") String notice_type,@Param("notice_category") String notice_category);
 		
 //		BoardVo selectModifyBoard(int notice_idx);
 

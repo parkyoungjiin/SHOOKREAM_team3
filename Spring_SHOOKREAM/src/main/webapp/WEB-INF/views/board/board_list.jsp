@@ -33,46 +33,43 @@
 		text-align: left;
 	}
 	
-	
 	#border_content {
 		padding: 130px;
 	}
 	
-	#selectCategory {
+	#boardCategory {
 		width: 200px;
-		text-align: right;
 	}
 </style>
 <script type="text/javascript">
+	let pageNum=1;
 
-	// 카테고리 선택
 	function selectCategory() {
-		var urlParam = new URL(location.href).searchParams;
-		var pageNum = urlParam.get('pageNum');
-		alert("pageNum");
-		let category = $("#selectCategory > option:selected").val();
+		let category = $("#boardCategory > option:selected").val();
+//		console.log(category);
 //		alert(category);
 		$.ajax({
-			type:"GET",
+			typt:"GET",
 			url: "BoardListJson.bo?notice_category=" + category,
-			dataType: "json"
-			
+			dataType:"json"
 		})
 		.done(function(boardList) {
-			$("#table > tbody").html("");
-			$("#list").empty();
+			$("#boardTable > tbody").empty();
 			for(let board of boardList) {
+//				alert("board확인" + board);
 				let result = "<tr>"
 							+ "<th scope='row' style='text-align:center'>" + board.notice_idx + "</th>"
 							+ "<td style='text-align:center'><b>" + board.notice_category + "</b></td>"
-							+ "<td><a href='BoardInfo.bo?notice_idx=" + board.notice_idx + "&pageNum=" + pageNum + "' style='text-decoration:none'>"+ board.notice_subject + "</a></td>"
+							+ "<td>"
+								+ "<a href='BoardInfo.bo?notice_idx=" + board.notice_idx + "&pageNum=" + pageNum + "' style='text-decoration:none'>" + board.notice_subject +"</a>"
+							+ "</td>"
 							+ "<td style='text-align:center'>" + board.notice_date + "</td>"
 							+ "</tr>"
-				$("table > tbody").append(result);
+				$("#boardTable > tbody").append(result);
 			}
 		})
 		.fail(function() {
-			$("#table > tbody").before("<h5>해당 카테고리 게시글이 없습니다.</h5>")
+			$("#cateTest").before("<h5>공지사항이 없습니다.</h5>");
 		});
 	}
 	
@@ -105,15 +102,15 @@
 		<div id="border_content">
 			<h3 style="padding: 20px;">공지사항</h3>
 			<div id="category">
-				<select id="selectCategory" name="selectCategory" class="form-select" onclick="selectCategory()">
-					<option>카테고리를 선택하세요</option>
+				<select id="boardCategory" name="boardCategory" class="form-select" onclick="selectCategory()">
+					<option value="" selected>전체보기</option>
 					<option value="EVENT">EVENT</option>
 					<option value="DELIVERY">DELIVERY</option>
 					<option value="NOTICE">NOTICE</option>
 				</select>
 			</div>
 			<hr style="border:solid 2px black;">
-			<table class="table">
+			<table class="table" id="boardTable">
 			  <c:choose>
 					<c:when test="${empty param.pageNum }">
 						<c:set var="pageNum" value="1" />
@@ -130,18 +127,18 @@
 			      <th scope="col">등록일</th>
 			    </tr>
 			  </thead>
-			 <c:forEach var="board" items="${boardList }">
-			  <tbody id="list">
-			    <tr>
-			      <th scope="row" style="text-align: center">${board.notice_idx }</th>
-			      <td style="text-align: center"><b>${board.notice_category }</b></td>
-			      <td>
-			      	<a href="BoardInfo.bo?notice_idx=${board.notice_idx }&pageNum=${pageNum }" style="text-decoration:none">${board.notice_subject }</a>
-				  </td>
-			      <td style="text-align: center">${board.notice_date }</td>
-			    </tr>
+			  <tbody>
+			 	<!--<c:forEach var="board" items="${boardList }">
+				    <tr>
+				      <th scope="row" style="text-align: center">${board.notice_idx }</th>
+				      <td style="text-align: center"><b>${board.notice_category }</b></td>
+				      <td>
+				      	<a href="BoardInfo.bo?notice_idx=${board.notice_idx }&pageNum=${pageNum }" style="text-decoration:none">${board.notice_subject }</a>
+					  </td>
+				      <td style="text-align: center">${board.notice_date }</td>
+				    </tr>
+			 	</c:forEach>-->
 			  </tbody>
-			 </c:forEach> 
 			</table>
 			
 			<c:choose>
@@ -288,27 +285,9 @@ function w3_close() {
 	  }
 	}
 </script>
-<!-- 네이버 아이디 로그인 -->
-<script type="text/javascript">
-  var naver_id_login = new naver_id_login("nSNLHIW18gDjrrJsFDeE", "http://localhost:8080/Project/index.jsp");
-  // 접근 토큰 값 출력
-//   alert(naver_id_login.oauthParams.access_token);
-  // 네이버 사용자 프로필 조회
-  naver_id_login.get_naver_userprofile("naverSignInCallback()");
-  // 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
-  function naverSignInCallback() {
-    alert(naver_id_login.getProfileData('email'));
-  }
-</script>
 
-<!-- 카테고리 모아보기 이동 페이지 -->
-<script>
 
-function collectView(e) {
-	
-}
 
-</script>
 <!-- End Channel Plugin -->
 
 
