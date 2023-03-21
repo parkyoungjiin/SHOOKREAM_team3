@@ -30,14 +30,14 @@ public class AdminService {
 		}
 		
 		// 상품 수정 updateProduct() 메서드
-		public int updateProduct(int product_idx, ProductVo product) {
-			return mapper.modifyProduct(product_idx, product);
+		public int updateProduct(int product_idx, ProductVo product, imageVo image) {
+			mapper.modifyProduct(product_idx, product, image);
+		    return 1;
 		}
-		
 		// 상품 수정 - 이미지 수정 updateImage() 메서드
-		public int updateImage(int product_idx, ProductVo product, imageVo image) {
-			return mapper.modifyImage(product_idx, product, image);
-		}
+//		public int updateImage(int product_idx, ProductVo product, imageVo image) {
+//			return mapper.modifyImage(product_idx, product, image);
+//		}
 
 		// 상품 삭제 deleteProduct() 메서드
 		public int deleteProduct(int product_idx) {

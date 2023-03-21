@@ -99,14 +99,12 @@
                 	 
           
             <!-- 상품 등록 폼 -->
-			<form action="ProductModifyPro.po?product_idx=${product.product_idx}" method="post"
-				enctype="multipart/form-data">
+			<form action="ProductModifyPro.po?product_idx=${product.product_idx}" method="post" enctype="multipart/form-data">
 				<table class="table">
 					<tr>
 						<td width="100px" align="left" class="table-secondary">상품명</td>
 						<td width="300px">
 						<input class="w3-input w3-border"type="text" placeholder="Product Name" name="product_name" id="product_name" value ="${product.product_name }" style="width:200px">
-<%-- 							<input type="hidden" name="product_name" value="${product.product_name}"> --%>
 							</td>
 
 					</tr>
@@ -232,7 +230,6 @@
 						<td><textarea class="w3-input w3-border" style="resize: none"
 								rows="5" cols="40" placeholder="Product summary" name="product_exp"
 								required="required">${product.product_exp }</textarea></td>
-						<!--           <td width="300px"><input class="w3-input w3-border" type="" placeholder="Product summary" name="Product summary" required></td> -->
 					</tr>
 
 					<tr>
@@ -244,10 +241,8 @@
 
 					<tr>
 						<td width="100px" align="left" class="table-secondary">메인 이미지</td>
-<%-- 						<td><input type="file" name="file" >기존 메인 파일: <input type="text" value="${image.image_main_file }" width="100" name ="origin_file" readonly></td> --%>
 						<td>
 						<input type="file" name="files" >
-<%-- 						 ${image.image_main_file } --%>
 						<c:set var="imagePathArray" value="${fn:split(image.image_main_file, '/')}" />
 							기존 메인 파일 : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" value="${imagePathArray[0]}" name="product_origin_file_1" readonly size="30">
 
@@ -258,15 +253,12 @@
 						<td><input type="file" name="files" >
 						<c:set var="imagePathArray" value="${fn:split(image.image_main_file, '/')}" />
 							기존 제품 이미지1 : &nbsp;<input type="text" value="${imagePathArray[1]}" name="product_origin_file_2" readonly size="30">
-<%-- 						<input type="text" value="${image.image_real_file1 }" width="100" name ="origin_file2" readonly></td>					</tr> --%>
 					<tr>
 						<td width="100px" align="left" class="table-secondary">제품 이미지2</td>
 						<td><input type="file" name="files"> 
 						<c:set var="imagePathArray" value="${fn:split(image.image_main_file, '/')}" />
 						기존 제품 이미지2 : &nbsp;<input type="text" value="${imagePathArray[2]}" name="product_origin_file_3" readonly size="30"></td></tr>
-
 					<tr>
-						
 						<td colspan="2">
 						<button type="submit" class="w3-button w3-block w3-black">수정하기</button>
 						</td>
@@ -282,12 +274,12 @@
         <!-- plugin -->
             
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="admin/js/scripts.js"></script>
+        <script src="${path}/WEB-INF/views/admin/js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="admin/assets/demo/chart-area-demo.js"></script>
-        <script src="admin/assets/demo/chart-bar-demo.js"></script>
+        <script src="${path}/WEB-INF/views/admin/assets/demo/chart-area-demo.js"></script>
+        <script src="${path}/WEB-INF/views/admin/assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script src="admin/js/datatables-simple-demo.js"></script>
+        <script src="${path}/WEB-INF/views/admin/js/datatables-simple-demo.js"></script>
         <script src="../js/jquery-3.6.3.js"></script>
         
 		

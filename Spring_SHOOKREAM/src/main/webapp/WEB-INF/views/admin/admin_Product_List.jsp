@@ -53,7 +53,6 @@
  			table{ 
  			width: 100%; 
      		table-layout: fixed; 
-     		text-align: center; 
  			} 
 		</style>
 </head>
@@ -116,7 +115,7 @@
 										</button>
 											<input type="hidden" name="image_main_file" value="${product.image_main_file}">
 <%-- 										<button type="button" class="btn btn-light" onclick= "deleteProduct(${product.product_idx})">삭제</button> --%>
-										<form action="ProductDeletePro.po" method="post" onsubmit="location.href='ProductList.po'">
+										<form action="ProductDeletePro.po" method="post" onsubmit="location.href='ProductListForm.po'">
 											<input type="hidden" name="product_idx" value="${product.product_idx}">
 											<input type="hidden" name="image_main_file" value="${product.image_main_file}">
 											<input type="submit" class="btn btn-light" value="삭제">
