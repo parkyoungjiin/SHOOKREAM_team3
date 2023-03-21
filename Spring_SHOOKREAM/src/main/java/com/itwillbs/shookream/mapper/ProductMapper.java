@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.OrderVo;
+import com.itwillbs.shookream.vo.OrderdeliveryVo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.ReviewVo;
 import com.itwillbs.shookream.vo.WishVo;
@@ -34,7 +35,7 @@ public interface ProductMapper {
 
 	public List<ReviewVo> selectReviewList(int product_idx);
 
-	public int insertOrderDetail(OrderVo order);
+	public int insertOrderDetail(@Param("order")OrderVo order,@Param("delivery")OrderdeliveryVo delivery);
 
 	public void updaetProduct(OrderVo order);
 
