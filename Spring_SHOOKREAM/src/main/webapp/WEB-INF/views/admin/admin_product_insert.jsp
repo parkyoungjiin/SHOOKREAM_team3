@@ -182,6 +182,9 @@ $(function() {
 								<option value="red">RED</option>
 								<option value="blue">BLUE</option>
 								<option value="gray">GRAY</option>
+								<option value="pink">PINK</option>
+								<option value="yellow">YELLOW</option>
+								<option value="green">GREEN</option>
 						</select></td>
 					</tr>
 
