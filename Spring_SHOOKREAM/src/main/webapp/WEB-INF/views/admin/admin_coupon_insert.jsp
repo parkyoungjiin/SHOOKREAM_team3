@@ -87,9 +87,9 @@ if (sId == null || !sId.equals("admin")) {%>
 				
 				if($("#selectBenefit").val() == "배송비 무료") {
 					$("#discountInput").prop("readonly", true);
-					$("#discountInput").val("");
+					$("#discountInput").val("3000");
 					$("#discountSelect").prop("disabled", true);
-					$("#discountSelect").val("");
+					$("#discountSelect").val("원");
 					$("#maxDiscount").prop("readonly", true);
 				} else if($("#selectBenefit").val() == "금액 할인"){
 					$("#discountInput").prop("readonly", false);
@@ -115,10 +115,11 @@ if (sId == null || !sId.equals("admin")) {%>
 			if($("#dataCheck").is(":checked")){
 				$("#start_date").prop("readonly", true);
 				$("#end_date").prop("readonly", true);
-				$("#end_date").val("");
+				$("#end_date").val("9999-12-31");
 			} else {
 				$("#start_date").prop("readonly", false);
 				$("#end_date").prop("readonly", false);
+				$("#end_date").val("");
 			}
 		});	
 		
@@ -173,7 +174,20 @@ if (sId == null || !sId.equals("admin")) {%>
 
 					<tr>
 						<td width="20px" align="left" class="table-secondary">쿠폰 내용</td>
-						<td><textarea class="form-control" style="resize: none"
+						<td>
+						<div class="form-check">
+						  <input class="form-check-input" type="radio" name="coupon_banner" id="flexRadioDefault1" value="banner_1">
+						  <label class="form-check-label" for="flexRadioDefault1">
+						    banner_1
+						  </label>
+						</div>
+						<div class="form-check">
+						  <input class="form-check-input" type="radio" name="coupon_banner" id="flexRadioDefault2" value="banner_2">
+						  <label class="form-check-label" for="flexRadioDefault2">
+						    banner_2
+						  </label>
+						</div>
+						<textarea class="form-control" style="resize: none"
 								rows="5" cols="40" 
 								name="coupon_content" required="required"></textarea></td>
 						<!--           <td width="300px"><input class="w3-input w3-border" type="" placeholder="Product summary" name="Product summary" required></td> -->
@@ -184,16 +198,16 @@ if (sId == null || !sId.equals("admin")) {%>
 						<td width="30px">
 							<div class="row g-2">
 								<div class="col-md">
-									<select class="form-select" id="selectBenefit" aria-label="size 1 select example" style="width: 200px;">
+									<select class="form-select" name="coupon_benefit" id="selectBenefit" aria-label="size 1 select example" style="width: 200px;">
 										<option selected value="금액 할인">금액 할인</option>
 										<option value="배송비 무료">배송비 무료</option>
 									</select>
 								</div>
 								<div class="col-md">
-									<input class="form-control" type="number" id="discountInput" placeholder="금액 또는 할인율" name="coupon_name" style="text-align: right; " required>
+									<input class="form-control" type="number" id="discountInput" placeholder="금액 또는 할인율" name="coupon_benefit_price" style="text-align: right; " required>
 								</div>
 								<div class="col-md-2">
-									<select class="form-select" id="discountSelect" size="1" id="discountSelect" aria-label="size 1 select example">
+									<select class="form-select" id="discountSelect" name="coupon_benefit_unit" size="1" id="discountSelect" aria-label="size 1 select example">
 										<option selected value="원">원</option>
 										<option value="%">%</option>
 									</select>
@@ -205,12 +219,12 @@ if (sId == null || !sId.equals("admin")) {%>
 					<tr>
 						<td width="20px" align="left" class="table-secondary">최소주문금액</td>
 						<td><input class="form-control" type="number"
-							name="coupon_name" required style="width: 200px;"></td>
+							name="coupon_min_price" required style="width: 200px;"></td>
 					</tr>
 					
 					<tr>
 						<td width="20px" align="left" class="table-secondary">최대할인금액</td>
-						<td width="100px"><input class="form-control" type="number" name="coupon_name" id="maxDiscount" readonly required style="width: 200px;"> </td>
+						<td width="100px"><input class="form-control" type="number" name="coupon_max_discount" id="maxDiscount" readonly required style="width: 200px;"> </td>
 					</tr>
 					<!-- 					<td width="20px" align="left" class="table-secondary">할인 가격</td> -->
 					<!-- 						<td><input type="text" id="testPrice" name ="coupon_price" placeholder="할인 가격을 입력하세요"><span>&nbsp;원</span>  -->
@@ -248,14 +262,14 @@ if (sId == null || !sId.equals("admin")) {%>
 						<div class="row g-2">
 							  <div class="col-md" style="float: right;">
 							  <div class="form-check" style="width: 200px;" >
-								  <input class="form-check-input" type="checkbox" value="" id="amountCheck">
+								  <input class="form-check-input" type="checkbox" id="amountCheck">
 								  <label class="form-check-label" for="flexCheckIndeterminate">
 								    개수제한 없음
 								  </label>
 								</div>
 								</div>
 							 <div class="col-md-2">
-							 <input class="form-control" type="number" id="amountInput" name="coupon_name" required style="width: 80px;">
+							 <input class="form-control" type="number" id="amountInput" name="coupon_amount"  required style="width: 80px;">
 							  </div>
 							  <div class="col-md"> </div>
 							  <div class="col-md"> </div>

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.shookream.vo.AuthVo;
+import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.WishVo;
 
@@ -57,6 +58,10 @@ public interface MemberMapper {
 	public boolean updatePass(@Param("vo") MemberVo vo,@Param("imsiPw") String imsiPw);
 
 	public List<WishVo> selectWish(int member_idx);
+
+	public CouponVo selectWelCoupon();
+
+	public int insertWelCoupon(@Param("coupon") CouponVo coupon, @Param("member_idx") int member_idx);
 
 
 }

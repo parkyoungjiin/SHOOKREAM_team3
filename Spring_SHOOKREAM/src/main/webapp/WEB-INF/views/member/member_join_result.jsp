@@ -51,7 +51,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
   
   <!-- Footer -->
  <div style="padding-top: 200px;">
-  <footer class="w3-padding-64 w3-small w3-center" id="footer" >
+  <div class="w3-padding-64 w3-small w3-center" >
     <div id = "sform">
         <h4>회원가입에 성공했습니다 <i class="fa fa-heart" style="font-size:10px;color:FC66B8"></i></h4>
         <br>
@@ -60,7 +60,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 		<button type="button" class="btn btn-secondary" style="margin-top: 50px;" onclick="location.href='LoginMember.me'">로그인</button>
 
 	</div>
-  </footer>
+  </div>
    <footer>
   	<jsp:include page="../inc/footer.jsp"/>
   </footer>

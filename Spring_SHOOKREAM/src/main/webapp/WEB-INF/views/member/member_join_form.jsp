@@ -430,7 +430,7 @@ function inputIdChk(){
 				return false; // submit 취소
 			}
 // 				alert(isEmailAuth); 
-				alert("Email 인증 성공!");
+// 				alert("Email 인증 성공!");
 				return true; // submit 실행
 		});
 		
@@ -579,7 +579,7 @@ window.onload = function(){
         new daum.Postcode({
             oncomplete: function(data) { //선택시 입력값 세팅
                 document.getElementById("address_kakao2").value = data.address; // 주소 넣기
-                document.querySelector("input[name=address_detail]").focus(); //상세입력 포커싱
+                document.querySelector("input[name=address2]").focus(); //상세입력 포커싱
             }
         }).open();
     });

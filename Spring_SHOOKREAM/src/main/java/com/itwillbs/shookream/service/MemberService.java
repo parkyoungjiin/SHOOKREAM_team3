@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.shookream.mapper.MemberMapper;
 import com.itwillbs.shookream.vo.AuthVo;
+import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.WishVo;
 
@@ -92,6 +93,17 @@ public class MemberService {
 	// wish 조회
 	public List<WishVo> getWish(int member_idx) {
 		return mapper.selectWish(member_idx);
+	}
+
+
+	// 회원가입 축하 쿠폰 조회
+	public CouponVo getWelCouponInfo() {
+		return mapper.selectWelCoupon();
+	}
+	
+	// 회원가입 쿠폰 지급 
+	public int insertWelCoupon(CouponVo welcomeCoupon, int member_idx) {
+		return mapper.insertWelCoupon(welcomeCoupon, member_idx);
 	}
 
 

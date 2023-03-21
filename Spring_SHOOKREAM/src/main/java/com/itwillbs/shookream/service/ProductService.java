@@ -75,8 +75,8 @@ public class ProductService {
 	// 구매 끝 
 	
 	// 쿠폰 목록 조회
-	public List<CouponVo> getCouponList(int member_idx) {
-		return mapper.selectCoupontList(member_idx);
+	public List<CouponVo> getCouponList(int member_idx, int product_price) {
+		return mapper.selectCoupontList(member_idx, product_price);
 	}
 
 	// 주문 내역 조회
