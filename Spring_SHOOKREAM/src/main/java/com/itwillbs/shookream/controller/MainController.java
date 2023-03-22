@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.itwillbs.shookream.service.AdminService;
 import com.itwillbs.shookream.service.MainService;
 import com.itwillbs.shookream.service.MemberService;
 import com.itwillbs.shookream.service.ProductService;
 import com.itwillbs.shookream.vo.PageInfo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.WishVo;
+import com.itwillbs.shookream.vo.imageVo;
 
 /**
  * Handles requests for the application home page.
@@ -34,6 +36,8 @@ public class MainController {
 	private MemberService service_member;
 	@Autowired 
 	private ProductService service_product;
+	@Autowired 
+	private AdminService service_admin;
 
 	//-----------------------메인 페이지--------------------------------
 	@RequestMapping(value = "/main.ma", method = RequestMethod.GET)
@@ -50,6 +54,18 @@ public class MainController {
 		// 베스트 상품 가져오기
 		List<ProductVo> productBestList = service.getProductBestList(startRow, listLimit);
 		model.addAttribute("productBestList", productBestList);
+		
+		for(ProductVo product1 : productBestList) {
+	        // 일치하는 상품을 찾았을 때 해당 상품에 대한 이미지를 조회
+	        List<imageVo> imageList = service_admin.getImgList(product1.getProduct_idx());
+	        String fileNames = imageList.get(0).getImage_main_file();
+	        String[] splitFileNames = fileNames.split("/");
+	        String firstFileName = splitFileNames[0]; // 맨 앞 파일명
+	        System.out.println("fileNames :: " + firstFileName);
+	        
+	        product1.setImage_main_file(firstFileName);
+	    }
+		
 		
 		// 최근 등록 상품 가져오기
 		List<ProductVo> productNewList = service.getProductNewList(startRow, listLimit);
