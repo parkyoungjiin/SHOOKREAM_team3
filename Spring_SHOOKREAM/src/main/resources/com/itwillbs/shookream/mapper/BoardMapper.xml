@@ -74,7 +74,7 @@
 	</delete>
 	<!-- 공지 삭제 -->
 	
-	<!-- 게시판 카테고리별 모아보기 -->
+	<!-- 공지사항 게시판 카테고리별 모아보기 -->
 	<select id="selectBoardJson" resultType="com.itwillbs.shookream.vo.BoardVo">
 		SELECT *
 			FROM notice

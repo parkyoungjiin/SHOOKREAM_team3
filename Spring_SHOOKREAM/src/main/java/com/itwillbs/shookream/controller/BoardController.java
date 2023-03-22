@@ -110,6 +110,30 @@ public class BoardController {
 		}
 	}
 	
+	// faq : 카테고리별 모아보기 - json
+	@ResponseBody
+	@GetMapping("FAQListJson.bo")
+	public void faqListJson(Model model, HttpServletResponse response, @RequestParam String notice_category) {
+		System.out.println("전달 카테고리 확인 : " + notice_category);
+		String notice_type="FAQ";
+		List<BoardVo> boardList = service.getBoardJson(notice_type, notice_category);
+		
+		JSONArray jsonArray = new JSONArray();
+		
+		for(BoardVo board : boardList) {
+			JSONObject jsonObject = new JSONObject(board);
+			jsonArray.put(jsonObject);
+//			System.out.println("json 확인 : " + jsonObject);
+		}
+		
+		try {
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().print(jsonArray);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	//--------------공지 상세정보 --------------
 	@GetMapping("/BoardInfo.bo")
