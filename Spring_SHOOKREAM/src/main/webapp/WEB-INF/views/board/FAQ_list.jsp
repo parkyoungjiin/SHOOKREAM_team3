@@ -99,7 +99,7 @@
 	  <div id="border_content">
 			<h3 style="padding: 20px;">자주묻는 질문</h3>
 			<div id="category">
-				<select id="faqCategory" name="faqCategory" class="form-select" onclick="selectCategory()">
+				<select id="faqCategory" name="faqCategory" class="form-select" onchange="selectCategory()">
 					<option value="" selected>전체보기</option>
 					<option value="주문/결제">주문/결제</option>
 					<option value="회원정보">회원정보</option>
