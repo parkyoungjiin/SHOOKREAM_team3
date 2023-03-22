@@ -102,7 +102,7 @@
 		<div id="border_content">
 			<h3 style="padding: 20px;">공지사항</h3>
 			<div id="category">
-				<select id="boardCategory" name="boardCategory" class="form-select" onclick="selectCategory()">
+				<select id="boardCategory" name="boardCategory" class="form-select" onchange="selectCategory()">
 					<option value="" selected>전체보기</option>
 					<option value="EVENT">EVENT</option>
 					<option value="DELIVERY">DELIVERY</option>
@@ -128,7 +128,7 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-			 	<!--<c:forEach var="board" items="${boardList }">
+			 	<c:forEach var="board" items="${boardList }">
 				    <tr>
 				      <th scope="row" style="text-align: center">${board.notice_idx }</th>
 				      <td style="text-align: center"><b>${board.notice_category }</b></td>
@@ -137,7 +137,7 @@
 					  </td>
 				      <td style="text-align: center">${board.notice_date }</td>
 				    </tr>
-			 	</c:forEach>-->
+			 	</c:forEach>
 			  </tbody>
 			</table>
 			
