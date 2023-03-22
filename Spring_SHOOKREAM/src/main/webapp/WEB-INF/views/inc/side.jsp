@@ -71,11 +71,13 @@
 <!--  <h5>최근 본 상품</h5> -->
 <!--   </div> -->
 <!-- </nav> -->
+<!-- 세션 최근 본 상품 뿌리기 -->
  <div style="height:300px; margin-right:100px;" id="floatMenu" >
 <%-- ${fn:split(image.image_main_file,'/')[0]} --%>
 ${fn:split(imageList[0].image_main_file,'/')[0]}
 ${fn:split(imageList[1].image_main_file,'/')[0]}
 ${fn:split(imageList[2].image_main_file,'/')[0]}
+<img src="${path}/resources/upload/${product.image_main_file }" class="img-thumbnail" onError="this.onerror=null; this.src='resources/images/noImg.JPG';" alt="..." style="width:100px; height:100px;">
 
 </div>
 
