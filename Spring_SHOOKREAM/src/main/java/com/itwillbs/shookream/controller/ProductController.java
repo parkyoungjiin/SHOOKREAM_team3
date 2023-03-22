@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,6 +41,7 @@ public class ProductController {
 	@Autowired
 	private MemberService service_member;
 	
+	List<imageVo> imageList;
 	
 	// 상품 상세 정보
 	@GetMapping(value = "/ProductInfoForm.po")
@@ -81,14 +83,28 @@ public class ProductController {
 		product = service.getProduct(product_idx);
 		System.out.println("product 조회 : " + product);
 		
+		imageList = new ArrayList<imageVo>();
+		
 		image = service.getImage(product_idx);
 		System.out.println("image 조회 : " + image);
 		
-		session.setAttribute("product", product);
-		session.setAttribute("image", image);
+		if(imageList.size() < 3) {
+			imageList.add(image);
+		} else {
+			imageList.set(0, imageList.get(1));
+			imageList.set(1, imageList.get(2));
+			imageList.add(image);
+		}
+		System.out.println("imageList 조회 : " + imageList);
 		
+		session.setAttribute("product_idx", product_idx);
+		session.setAttribute("image", image);
+		session.setAttribute("imageList", imageList);
+		System.out.println("이거다"+session.getAttribute("image"));
+		model.addAttribute("product_idx", product_idx);
 		model.addAttribute("product", product);
 		model.addAttribute("image", image);
+		model.addAttribute("imageList", imageList);
 		
 		// ======================================================
 		

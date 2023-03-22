@@ -1,8 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+   <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <head>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style type="text/css">
+#floatMenu {
+	position: fixed;
+	width: 100px;
+	height: 200px;
+	right: 0px;
+	top: 10px;
+	background-color: #606060;
+	color: #fff;
+	margin:100px 0 150px;
+	
+}
+</style>
 </head>    
 
 <nav class="w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style="z-index:3;width:250px" id="mySidebar" >
@@ -49,21 +63,21 @@
   </div>
   
 <%--     <input type="button" class ="reportbtn" value="신고하기" onclick="location.href='./ReportFormAction.me?member_idx=${member_idx}&member_id=${sessionScope.sId }'"> --%>
-<!--   <div id = "gotopbtn"  style="cursor:pointer; height:50px; " class="back-to-top d-flex align-items-center justify-content-center active" onclick="window.scrollTo(0,0);">TOP</div> 홈페이 -->
-<!--  </nav> -->
+<!--   <div id = "gotopbtn"  style="cursor:pointer; height:50px ; " class="back-to-top d-flex align-items-center justify-content-center active" onclick="window.scrollTo(0,0);">TOP</div>  -->
+
 <!--  <div style="height:300px; margin-right:100px;" id="floatMenu" > -->
  
 
 <!--  <h5>최근 본 상품</h5> -->
-<%
-session =request.getSession();
-if(session.getAttribute("product") != null){
-	out.print("product name :" + session.getAttribute("product"));
-	 if(session.getAttribute("product") != null){
-	    	out.print("방금본 상품 <br>");
-	    	out.print("아이디 : " + session.getAttribute("product") + "<br>");
-	    }
-}
-%>
-  </div>
-</nav>
+<!--   </div> -->
+<!-- </nav> -->
+ <div style="height:300px; margin-right:100px;" id="floatMenu" >
+<%-- ${fn:split(image.image_main_file,'/')[0]} --%>
+${fn:split(imageList[0].image_main_file,'/')[0]}
+${fn:split(imageList[1].image_main_file,'/')[0]}
+${fn:split(imageList[2].image_main_file,'/')[0]}
+
+</div>
+
+
+ </nav>
