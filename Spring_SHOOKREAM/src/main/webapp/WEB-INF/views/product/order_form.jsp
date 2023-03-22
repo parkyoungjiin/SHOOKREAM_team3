@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri ="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri ="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -142,8 +143,11 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 	  padding-bottom: 300px;
 	}
  </style>
+ <script src="../js/jquery-3.6.3.js"></script>
  <script type="text/javascript">
-	// 쿠폰 보러가기 클릭 함수
+ 
+	 
+	 // 쿠폰 보러가기 클릭 함수
 	function CouponCheck() {
 		
 		let url = "CouponListForm.po";
@@ -156,6 +160,8 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 		
 	}
 
+	 
+	
 </script>
 </head>
 <body class="w3-content" style="max-width:95%">
@@ -253,44 +259,92 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 	    		주문 하시는 분
 	    	</th>
 	    	<td colspan="6">
-	    		주문자이름<br>
-	    		xxxxx@xxxx.com<br>
-	    		010-1111-1111<br>
+	    		${member.member_id} 님<br>
+	    		${member.member_email }<br>
+	    		${fn:substring(member.member_phone,0,3) } -  
+	    		${fn:substring(member.member_phone,3,7) } -  
+	    		${fn:substring(member.member_phone,7,12) }  
+	    		<br>
 	    	</td>
 	   </tr>
 	   <tr>
 		<th colspan="2">배송지 선택</th>
 		<td colspan="6" style="margin-left:500px;">
-			<input type="radio" value="" name=""> 기본배송지
-			<input type="radio" value="새로운 배송지" name=""> 새로운 배송지
+			<input type="radio" value="order" name="address" checked="checked" id="order"> 기본배송지
+			<input type="radio" value="new" name="address"> 새로운 배송지
 		</td>
 	   </tr>
 	   <tr>
-	    <th colspan="2">배송지명</th>
-	   	<td colspan="6" style="text-align: left;">집</td>
-	   </tr>
-	   
-	   <tr>
 	   <th colspan="2">받으시는 분</th>   
-	   <td>박영진<br>
-	 	   전화번호 : 000-0000-0000/휴대폰 번호 : 000-0000-0000 <br>
-	       주소: 주소들어가기<br>
+	   <td>
+	   	  <div id="address">
+	   	  <div class="row mb-3">
+                <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">성함</label>
+                <div class="col-md-8 col-lg-2">
+                  <input name="order_name" type="text" class="form-control" id="order_name" value="${member.member_name }">
+                </div>
+           </div>
+	 	 <div class="row mb-3">
+               <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">연락처</label>
+               <div class="col-md-8 col-lg-2">
+                 <input name="order_phone" type="text" class="form-control" id="order_phone" value="${member.member_phone }">
+               </div>
+           </div>
+	 	 <div class="row mb-3">
+                <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">주소</label>
+                <div class="col-md-8 col-lg-5">
+                  <input name="order_addr1" type="text" class="form-control" id="order_addr1" value="${fn:split(member.member_address,',')[0]}">
+                </div>
+           </div>
+	 	 <div class="row mb-3">
+              <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label"></label>
+              <div class="col-md-8 col-lg-5">
+                <input name="order_addr2" type="text" class="form-control" id="order_addr2" value="${fn:split(member.member_address,',')[1]}">
+              </div>
+           </div>
+	   </div>
+	   
+	   <div id="newaddress">
+	   	  <div class="row mb-3">
+                <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">성함</label>
+                <div class="col-md-8 col-lg-2">
+                  <input name="order_name" type="text" class="form-control" id="new_order_name">
+                </div>
+           </div>
+	 	 <div class="row mb-3">
+               <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">연락처</label>
+               <div class="col-md-8 col-lg-2">
+                 <input name="order_phone" type="text" class="form-control" id="new_order_phone">
+               </div>
+           </div>
+	 	 <div class="row mb-3">
+                <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">주소</label>
+                <div class="col-md-8 col-lg-5">
+                  <input name="order_addr1" type="text" class="form-control" id="new_order_addr1">
+                </div>
+           </div>
+	 	 <div class="row mb-3">
+              <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label"></label>
+              <div class="col-md-8 col-lg-5">
+                <div class="input-group mb-6">
+                <input name="order_addr2" type="text" class="form-control" id="new_order_addr2">
+              	<button id="address_kakao" class="btn btn-primary" style="float: right;">주소찾기</button>
+               </div>
+              </div>
+           </div>
+	   </div>
 	   </td>
 	   </tr>
 	   <tr>
 	   	<th colspan="2">배송 메세지</th>
 	   	<td>
-	   		<select class="form-select" style="width: 300px">
+	   		<select class="form-select" id="order_content" style="width: 300px">
 	   			<option>부재시 문 앞에 놓아주세요</option>
-	   			<option>경비실에 ㄱㄱ </option>
+	   			<option>경비실에 놔둬주세요. </option>
 	   			<option>전화 부탁 드립니다</option>
 	   			<option>소화전에 넣어 주세요</option>
 	   		</select>
 	   	 </td>
-	   </tr>
-	   <tr>
-	   	<th colspan="2">총 배송비</th>
-	   	<td colspan="6">0원 </td>
 	   </tr>
 	  </tbody>
 	</table>
@@ -308,7 +362,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 	  <tbody>
 	   <tr>
 		<th colspan="2">즉시 할인금액</th>
-		<td><input type="text" class="form-control" readonly="readonly" value="<fmt:formatNumber value='${cart_total_price-cart_order_total_price }'></fmt:formatNumber>" style="width: 100px; display: inline-block; text-align: right; font-size: 18px ">원 할인 
+		<td><input type="text" class="form-control" readonly="readonly" value="<fmt:formatNumber value='${product.product_price * (product.product_discount_price / 100)}'></fmt:formatNumber>" style="width: 100px; display: inline-block; text-align: right; font-size: 18px ">원 할인 
 	   	</td>
 	   </tr>
 	   <tr>
@@ -379,9 +433,24 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 
 
 <!-- ------------------------------------------------------------------------------------------------------------>
+<!-- 카카오 주소 API -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+window.onload = function(){
+    document.getElementById("address_kakao").addEventListener("click", function(){ //주소입력칸을 클릭하면
+        //카카오 지도 발생
+        new daum.Postcode({
+            oncomplete: function(data) { //선택시 입력값 세팅
+                document.getElementById("new_order_addr1").value = data.address; // 주소 넣기
+                document.querySelector("input[id=new_order_addr1]").focus(); //상세입력 포커싱
+            }
+        }).open();
+    });
+}
+</script>
+
 <!-- 자바스크립트 부분 -->
 <script type="text/javascript">
-// alert(typeof(${product.product_price }));
 function CouponCheck() {
 	let url = "CouponListForm.po?member_idx="+${sessionScope.member_idx}+"&product_price="+${product.product_release_price };  // 테스트용 파라미터임!
 	let name = "Coupon List";
@@ -393,6 +462,21 @@ function CouponCheck() {
 </script>
 <script src="../js/jquery-3.6.3.js"></script>
 <script>
+$(function() {
+	 $("#newaddress").hide();
+});
+$("input:radio[name='address']").change(function() {
+	let location = $("input:radio[name='address']:checked").val();
+	if(location == 'new'){
+		$("#newaddress").show();
+		$("#address").hide();
+	}else if(location == 'order'){
+		$("#address").show();
+		$("#newaddress").hide();
+	}
+});// 내부,외부처리
+
+
 // Accordion 
 function myAccFunc() {
   var x = document.getElementById("demoAcc");
@@ -473,8 +557,28 @@ function w3_close() {
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript">
 function iamport(){
-	var price = parseInt(document.getElementById("order_total_price").value) * 1000;
-	alert(price);
+	let order_name_value = document.getElementById("order_name").value;
+	let order_phone_value =  document.getElementById("order_phone").value; 
+	let order_addr1_value =  document.getElementById("order_addr1").value;
+	let order_addr2_value= document.getElementById("order_addr2").value;
+	let order_content = document.getElementById("order_content").value;
+	if(document.getElementById("new_order_name").value != "" || document.getElementById("new_order_name").value == null){
+		order_name_value =document.getElementById("new_order_name").value;
+	}
+	
+	if(document.getElementById("new_order_phone").value != "" || document.getElementById("new_order_phone").value == null){
+		order_phone_value =document.getElementById("new_order_phone").value;
+	}
+	
+	if(document.getElementById("new_order_addr1").value != "" || document.getElementById("new_order_addr1").value == null){
+		order_addr1_value =document.getElementById("new_order_addr1").value;
+	}
+	
+	if(document.getElementById("new_order_addr2").value != "" || document.getElementById("new_order_addr2").value == null){
+		order_addr2_value =document.getElementById("new_order_addr2").value;
+	}
+	
+	var price = parseInt(document.getElementById("order_total_price").value);
 	//getter
     IMP.init('imp77718215');
 //     var money = $('input[name="cp_item"]:checked').val();
@@ -484,7 +588,7 @@ function iamport(){
         pay_method : 'card',
         merchant_uid: "order_no_"+ new Date().getTime(), // 상점에서 관리하는 주문 번호를 전달
         name : '${product.product_name}',
-        amount : "100",
+        amount : price,
         buyer_email : 'iamport@siot.do',
         buyer_name : '${sessionScope.sId}',
         buyer_tel : '010-1234-5678',
@@ -505,11 +609,17 @@ function iamport(){
 					"order_count":${param.order_count},
 					"order_size":"${product.product_size}",
 					"order_color":"${product.product_color}",
+					"order_name":order_name_value,
+					"order_phone":order_phone_value,
+					"order_addr1":order_addr1_value,
+					"order_addr2":order_addr2_value,
+					"order_content":order_content
 				}
 			})
 			.done(function(whlist) { // 요청 성공 시
 				alert(msg);
-				location.href='./main.ma';
+				var id = '${sessionScope.sId}';
+				location.href="./ProductOrderList.po?id="+id+"&member_idx="+${sessionScope.member_idx}+"&pageNum="+1;
 			})
 	    } else {
 	    	 var msg = '결제에 실패하였습니다.';

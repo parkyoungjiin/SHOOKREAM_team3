@@ -6,7 +6,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>상품등록</title>
+<!--         <meta charset="utf-8" /> -->
+<!--         <meta http-equiv="X-UA-Compatible" content="IE=edge" /> -->
+<!--         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" /> -->
+<!--         <meta name="description" content="" /> -->
+<!--         <meta name="author" content="" /> -->
+<title>상품등록 페이지</title>
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 <%-- <link href="${path}/admin/css/styles.css" rel="stylesheet" /> --%>
 <link href="${path}/resources/css/styles.css" rel="stylesheet">
@@ -19,30 +24,23 @@
 <script src="${path}/resources/admin/assets/demo/chart-bar-demo.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
 <script src="${path}/resources/admin/js/datatables-simple-demo.js"></script>
-<script type="text/javascript">
+        
+ <script type="text/javascript">
 	<%
 		String sId = (String)session.getAttribute("sId");
 		String id = request.getParameter("id");
 		if(sId == null || !sId.equals("admin")) { 
 		%>
 		alert("잘못된 접근입니다!")
-		location.href='adminLogin.ad';
+		location.href=history.back();
 	<% 
 		} 
 	%>
-</script>        
- 
+</script>  
 <style type="text/css">
 	* {
 		font-family: "Noto Sans KR", sans-serif;
 	}
-	 .form-control {
-      width: 55%;
- 	 }
- 	 
- 	 .table-secondary{
-	font-weight: bold;
-}
 </style>      
       <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
       <!-- 외부 jQuery 라이브러리 등록 -->
@@ -86,8 +84,6 @@ $(function() {
 		if(product_price < 0 || product_price == ""){
 			alert("상품 가격을 입력하세요.")
 			$('input:radio[id="saleRadio2"]').prop('checked',false);
-			$('#testRate').prop('disabled', true);
-
 			$("#prod_price").focus();
 		}
 	});
@@ -173,6 +169,16 @@ $(function() {
 
 		    }
 		</script>
+
+
+<style type="text/css">
+.table-secondary{
+	font-weight: bold;
+}
+
+</style>
+
+
 </head>
     
 <body class="sb-nav-fixed">
@@ -185,25 +191,26 @@ $(function() {
        <jsp:include page="./inc2/side.jsp"></jsp:include>             
             <div id="layoutSidenav_content">
                 <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4" >상품 등록</h1>
+                	 </div>
+                	 
             <!-- 상품 등록 폼 -->
 			<form action="ProductInsertPro.po" method="post" id="product_insert"enctype="multipart/form-data">
 				<!-- 상품가격과 할인적용 가격에 ,를 붙이기에 hidden으로 파라미터 넘김 => 우선 할인적용 가격만 넘겨서 처리할 예정-->
+<!-- 				<input type="hidden" id = "price" name = "price"> -->
 				<input type="hidden" id ="product_release_price" name ="product_release_price" value="0">
-				<table class="table table-bordered">
+				<table class="table">
 					<tr>
-					<th colspan="2" class="card-header" height="80px" style="vertical-align: middle; font-size: 30px;">상품 등록</th>
-					</tr>
-					<tr>
-						<th class="table-light">상품명</th>
-						<td>
+						<td width="100px" align="left" class="table-secondary">상품명</td>
+						<td width="300px">
 						<input class="form-control"
-							type="text" placeholder="상품명을 입력하세요." name="product_name" id = "product_name" required style="width:300px;"></td>
+							type="text" placeholder="Product Name" name="product_name" id = "product_name" required style="width:200px"></td>
 					</tr>
-					
 					<tr>
-						<th class="table-light">상품 브랜드</th>
-						<td>
-						<select class="form-select" name="product_brand" id ="product_brand" style="width:300px">
+						<td width="100px" align="left" class="table-secondary">상품 브랜드</td>
+						<td width="300px">
+						<select class="form-select" name="product_brand" id ="product_brand" style="width:200px">
 								<option value="" selected>브랜드를 선택하세요</option>
 								<option value="나이키">나이키</option>
 								<option value="뉴발란스">뉴발란스</option>
@@ -214,89 +221,88 @@ $(function() {
 						</td>
 					</tr>
 					<tr>
-						<th class="table-light">상품 가격</th>
+						<td width="100px" align="left" class="table-secondary">상품 가격</td>
 						<td>
-						  <input type="text" id="prod_price" class="form-control flex-nowrap" placeholder="상품 가격을 입력하세요" aria-label="Username" onkeyup="inputNumberFormat_price(this)" aria-describedby="addon-wrapping" style="width:300px; display: inline-block;">
-						  <span>원</span>
+						<input type="text" id="prod_price" class="form-control" placeholder="상품 가격을 입력하세요" style="width:200px;" onkeyup="inputNumberFormat_price(this)">
 						<input type="hidden" id="prod_price_uncomma" name ="product_price" value="">
-						
+						<span>&nbsp;원</span> 
 						</td>
 						
 					</tr>
 					
 						
 					<tr>
-						<th class="table-light">할인율</th>
+						<td width="100px" align="left" class="table-secondary">할인율</td>
 						<td>
-							<div class="form-check">
-								<input class="form-check-input" type="radio" name="saleRadio" id="saleRadio1" >
-								<label class="form-check-label" for="saleRadio1">할인 미선택</label>
-	<!-- 							<input type="hidden" id ="testRate_0" name ="product_discount_price" value="0" disabled="disabled"> -->
-							</div>
-								
-								<div class="form-check">
-										<input class="form-check-input" type="radio" name="saleRadio" id="saleRadio2" style="display: inline-block;">
-										<label class="form-check-label" for="saleRadio2" style="margin-right: 15px" >할인 선택</label>
-										<input type="text" class="form-control" id="testRate" name ="product_discount_price" disabled="disabled" onchange="inputOnlyNumberFormats(this)" style="width:50px; display: inline-block; text-align: center;" >
-										<span>%</span>
-								</div>
-								
-								
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="saleRadio" id="saleRadio1" >
+							<label class="form-check-label" for="flexRadioDefault2">할인 미선택</label>
+<!-- 							<input type="hidden" id ="testRate_0" name ="product_discount_price" value="0" disabled="disabled"> -->
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" type="radio" name="saleRadio" id="saleRadio2" > 
+							<label class="form-check-label" for="flexRadioDefault1">할인 적용 
+							<input type="number" id="testRate" name ="product_discount_price" class="form-control" size="1" min = "0" max ="100" style = "text-align:center;" disabled="disabled" onchange="inputOnlyNumberFormats(this)"> <!-- 할인율 입력칸 -->
+							<span>%</span>
+							</label>
+						</div>
 						
+						</td>
+						<td>
 						</td>
 						
 					<tr>
-						<th class="table-light">판매가격</th>
+						<td width="150px" align="left" class="table-secondary">판매가격</td>
+						
 						<td><p id = "testResultBox02"></p></td>
+						
 					</tr>
 	
 					<tr>
-						<th class="table-light">상품 사이즈</th>
-						<td>
-							<select class="form-select" name="product_size" id ="product_size" style="width:300px">
-									<option value="" selected>사이즈를 선택해주세요.</option>
-									<option value="220">220</option>
-									<option value="230">230</option>
-									<option value="240">240</option>
-									<option value="250">250</option>
-									<option value="260">260</option>
-									<option value="270">270</option>
-									<option value="280">280</option>
-									<option value="290">290</option>
-									<option value="300">300</option>
-							</select>
-						</td>
-					</tr>
-					
+
+						<td width="100px" align="left" class="table-secondary">상품 사이즈</td>
+						<td width="300px">
+						<select class="form-select" name="product_size" id ="product_size" style="width:200px">
+								<option value="" selected>사이즈를 선택해주세요.</option>
+								<option value="220">220</option>
+								<option value="230">230</option>
+								<option value="240">240</option>
+								<option value="240">250</option>
+								<option value="240">260</option>
+								<option value="240">270</option>
+								<option value="240">280</option>
+								<option value="240">290</option>
+								<option value="240">300</option>
+						</select></td>
 					<tr>
-						<th class="table-light">상품 재고량</th>
-						<td><input class="form-control" type="number" min="0" max="100" placeholder="수량" id="amount" name="product_amount" onkeyup="inputNumberFormat(this);" required style="width:300px"></td>
+						<td width="100px" align="left" class="table-secondary">상품 재고량</td>
+						<td width="300px"><input class="form-control" type="number" min="0" max="100" placeholder="수량" id="amount" name="product_amount" onkeyup="inputNumberFormat(this);" required style="width:200px"></td>
 					</tr>
 
 					<tr>
-						<th class="table-light">상품 색상</th>
-						<td >
-							<select class="form-select" name="product_color" id ="product_color" style="width:300px">
-									<option value="" selected>색상을 선택해주세요.</option>
-									<option value="black">BLACK</option>
-									<option value="white">WHITE</option>
-									<option value="navy">NAVY</option>
-									<option value="red">RED</option>
-									<option value="blue">BLUE</option>
-									<option value="gray">GRAY</option>
-							</select>
+						<td width="100px" align="left" class="table-secondary">상품 색상</td>
+						<td width="300px">
+						<select class="form-select" name="product_color" id ="product_color" style="width:200px">
+								<option value="" selected>색상을 선택해주세요.</option>
+								<option value="black">BLACK</option>
+								<option value="white">WHITE</option>
+								<option value="navy">NAVY</option>
+								<option value="red">RED</option>
+								<option value="blue">BLUE</option>
+								<option value="gray">GRAY</option>
+						</select></td>
 					</tr>
 
 					<tr>
-						<th class="table-light">상품 요약설명</th>
+						<td width="100px" align="left" class="table-secondary">요약 설명</td>
 						<td><textarea class="form-control" style="resize: none"
 								rows="5" cols="40" placeholder="Product summary" id ="exp" name="product_exp"
 								required="required"></textarea></td>
-						<!--           <td ><input class="w3-input w3-border" type="" placeholder="Product summary" name="Product summary" required></td> -->
+						<!--           <td width="300px"><input class="w3-input w3-border" type="" placeholder="Product summary" name="Product summary" required></td> -->
 					</tr>
 
 					<tr>
-						<th class="table-light">상품 상세설명</th>
+						<td width="100px" align="left" class="table-secondary">상세 설명</td>
 						<td><textarea class="form-control" style="resize: none"
 								rows="10" cols="150" placeholder="Product detail"
 								id="detail_exp" name="product_detail_exp" required="required"></textarea></td>
@@ -304,21 +310,21 @@ $(function() {
 
 
 					<tr>
-						<th class="table-light">상품 메인이미지</th>
-						<td><input class="form-control" type="file" name="files" required="required"></td>
+						<td width="100px" align="left" class="table-secondary">메인 이미지</td>
+						<td><input type="file" name="files" required="required"></td>
 					</tr>
 					<tr>
-						<th class="table-light">상품 제품이미지1</th>
-						<td><input class="form-control" type="file" name="files" required="required"></td>
+						<td width="100px" align="left" class="table-secondary">제품 이미지1</td>
+						<td><input type="file" name="files" required="required"></td>
 					</tr>
 					<tr>
-						<th class="table-light">상품 제품이미지2</th>
-						<td><input class="form-control" type="file" name="files" required="required"></td>
+						<td width="100px" align="left" class="table-secondary">제품 이미지2</td>
+						<td><input type="file" name="files" required="required"></td>
 					</tr>
 
 					<tr>
-						<td colspan="2">
-						<button type="submit" class="btn btn-secondary" onclick="valueCheck(this)">등록하기</button></td>
+						<td colspan="2"><button type="submit"
+								class="btn btn-secondary" onclick="valueCheck(this)">등록하기</button></td>
 					</tr>
 				</table>
 			</form>
@@ -329,7 +335,12 @@ $(function() {
             </div>
         <!-- plugin -->
         
-        <!-- SELECT 박스 값 변경에 따라 TRUE, FALSE 처리 -->
+        
+    </body>
+
+		
+	
+		<!-- SELECT 박스 값 변경에 따라 TRUE, FALSE 처리 -->
 		<script type="text/javascript">
 		var BrandStatus = false;
 		var SizeStatus = false;
@@ -429,11 +440,6 @@ $(function() {
 		}// valueCheck 끝
 		
 		</script>
-    </body>
-
-		
-	
-		
 
      	
 </html>

@@ -26,6 +26,7 @@ import com.itwillbs.shookream.vo.BoardVo;
 import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.OrderVo;
+import com.itwillbs.shookream.vo.OrderdeliveryVo;
 import com.itwillbs.shookream.vo.PageInfo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.ReviewVo;
@@ -160,6 +161,7 @@ public class ProductController {
 		product = service.getProduct(product_idx);
 		image = service.getImage(product_idx);
 		member = service_member.getMemberInfo(sId);
+		System.out.println("member : "+member);
 		model.addAttribute("product", product);
 		model.addAttribute("member", member);
 		model.addAttribute("image", image);
@@ -176,14 +178,14 @@ public class ProductController {
 			@RequestParam(defaultValue = "0") int coupon_idx,
 			@RequestParam(defaultValue = "0") int product_idx,
 			@RequestParam(defaultValue = "0") int product_price,
-			HttpSession session) {
+			HttpSession session, OrderdeliveryVo delivery) {
 		System.out.println(order);
 		String sId = (String)session.getAttribute("sId");		
 		int member_idx = service.getMemberIdx(sId);
 //		order.setOrder_member_idx(member_idx);
 //		order.setOrder_product_idx(product_idx);
 //		order.setOrder_product_price(product_price);
-		
+		System.out.println("delivery :"+delivery);
 		// 쿠폰 임시 값 지정 (추후 수정 필요)
 		if(model.getAttribute("coupon_idx") != "") {
 			order.setOrder_coupon_idx(coupon_idx);
@@ -194,17 +196,17 @@ public class ProductController {
 		int insertOrder = service.InsertOrder(order);
 		
 		if(insertOrder > 0) {
-//			int insertOrder2 = service.InsertOrderDetail(order);
+			int insertOrder2 = service.InsertOrderDetail(order,delivery);
 			 
-//			if(insertOrder2 > 0) {
+			if(insertOrder2 > 0) {
 				service.updatePro(order);
 				service.updateMem(order);
-//			}
+			}
 			
 			return "redirect:/ProductOrderList.po?member_idx"+member_idx;
 			
 		} else {
-			
+//			
 			model.addAttribute("msg", "일시적 오류로 구매에 실패했습니다.");
 			return "fail_back";
 		}
@@ -258,11 +260,19 @@ public class ProductController {
 		}
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
 		
-		
 		System.out.println(orderList);
+		
+		
 		model.addAttribute("orderList", orderList);
 		model.addAttribute("pageInfo", pageInfo);
 		return "product/Product_orderlist";
+	}// 회원 주문 목록 끝
+	
+	@GetMapping(value = "/ProductOrderDeliveryPro.po")
+	public String OrderDelivery(Model model, HttpSession session,@RequestParam(defaultValue = "1")int pageNum) {
+		
+		
+		return "product/order_Form";
 	}// 회원 주문 목록 끝
 			
 }

@@ -18,7 +18,7 @@ public interface MemberMapper {
 	public MemberVo selectMemberInfo(String id);
 	
 	// 회원가입
-	public boolean insertMember(MemberVo member);
+	public int insertMember(MemberVo member);
 	
 	// 회원가입 : idx조회
 	public int selectIdx();
