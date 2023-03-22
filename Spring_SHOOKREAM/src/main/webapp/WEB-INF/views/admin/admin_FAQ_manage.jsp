@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%-- <c:set var="path" value="${pageContext.request.contextPath }"/> --%>
+<c:set var="path" value="${pageContext.request.contextPath }"/>
 
 <html lang="en">
     <head>
@@ -17,17 +17,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
              <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
-        <script type="text/javascript">
-			<%
-			String sId = (String)session.getAttribute("sId");
-			String id = request.getParameter("id");
-<%-- 			if(sId == null || !sId.equals("admin")) { %> --%>
-				alert("잘못된 접근입니다!")
-				location.href=history.back();
-			<% 
-// 			} 
-<%-- 			%> --%>
-		</script>  
+
         <style type="text/css">
 			* {
 				font-family: "Noto Sans KR", sans-serif;
@@ -44,7 +34,8 @@
        <jsp:include page="./inc2/top.jsp"></jsp:include>
           
     <!-- SIDE --> 
-<%--        <jsp:include page="./inc2/side.jsp"></jsp:include>              --%>
+       <jsp:include page="./inc2/side.jsp"></jsp:include>             
+       
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -52,7 +43,7 @@
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">FAQ 관리</li>
                         </ol>
-                        </div>
+                        
                             <div class="card-body">
                            	<form method="post">
                                 <table id="datatablesSimple">
@@ -83,20 +74,9 @@
                                             <th>
                                             	<input type="hidden" name="notice_idx" value=${board.notice_idx }>
                             					<input type="hidden" name="pageNum" value=${param.pageNum }>
-                            					
-                            					<script type="text/javascript">
-                            					<%
-                            					String sId = (String)session.getAttribute("sId");
-                            					String id = request.getParameter("id");
-                            		 			if(sId == null || !sId.equals("admin")) { %> 
-                            		 			
-                            						alert("잘못된 접근입니다!")
-                            						location.href=history.back();
                             				
-                            					
-										      	<input type="button" value="수정"  class="btn btn-outline-secondary btn-sm" onclick="location.href='BoardModifyForm.bo?notice_idx=${board.notice_idx }&pageNum=${param.pageNum}'" >
+													<input type="button" value="수정"  class="btn btn-outline-secondary btn-sm" onclick="location.href='BoardModifyForm.bo?notice_idx=${board.notice_idx }&pageNum=${param.pageNum}'" >
 												<a href="BoardDeletePro.bo?notice_idx=${board.notice_idx }&pageNum=${param.pageNum}"><input type="button" value="삭제" class="btn btn-outline-secondary btn-sm"></a>
-												</script>
 										    </th>
                                         </tr>
                                      </c:forEach>  
@@ -138,16 +118,16 @@
 									</c:choose>
 								</section>	
                        		 </div>
-                    
+                    </div>
                 </main>
 				<jsp:include page="./inc2/footer.jsp"></jsp:include>
             </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="admin/js/scripts.js"></script>
+        <script src="${path}/resources/admin/js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="admin/assets/demo/chart-area-demo.js"></script>
-        <script src="admin/assets/demo/chart-bar-demo.js"></script>
+        <script src="${path}/resources/admin/assets/demo/chart-area-demo.js"></script>
+        <script src="${path}/resources/admin/assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script src="admin/js/datatables-simple-demo.js"></script>
+        <script src="${path}/resources/admin/js/datatables-simple-demo.js"></script>
     </body>
 </html>

@@ -2,7 +2,10 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="path" value="${pageContext.request.contextPath }" />
+
+<c:set var="path" value="${pageContext.request.contextPath }"/>
+
+
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -43,7 +46,9 @@
        <jsp:include page="./inc2/top.jsp"></jsp:include>
           
     <!-- SIDE --> 
-        <jsp:include page="./inc2/side.jsp"></jsp:include>              
+
+       <jsp:include page="./inc2/side.jsp"></jsp:include>             
+
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -130,11 +135,13 @@
 				<jsp:include page="./inc2/footer.jsp"></jsp:include>
             </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="${path}/resources/js/scripts.js"></script>
+
+        <script src="${path}/resources/admin/js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-<!--         <script src="admin/assets/demo/chart-area-demo.js"></script>
-        <script src="admin/assets/demo/chart-bar-demo.js"></script> -->
+        <script src="${path}/resources/admin/assets/demo/chart-area-demo.js"></script>
+        <script src="${path}/resources/admin/assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <!-- <script src="admin/js/datatables-simple-demo.js"></script> -->
+        <script src="${path}/resources/admin/js/datatables-simple-demo.js"></script>
+
     </body>
 </html>
