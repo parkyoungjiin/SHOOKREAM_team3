@@ -82,6 +82,7 @@
 			<if test='notice_category neq null and notice_category neq""'>		
 				AND notice_category = #{notice_category}
 			</if>
+				ORDER BY notice_idx DESC
 	</select>
 
 

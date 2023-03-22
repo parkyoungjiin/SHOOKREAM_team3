@@ -127,7 +127,7 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-				 <%-- <c:forEach var="board" items="${boardList }">
+				 <c:forEach var="board" items="${boardList }">
 				    <tr>
 				      <th scope="row"  style="text-align: center">${board.notice_idx }</th>
 				      <td style="text-align: center"><b>${board.notice_category }</b></td>
@@ -136,7 +136,7 @@
 					  </td>
 				      <td style="text-align: center">${board.notice_date }</td>
 				    </tr>
-				 </c:forEach> --%> 
+				 </c:forEach>
 			  </tbody>
 			</table>
 			<c:choose>
