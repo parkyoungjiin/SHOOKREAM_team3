@@ -383,7 +383,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 <script type="text/javascript">
 // alert(typeof(${product.product_price }));
 function CouponCheck() {
-	let url = "CouponListForm.po?member_idx="+${sessionScope.member_idx}+"&product_price="+${product.product_release_price };  // 테스트용 파라미터임!
+	let url = "CouponListForm.po?member_idx="+${sessionScope.member_idx}+"&product_price="+${product.product_price - product.product_price * (product.product_discount_price / 100)};  // 테스트용 파라미터임!
 	let name = "Coupon List";
 	let attr = "width=900, height=600, top=200, left=510"
 
