@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.taglibs.standard.tag.el.fmt.RequestEncodingTag;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,7 +52,8 @@ public class BoardController {
 		}
 		return "redirect:/FAQList.bo?notice_idx="+board.getNotice_idx();
 	}// 게시판 등록 작업 끝
-	//-------------공지 목록 -----------
+	
+	//-------------공지 목록 : 삭제? -----------
 	@GetMapping("/BoardList.bo")
 	public String list(@ModelAttribute BoardVo board,@RequestParam(defaultValue = "1") int pageNum, String keyword, Model model ) {
 		
@@ -80,9 +84,57 @@ public class BoardController {
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("page", page);
 		return"board/board_list";
+	}//공지 목록 끝
+	
+	// 공지 : 카테고리별 모아보기 - json
+	@ResponseBody
+	@GetMapping("BoardListJson.bo")
+	public void listJson(Model model, HttpServletResponse response, @RequestParam String notice_category) {
+//		System.out.println("전달 카테고리 확인 : " + notice_category);
+		String notice_type="Notice";
+		List<BoardVo> boardList = service.getBoardJson(notice_type, notice_category);
+		
+		JSONArray jsonArray = new JSONArray();
+		
+		for(BoardVo board : boardList) {
+			JSONObject jsonObject = new JSONObject(board);
+			jsonArray.put(jsonObject);
+//			System.out.println("json 확인 : " + jsonObject);
+		}
+
+		try {
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().print(jsonArray);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	//공지 목록 끝
+	// faq : 카테고리별 모아보기 - json
+	@ResponseBody
+	@GetMapping("FAQListJson.bo")
+	public void faqListJson(Model model, HttpServletResponse response, @RequestParam String notice_category) {
+		System.out.println("전달 카테고리 확인 : " + notice_category);
+		String notice_type="FAQ";
+		List<BoardVo> boardList = service.getBoardJson(notice_type, notice_category);
+		
+		JSONArray jsonArray = new JSONArray();
+		
+		for(BoardVo board : boardList) {
+			JSONObject jsonObject = new JSONObject(board);
+			jsonArray.put(jsonObject);
+//			System.out.println("json 확인 : " + jsonObject);
+		}
+		
+		try {
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().print(jsonArray);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	//--------------공지 상세정보 --------------
 	@GetMapping("/BoardInfo.bo")
 	public String info(@ModelAttribute BoardVo board, @RequestParam(defaultValue="1") int notice_idx, boolean isUpdateReadCount, Model model) {
@@ -148,7 +200,7 @@ public class BoardController {
 			return "admin/admin_FAQ_manage";
 	} //삭제 끝
 	
-	//------자주묻는 질문 ------
+	//------자주묻는 질문 : 삭 ------
 	@GetMapping("/FAQList.bo")
 	public String FAQList(@ModelAttribute BoardVo board , @RequestParam(defaultValue = "1") int pageNum , String keyword, Model model) {
 		int listLimit =10;

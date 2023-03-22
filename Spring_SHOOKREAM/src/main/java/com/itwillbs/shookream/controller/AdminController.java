@@ -12,6 +12,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.shookream.service.AdminService;
 import com.itwillbs.shookream.service.BoardService;
+import com.itwillbs.shookream.service.MemberService;
 import com.itwillbs.shookream.vo.BoardVo;
 import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.MemberVo;
@@ -37,6 +39,8 @@ public class AdminController {
 	private AdminService service;
 	@Autowired
 	private BoardService service1;
+	@Autowired
+	private MemberService service2;
 	//관리자 페이지 이동
 	@GetMapping(value = "admin.ad")
 	public String adminMain() {
@@ -132,7 +136,7 @@ public class AdminController {
 								@ModelAttribute imageVo image,
 								Model model,
 								HttpSession session) {
-			
+			System.out.println(product);
 			String uploadDir = "/resources/upload";
 			String saveDir = session.getServletContext().getRealPath(uploadDir);
 			System.out.println("실제 업로드 경로 : " + saveDir);
@@ -248,7 +252,7 @@ public class AdminController {
 			imageVo image =service.getImage(product_idx);
 			model.addAttribute("image", image);
 			
-			return "admin/admin_Product_ModifyForm";
+			return "admin/admin_product_modifyForm";
 		}
 		
 		// "/ProductModifyPro.po" 비즈니스 로직
@@ -368,15 +372,14 @@ public class AdminController {
 	//============================= 상품 수정 끝 ================================
 			
 	//============================= 상품 삭제 ============================= 
-			@PostMapping(value = "/ProductDeletePro.po")
+			@GetMapping(value = "/ProductDeletePro.po")
 			public String deleteProduct(@RequestParam(defaultValue = "1") int product_idx, 
 										Model model, HttpSession session) {
 				
 				int deleteCount = service.deleteProduct(product_idx);
 				
 				if(deleteCount > 0) {
-					model.addAttribute("msg", "상품이 삭제되었습니다.");
-					return "redirect:/";
+					return "redirect:/ProductListForm.po";
 				} else {
 					model.addAttribute("msg", "상품 삭제 실패!");
 					return "fail_back";
@@ -403,7 +406,7 @@ public class AdminController {
 //				model.addAttribute("imgList", imgList);
 //				System.out.println("imgList" + imgList);
 				
-				return "admin/admin_Product_List";
+				return "admin/admin_product_list";
 			}
 			
       //============================= 상품 목록 ================================
@@ -417,7 +420,7 @@ public class AdminController {
 				
 				if(id == null || id.equals("") || !id.equals("admin")) { 
 					model.addAttribute("msg", "잘못된 접근입니다!");
-					return "redirect:/Admin.ad";
+					return "redirect:/adminLogin.ad";
 				} else {//admin일 경우
 					// Service 객체의 getProductList() 메서드를 호출하여 전체 회원 목록 조회
 					// => 파라미터 : 없음   리턴타입 : List<ProductVO>(productList)
@@ -441,11 +444,9 @@ public class AdminController {
 					model.addAttribute("productList", productList);
 
 					// admin_Product_List.jsp로 포워딩
-					return "admin/admin_Product_List";
+					return "admin/admin_product_list";
 				}
 			}
-
-		//============================= 상품 목록 ================================
 
 
 //================== 끝 =============================
@@ -465,9 +466,52 @@ public class AdminController {
 	}
 	
 	
+	//---------관리자 로그인------------
+		@GetMapping(value = "adminLogin.ad")
+		public String LoginForm() {
+			
+			return "admin/admin_login_form";
+		}//LoginForm 끝
+		
+	//-------------관리자 로그인 작업-----------------
+		@PostMapping(value = "adminLoginPro.ad")
+		public String LoginPro(@ModelAttribute MemberVo member,
+				Model model, 
+				HttpSession session
+				) {
+			// 파라미터로 받은 패스워드 암호화작업
+			BCryptPasswordEncoder passwdEncoder = new BCryptPasswordEncoder();
+			//비밀번호 일치 여부 확인을 위해 비밀번호 가져오기
+			String passwd = service2.getSelectPass(member.getMember_id()); // DB저장된 비밀번호 (PASSWD)
+			//로그인 작업(비밀번호 일치여부 판별)
+			// 
+			
+//			System.out.println("DB저장 passwd : " + passwd + ", 암호화 : " + chk);
+			if(passwd == null || !passwdEncoder.matches(member.getMember_pass(), passwd)) { // 실패
+				// Model 객체에 "msg" 속성명으로 "로그인 실패!" 메세지 저장 후
+				// fail_back.jsp 페이지로 포워딩
+					model.addAttribute("msg", "로그인 실패(아이디 또는 비밀번호를 확인해주세요.)");
+					return "fail_back";
+			}else { // 성공
+				MemberVo member2 = service2.getMemberInfo(member.getMember_id()); // DB저장된 비밀번호 (PASSWD)
+				//성공 시 세션아이디, member_idx 저장
+				session.setAttribute("sId", member.getMember_id());
+				session.setAttribute("member_idx", member2.getMember_idx());
+				return "redirect:/admin.ad";
+			}
+			
+				
+			
+		}//LoginPro 끝 
 	
-	
-	
+	//-------관리자 로그아웃---------
+		//-------------로그아웃 작업------------
+		@GetMapping(value = "adminLogout.ad")
+		public String logout(HttpSession session) {
+			// 세션 초기화
+			session.invalidate();
+			return "redirect:/admin.ad";
+		}//logout 끝
 	
 	
 	// =========== 주문 관리 ===============

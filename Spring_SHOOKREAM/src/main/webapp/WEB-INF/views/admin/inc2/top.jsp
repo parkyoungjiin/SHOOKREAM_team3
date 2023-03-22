@@ -1,6 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
+<script>
+	function logout() {
+		let isLogout = confirm("로그아웃 하시겠습니까?");
+		
+		if(isLogout) {
+			location.href = "adminLogout.ad";
+		}
+	}
+</script>   
     	<style type="text/css">
 			* {
 				font-family: "Noto Sans KR", sans-serif;
@@ -21,14 +32,22 @@
             </form>
              
             <!-- Navbar-->
+            
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li class="dropdown-item">${sessionScope.sId }님 </li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                        <c:choose>
+                        	<c:when test="${not empty sessionScope.sId }">
+		                        <li><a class="dropdown-item" onclick="logout()">Logout</a></li>
+                        	</c:when>
+	                        <c:otherwise>
+                        		<li><a class="dropdown-item" href="adminLogin.ad">Login</a></li>
+	                        </c:otherwise>
+                        
+                        </c:choose>
                     </ul>
                 </li>
             </ul>
