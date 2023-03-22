@@ -43,6 +43,10 @@ public class MainService {
 		return mapper.getProductSearchList(keyword, startRow, listLimit);
 	}
 
+	public int getSaleProductListCount() {
+		return mapper.getSaleProductListCount();
+	}
+
 
 	
 	

@@ -15,8 +15,7 @@
 	</select>
 <!-- 상품 목록 개수 -->
 	<select id="getProductListCount" resultType="int">
-		SELECT COUNT(product_idx)
-			FROM product;
+		SELECT COUNT(distinct(product_name)) FROM product;
 	</select>
 <!-- 할인 상품 목록 -->
 	<select id="getProductSaleList" resultType="com.itwillbs.shookream.vo.ProductVo">
@@ -48,5 +47,11 @@
 					WHERE product_brand LIKE '%${keyword}%' OR product_name LIKE '%${keyword}%'
 						GROUP BY product_name ORDER BY product_sell_count ASC LIMIT #{startRow}, #{listLimit};
 	
+	</select>
+		
+	<select id="getSaleProductListCount" resultType="int">
+		SELECT COUNT(product_idx)
+			FROM product
+				WHERE product_discount_price > 0;
 	</select>	
 </mapper>

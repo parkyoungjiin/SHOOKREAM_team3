@@ -302,7 +302,7 @@ public class MainController {
 		// ------------------페이징 처리----------------------
 		// => 파라미터 : x   리턴타입 : int(listCount)
 		//1. 목록 개수
-		int listCount = service.getProductListCount();
+		int listCount = service.getSaleProductListCount();
 	
 		// 2. 한 페이지에서 표시할 페이지 목록 갯수 설정
 		int pageListLimit = 10; // 한 페이지에서 표시할 페이지 목록을 3개로 제한
