@@ -452,7 +452,7 @@ window.onload = function(){
 <!-- 자바스크립트 부분 -->
 <script type="text/javascript">
 function CouponCheck() {
-	let url = "CouponListForm.po?member_idx="+${sessionScope.member_idx}+"&product_price="+${product.product_release_price };  // 테스트용 파라미터임!
+	let url = "CouponListForm.po?member_idx="+${sessionScope.member_idx}+"&product_price="+${product.product_price - product.product_price * (product.product_discount_price / 100)};  // 테스트용 파라미터임!
 	let name = "Coupon List";
 	let attr = "width=900, height=600, top=200, left=510"
 
