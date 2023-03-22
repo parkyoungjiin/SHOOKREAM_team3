@@ -252,7 +252,7 @@ public class AdminController {
 			imageVo image =service.getImage(product_idx);
 			model.addAttribute("image", image);
 			
-			return "admin/admin_Product_ModifyForm";
+			return "admin/admin_product_modifyForm";
 		}
 		
 //		// "/ProductModifyPro.po" 비즈니스 로직1
@@ -443,7 +443,7 @@ public class AdminController {
 //				model.addAttribute("imgList", imgList);
 //				System.out.println("imgList" + imgList);
 				
-				return "admin/admin_Product_List";
+				return "admin/admin_product_list";
 			}
 			
       //============================= 상품 목록 ================================
@@ -481,11 +481,9 @@ public class AdminController {
 					model.addAttribute("productList", productList);
 
 					// admin_Product_List.jsp로 포워딩
-					return "admin/admin_Product_List";
+					return "admin/admin_product_list";
 				}
 			}
-
-		//============================= 상품 목록 ================================
 
 
 //================== 끝 =============================
