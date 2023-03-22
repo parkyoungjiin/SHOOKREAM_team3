@@ -98,7 +98,7 @@ font-size: 20px;
 }
 
 #product_discount_price {
-	color: red; 
+	color: #E16A93; 
 	font-size: 20px;
 	float: right;
 	padding-right: 10px;
@@ -155,7 +155,7 @@ function plus_wish_btn(cb){
 			if(data == 1){
 			alert("이미 찜한 상품입니다!");
 			
-			$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+			$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart w3-grayscale" id="wish_minus_btn' + idx + '" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
 			
 			idx = null;
 				
@@ -174,7 +174,7 @@ function plus_wish_btn(cb){
 							
 							alert("찜한 상품에 추가되었습니다!");
 							
-							$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+							$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart w3-grayscale" id="wish_minus_btn' + idx + '" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
 					
 							idx = null;
 							
@@ -223,7 +223,7 @@ function minus_wish_btn(cb){
 
 				alert("찜한 상품에서 삭제되었습니다!");
 				
-				$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-regular fa-heart" id="wish_btn' + idx + '" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+				$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-regular fa-heart w3-grayscale" id="wish_btn' + idx + '" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
 				
 				idx = null;
 		}, 
@@ -263,7 +263,7 @@ function new_plus_wish_btn(cb){
 			if(data == 1){
 			alert("이미 찜한 상품입니다!");
 			
-			$("#new_wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="new_minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+			$("#new_wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart w3-grayscale" id="wish_minus_btn' + idx + '" onclick="new_minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
 			
 			idx = null;
 				
@@ -281,7 +281,7 @@ function new_plus_wish_btn(cb){
 							
 						alert("찜한 상품에 추가되었습니다!");
 						
-						$("#new_wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="new_minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+						$("#new_wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart w3-grayscale" id="wish_minus_btn' + idx + '" onclick="new_minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
 				
 						idx = null;
 							
@@ -330,7 +330,7 @@ function new_minus_wish_btn(cb){
 
 				alert("찜한 상품에서 삭제되었습니다!");
 				
-				$("#new_wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-regular fa-heart" id="wish_btn' + idx + '" onclick="new_plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+				$("#new_wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-regular fa-heart w3-grayscale" id="wish_btn' + idx + '" onclick="new_plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
 				
 				idx = null;
 		}, 
@@ -396,10 +396,10 @@ localStorage.setItem("z","11");
 
   <!-- ./images header -->
   <div class ="post-wrapper" style="margin-top: 18px;">
-  	<div><img src="${path}/resources/images/banner(nike).jpg" height="600" width="100%"  onclick="location.href='BrandCG.MAIN?cg=나이키'" style="cursor: pointer;"></div>
+  	<div><img src="${path}/resources/images/banner(nike).jpg" height="600" width="100%"  onclick="location.href='BrandCG.ma?cg=나이키'" style="cursor: pointer;"></div>
 <!--   	<div><a href="CouponMainList.po?coupon_content=banner_1"><img src="images/banner_1.jpg" height="700" width="900"></a></div> -->
-  	<div><img src="${path}/resources/images/banner(newbalance).png" height="600" width="100%" onclick="location.href='BrandCG.MAIN?cg=뉴발란스'" style="cursor: pointer;"></div>
-  	<div><img src="${path}/resources/images/banner(adidas).png" height="600" width="100%" onclick="location.href='BrandCG.MAIN?cg=아디다스'" style="cursor: pointer;"></div>
+  	<div><img src="${path}/resources/images/banner(newbalance).png" height="600" width="100%" onclick="location.href='BrandCG.ma?cg=뉴발란스'" style="cursor: pointer;"></div>
+  	<div><img src="${path}/resources/images/banner(adidas).png" height="600" width="100%" onclick="location.href='BrandCG.ma?cg=아디다스'" style="cursor: pointer;"></div>
   	<div>
   	
   	<img id="banner_1" src="${path}/resources/images/banner_1.jpg"  height="600" width="100%" style="cursor: pointer;" onclick="openModal(this.id)" ></div>
@@ -412,7 +412,7 @@ localStorage.setItem("z","11");
 	
 	
   <!-- Product grid -->
-<div class="w3-row w3-grayscale" style="clear:both;">
+<div class="w3-row" style="clear:both;">
 		<c:forEach var="productBestList" items="${productBestList }" begin="0" end="7" step="1" varStatus="status">
 		<input type="hidden" id="product_idx${status.index }" value="${productBestList.product_idx }">
 			<div class="w3-col l3 s6">
@@ -438,12 +438,12 @@ localStorage.setItem("z","11");
 									 <c:choose>
 									   <c:when test="${isWished}">
 									   	<span id="wishBtnId${status.index }">
-									     <i class="fa-solid fa-heart" id="wish_minus_btn${status.index }" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
+									     <i class="fa-solid fa-heart w3-grayscale" id="wish_minus_btn${status.index }" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
 									     </span>
 									   </c:when>
 									   <c:otherwise>
 									   <span id="wishBtnId${status.index }">
-									     <i class="fa-regular fa-heart" id="wish_btn${status.index }" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
+									     <i class="fa-regular fa-heart w3-grayscale" id="wish_btn${status.index }" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
 									     </span>
 									   </c:otherwise>
 									 </c:choose>
@@ -473,7 +473,7 @@ localStorage.setItem("z","11");
 									구매 ${productBestList.product_sell_count } &nbsp;
 								</span>
 								<span>
-									<i class="fa-solid fa-heart" style="color:pink;"></i> ${productBestList.product_wishcount }
+									<i class="fa-solid fa-heart w3-grayscale" style="color:pink;"></i> ${productBestList.product_wishcount }
 								</span>
 							</div>
 						</div>
@@ -487,7 +487,7 @@ localStorage.setItem("z","11");
 		<p>NEW</p>
 	</div>
 	<!-- Product grid -->
-  <div class="w3-row w3-grayscale" style="clear:both;">
+  <div class="w3-row" style="clear:both;">
   <c:forEach var="productNewList" items="${productNewList }" begin="0" end="7" step="1" varStatus="status">
   <input type="hidden" id="new_product_idx${status.index }" value="${productNewList.product_idx }">
    <div class="w3-col l3 s6" style="z-index:1;">
@@ -513,12 +513,12 @@ localStorage.setItem("z","11");
 									 <c:choose>
 									   <c:when test="${isWished}">
 									   	<span id="new_wishBtnId${status.index }">
-									     <i class="fa-solid fa-heart" id="wish_minus_btn${status.index }" onclick="new_minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
+									     <i class="fa-solid fa-heart w3-grayscale" id="wish_minus_btn${status.index }" onclick="new_minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
 									     </span>
 									   </c:when>
 									   <c:otherwise>
 									   <span id="new_wishBtnId${status.index }">
-									     <i class="fa-regular fa-heart" id="wish_btn${status.index }" onclick="new_plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
+									     <i class="fa-regular fa-heart w3-grayscale" id="wish_btn${status.index }" onclick="new_plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
 									     </span>
 									   </c:otherwise>
 									 </c:choose>
@@ -549,7 +549,7 @@ localStorage.setItem("z","11");
 									구매 ${productNewList.product_sell_count } &nbsp;
 								</span>
 								<span>
-									<i class="fa-solid fa-heart" style="color:pink;"></i> ${productNewList.product_wishcount }
+									<i class="fa-solid fa-heart w3-grayscale" style="color:pink;"></i> ${productNewList.product_wishcount }
 								</span>
 							</div>
 						</div>

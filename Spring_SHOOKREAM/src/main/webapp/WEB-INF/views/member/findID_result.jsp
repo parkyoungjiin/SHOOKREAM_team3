@@ -1,6 +1,7 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +18,7 @@
 #sform {
           display: inline-block;
           text-align: center;
+          
         }
 </style>
 <style>
@@ -60,10 +62,17 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
   <!-- Footer -->
   <footer class="w3-padding-64 w3-small w3-center" id="footer">
     <div id = "sform">
-    	
          <h4 style="padding-top: 30px;">아이디 찾기 결과</h4>
         <div style="padding-bottom: 10px;"></div>
-        <h5>회원님의 아이디는 <b>${member }</b> 입니다.</h5>
+       <c:choose>
+		    <c:when test="${empty member}">
+		        <h5>일치하는 아이디가 없습니다.</h5>
+		    </c:when>
+		    <c:otherwise>
+		        <h5>회원님의 아이디는 <b>${member}</b> 입니다.</h5>
+		    </c:otherwise>
+		</c:choose>
+
         <div style="padding-bottom: 50px;"></div>
 		<button style="margin-bottom: 2px; width: 300px;" type="button" class="w3-button w3-block w3-black" onclick="location.href='LoginMember.me'">로그인</button>
 		<button type="button" class="w3-button w3-block w3-black" onclick="location.href='FindPwForm.me'">비밀번호 찾기</button>

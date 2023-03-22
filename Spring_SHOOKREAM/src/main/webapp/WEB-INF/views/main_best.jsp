@@ -59,7 +59,7 @@ font-size: 20px;
 }
 
 #product_discount_price {
-	color: red; 
+	color: #E16A93; 
 	font-size: 20px;
 	float: right;
 	padding-right: 10px;
@@ -130,7 +130,7 @@ function plus_wish_btn(cb){
 				
 				alert("찜한 상품에 추가되었습니다!");
 				
-				$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+				$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart w3-grayscale" id="wish_minus_btn' + idx + '" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
 		
 				idx = null;
 				
@@ -170,7 +170,7 @@ function minus_wish_btn(cb){
 
 				alert("찜한 상품에서 삭제되었습니다!");
 				
-				$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-regular fa-heart" id="wish_btn' + idx + '" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+				$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-regular fa-heart w3-grayscale" id="wish_btn' + idx + '" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
 				
 				idx = null;
 		}, 
@@ -219,7 +219,7 @@ function minus_wish_btn(cb){
 		<p>Best</p>
 	</div>
   <!-- Product grid -->
-  <div class="w3-row w3-grayscale">
+  <div class="w3-row">
      <c:forEach var="productBestList" items="${productBestList }" varStatus="status">
      <input type="hidden" id="product_idx${status.index }" value="${productBestList.product_idx }">
    <div class="w3-col l3 s6">
@@ -245,12 +245,12 @@ function minus_wish_btn(cb){
 									 <c:choose>
 									   <c:when test="${isWished}">
 									   	<span id="wishBtnId${status.index }">
-									     <i class="fa-solid fa-heart" id="wish_minus_btn${status.index }" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
+									     <i class="fa-solid fa-heart w3-grayscale" id="wish_minus_btn${status.index }" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
 									     </span>
 									   </c:when>
 									   <c:otherwise>
 									   <span id="wishBtnId${status.index }">
-									     <i class="fa-regular fa-heart" id="wish_btn${status.index }" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
+									     <i class="fa-regular fa-heart w3-grayscale" id="wish_btn${status.index }" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
 									     </span>
 									   </c:otherwise>
 									 </c:choose>
@@ -281,7 +281,7 @@ function minus_wish_btn(cb){
 									구매 ${productBestList.product_sell_count } &nbsp;
 								</span>
 								<span>
-									<i class="fa-solid fa-heart" style="color:pink;"></i> ${productBestList.product_wishcount }
+									<i class="fa-solid fa-heart w3-grayscale" style="color:pink;"></i> ${productBestList.product_wishcount }
 								</span>
 							</div>
 						</div>

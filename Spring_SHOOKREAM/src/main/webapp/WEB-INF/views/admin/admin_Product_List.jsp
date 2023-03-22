@@ -1,8 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
  <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
  <c:set var="path" value="${pageContext.request.contextPath }"/>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +20,7 @@
 			alert("삭제가 취소되었습니다");
 		}
 	};
+	
 </script>
 <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -31,7 +33,7 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="${path}/resources/css/styles.css" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <script type="text/javascript">
 			<%
@@ -53,8 +55,14 @@
  			table{ 
  			width: 100%; 
      		table-layout: fixed; 
-     		text-align: center; 
- 			} 
+     		font-size: 18px;
+/*      		text-align: center;  */
+ 			}
+ 			table > thead{
+ 			font-size: 19px;
+ 			
+ 			}
+
 		</style>
 </head>
  <body class="sb-nav-fixed">
@@ -69,7 +77,7 @@
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">상품 목록</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="Admin.ad">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="admin.ad">Dashboard</a></li>
 <!--                             <li class="breadcrumb-item active">Tables</li> -->
                         </ol>
                         <div class="card mb-4">
@@ -88,11 +96,12 @@
                                 <table id="datatablesSimple">
                                     <thead>
                                         <tr>
-                                            <th>번호</th>
+                                            <th>상품번호</th>
                                             <th>상품명</th>
                                             <th width="150px">이미지</th>
                                             <th>브랜드</th>
-                                            <th>가격</th>
+                                            <th>판매가격</th>
+                                            <th>할인율</th>
                                             <th>재고</th>
                                             <th>등록일</th>
                                             <th>수정</th>
@@ -102,25 +111,38 @@
                                       <c:forEach var="product" items="${productList }">
 										<tr>
 										<td id="product_idx">${product.product_idx }</td>
-										<td>${product.product_name } <br>(색상 : ${product.product_color })</td>   
+										
+										<td>
+										${product.product_name } <br>
+										<span style="font-size: 13px; color: gray">색상 : ${product.product_color }</span>
+										</td>  
+										
 										<td><img src="${path}/resources/upload/${product.image_main_file }" class="img-thumbnail" onError="this.onerror=null; this.src='resources/images/noImg.JPG';" alt="..." style="width:100px; height:100px;"></td>
-<%-- 										<td><img src="${path}/resources/upload/${product.image_main_file }" class="img-thumbnail" onError="this.onerror=null; this.src='resources/images/noImg.JPG';" alt="..." style="width:100px; height:100px;"></td> --%>
-<%-- 										<td><img src="${path}/resources/upload/${image.image_main_file }" class="img-thumbnail" onError="this.onerror=null; this.src='resources/images/noImg.JPG';" alt="..." style="width:100px; height:100px;"></td> --%>
 										<td>${product.product_brand }</td>
-										<td><fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber> </td>
+										
+										<!-- 할인율 여부에 따른 처리(0 초과일 때 할인적용가격, 0은 상품가격) -->
+										<c:choose>
+											<c:when test="${product.product_discount_price gt 0 }">
+												<td>
+												<fmt:formatNumber value="${product.product_release_price }" pattern="#,###원"></fmt:formatNumber><br>
+												<span style="font-size: 13px; color: gray">상품가격 : <fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber></span>
+												</td>
+											</c:when>
+											<c:otherwise>
+												<td><fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber> </td>
+											</c:otherwise>									
+										</c:choose>
+										<td>${product.product_discount_price }%</td>
 										<td><fmt:formatNumber value="${product.product_amount }" pattern="#개"></fmt:formatNumber></td>
 										<td><fmt:formatDate value="${product.product_date}" pattern="yyyy-MM-dd"/></td>
 										<td>
 										
-										<button type="button" class="btn btn-light" onclick="location.href ='ProductModifyForm.po?product_idx=${product.product_idx}'">수정
+										<button type="button" class="btn btn-secondary" onclick="location.href ='ProductModifyForm.po?product_idx=${product.product_idx}'">수정
 										</button>
-											<input type="hidden" name="image_main_file" value="${product.image_main_file}">
-<%-- 										<button type="button" class="btn btn-light" onclick= "deleteProduct(${product.product_idx})">삭제</button> --%>
-										<form action="ProductDeletePro.po" method="post" onsubmit="location.href='ProductList.po'">
-											<input type="hidden" name="product_idx" value="${product.product_idx}">
-											<input type="hidden" name="image_main_file" value="${product.image_main_file}">
-											<input type="submit" class="btn btn-light" value="삭제">
-										</form>
+										<button type="button" class="btn btn-secondary" onclick= "deleteProduct(${product.product_idx})">삭제</button>
+										<input type="hidden" name="image_main_file" value="${product.image_main_file}">
+										
+
 										</td>
 										</tr> 
 										</c:forEach>  

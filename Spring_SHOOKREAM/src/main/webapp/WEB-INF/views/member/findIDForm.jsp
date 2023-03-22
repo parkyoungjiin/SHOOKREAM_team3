@@ -18,7 +18,8 @@
 <style type="text/css">
 #sform {
           display: inline-block;
-          text-align: center;
+          text-align: center; 
+          font-size: 15px;
         }
 </style>
 <style>
@@ -61,17 +62,17 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
   <!-- 로그인 화면 폼 -->
   <footer class="w3-padding-50 w3-small w3-center" id="footer">
     <div id = "sform">
-        <h4 style="padding-top: 30px;">아이디 찾기</h4>
+        <h4 style="padding-top: 25px;">아이디 찾기</h4>
         <form method="post" action="FindIdFormAction.me" >
         <p align="center"><a href="LoginMember.me">[돌아가기]</a></p>
           <table>
 				<tr>
 					<th class="active">이름</th>
-					<td width="230px"><input class="w3-input w3-border" type="text" name="member_name" id="member_name" placeholder="이름을 입력해주세요." required></td>
+					<td width="300px"><input class="w3-input w3-border" type="text" name="member_name" id="member_name" placeholder="이름을 입력해주세요." required></td>
 				</tr>
 				<tr>
 					<th class="active">이메일 주소</th>
-					<td width="230px"><input class="w3-input w3-border" type="text" name="member_email" id="member_email" placeholder="이메일을 입력해주세요." required></td>
+					<td width="300px"><input class="w3-input w3-border" type="text" name="member_email" id="member_email" placeholder="이메일을 입력해주세요." required></td>
 				</tr>
 				<tr>
 					<td colspan="2" width="230px">

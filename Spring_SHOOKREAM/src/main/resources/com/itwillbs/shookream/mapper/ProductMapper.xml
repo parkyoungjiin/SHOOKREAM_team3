@@ -103,8 +103,12 @@
 			INTO order_detail
 			VALUES(
 				#{order_idx}
-				,#{order_member_idx}
-				,#{order_product_idx}
+				,#{order.member_idx}
+				,#{order.product_idx}
+				,#{delivery.order_name}
+				,#{delivery.order_phone}
+				,CONCAT(#{delivery.order_addr1},",",#{delivery.order_addr2})
+				,#{delivery.order_content}
 			)
 	</insert>
 	
