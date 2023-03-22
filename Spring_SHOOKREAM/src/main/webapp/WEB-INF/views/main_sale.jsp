@@ -59,7 +59,7 @@ font-size: 20px;
 }
 
 #product_discount_price {
-	color: red; 
+	color: #E16A93; 
 	font-size: 20px;
 	float: right;
 	padding-right: 10px;
@@ -129,7 +129,7 @@ function plus_wish_btn(cb){
 				
 				alert("찜한 상품에 추가되었습니다!");
 				
-				$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart" id="wish_minus_btn' + idx + '" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+				$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-solid fa-heart w3-grayscale" id="wish_minus_btn' + idx + '" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
 		
 				idx = null;
 				
@@ -169,7 +169,7 @@ function minus_wish_btn(cb){
 
 				alert("찜한 상품에서 삭제되었습니다!");
 				
-				$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-regular fa-heart" id="wish_btn' + idx + '" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
+				$("#wishBtnId"+idx).removeClass("fa-solid fa-heart").html('<i class="fa-regular fa-heart w3-grayscale" id="wish_btn' + idx + '" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>');
 				
 				idx = null;
 		}, 
@@ -216,7 +216,7 @@ function minus_wish_btn(cb){
 		<p>Sale</p>
 	</div>
   <!-- Product grid -->
-  <div class="w3-row w3-grayscale">
+  <div class="w3-row">
      <c:forEach var="productSaleList" items="${productSaleList }" varStatus="status">
      <input type="hidden" id="product_idx${status.index }" value="${productSaleList.product_idx }">
    <div class="w3-col l3 s6">
@@ -241,12 +241,12 @@ function minus_wish_btn(cb){
 									 <c:choose>
 									   <c:when test="${isWished}">
 									   	<span id="wishBtnId${status.index }">
-									     <i class="fa-solid fa-heart" id="wish_minus_btn${status.index }" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
+									     <i class="fa-solid fa-heart w3-grayscale" id="wish_minus_btn${status.index }" onclick="minus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
 									     </span>
 									   </c:when>
 									   <c:otherwise>
 									   <span id="wishBtnId${status.index }">
-									     <i class="fa-regular fa-heart" id="wish_btn${status.index }" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
+									     <i class="fa-regular fa-heart w3-grayscale" id="wish_btn${status.index }" onclick="plus_wish_btn(this)" style="font-size: 35px; color: #FFC0CB; cursor: pointer;"></i>
 									     </span>
 									   </c:otherwise>
 									 </c:choose>
@@ -277,7 +277,7 @@ function minus_wish_btn(cb){
 									구매 ${productSaleList.product_sell_count } &nbsp;
 								</span>
 								<span>
-									<i class="fa-solid fa-heart" style="color:pink;"></i> ${productSaleList.product_wishcount }
+									<i class="fa-solid fa-heart w3-grayscale" style="color:pink;"></i> ${productSaleList.product_wishcount }
 								</span>
 							</div>
 						</div>
@@ -290,7 +290,7 @@ function minus_wish_btn(cb){
 	<div class="paging">
         <c:choose>
 			<c:when test="${param.pageNum > 1}">
-				<a href="Sale.MAIN?pageNum=${param.pageNum - 1 }">이전</a>
+				<a href="Sale.ma?pageNum=${param.pageNum - 1 }">이전</a>
 			</c:when>
 			<c:otherwise>
 				<a href="javascript:void(0)">이전</a>
@@ -304,14 +304,14 @@ function minus_wish_btn(cb){
 					${i }
 				</c:when>
 				<c:otherwise>
-					<a href="Sale.MAIN?pageNum=${i }">${i }</a>
+					<a href="Sale.ma?pageNum=${i }">${i }</a>
 				</c:otherwise>
 			</c:choose>
 		</c:forEach>
 		
 		<c:choose>
 			<c:when test="${param.pageNum < pageInfo.maxPage}">
-				<a href="Sale.MAIN?pageNum=${param.pageNum + 1 }">다음</a>
+				<a href="Sale.ma?pageNum=${param.pageNum + 1 }">다음</a>
 			</c:when>
 			<c:otherwise>
 				<a href="javascript:void(0)">다음</a>

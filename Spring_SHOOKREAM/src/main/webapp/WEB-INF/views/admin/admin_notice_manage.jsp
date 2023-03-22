@@ -12,7 +12,7 @@
         <meta name="author" content="" />
         <title>관리자 페이지</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-        <link href="admin/css/styles.css" rel="stylesheet" />
+        <link href="${path}/resources/css/styles.css" rel="stylesheet" type="text/css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -31,6 +31,11 @@
 			* {
 				font-family: "Noto Sans KR", sans-serif;
 			}
+			table{ 
+ 			width: 100%; 
+     		table-layout: fixed; 
+     		text-align: center; 
+ 			} 
 		</style>   
     </head>
     <body class="sb-nav-fixed">

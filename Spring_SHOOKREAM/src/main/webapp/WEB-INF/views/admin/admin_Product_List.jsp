@@ -62,6 +62,7 @@
  			font-size: 19px;
  			
  			}
+
 		</style>
 </head>
  <body class="sb-nav-fixed">
@@ -141,6 +142,7 @@
 										<button type="button" class="btn btn-secondary" onclick= "deleteProduct(${product.product_idx})">삭제</button>
 										<input type="hidden" name="image_main_file" value="${product.image_main_file}">
 										
+
 										</td>
 										</tr> 
 										</c:forEach>  

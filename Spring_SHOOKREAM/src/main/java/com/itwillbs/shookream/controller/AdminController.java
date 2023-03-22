@@ -255,42 +255,15 @@ public class AdminController {
 			return "admin/admin_product_modifyForm";
 		}
 		
-//		// "/ProductModifyPro.po" 비즈니스 로직1
-//		@PostMapping(value = "/ProductModifyPro.po")
-//		public String ModifyPro(@RequestParam(defaultValue = "1") int product_idx,
-////								@RequestParam(defaultValue = "") String product_name,
-////								@RequestParam(defaultValue = "") String product_brand,
-////								@RequestParam(defaultValue = "") String product_size,
-//								@ModelAttribute ProductVo product,
-//								@ModelAttribute imageVo image,
-//								Model model,
-//								HttpSession session) {
-//			System.out.println(product_idx);
-//			System.out.println(product);
-//			System.out.println(image);
-//			
-//			int updateCount = service.updateProduct(product_idx, product, image);
-////			int updateCount = service.updateProduct(product_idx,product_name, product_brand,product_size, product, image);
-//			
-//			// 등록 성공/실패에 따른 포워딩 작업 수행
-//			if(updateCount > 0) { // 성공
-//				// 메인페이지로 리다이렉트
-//				return "redirect:/";
-//			} else { // 실패
-//				return "admin/admin_Product_ModifyForm";
-//			}
-//		}
-		
-		// "/ProductModifyPro.po" 비즈니스 로직2(new!)
+		// "/ProductModifyPro.po" 비즈니스 로직
 		@PostMapping(value="/ProductModifyPro.po")
 		public String ModifyPro(
 				@ModelAttribute ProductVo product
 				, @ModelAttribute imageVo image
-				, @RequestParam(value = "file", required = false) MultipartFile file
+				, @RequestParam(value = "files", required = false) MultipartFile files
 				, HttpSession session
 				, Model model) {
 			
-			System.out.println("*** image.getImage_main_file() : " + image.getImage_main_file());
 			// ------------------- 이미지 수정 -----------------------------
 			// 경로 설정
 			String uploadDir = "/resources/upload"; // 가상의 업로드 경로
@@ -308,6 +281,7 @@ public class AdminController {
 			
 			// 기존 파일명 설정
 			String image_main_file = image.getImage_main_file();
+			System.out.println("기존 파일명 image_main_file : " + image_main_file);
 			
 			MultipartFile[] mFiles = image.getFiles();
 			 
@@ -334,13 +308,11 @@ public class AdminController {
 					originalFileNames += originalFileName + "/";
 					realFileNames += uuid + "_" + originalFileName + "/";
 					
-				} else {
 					// 업로드될 파일명에 1개 파일명을 결합
 					realFileNames += realFileName;
 					// 각 파일명을 List 객체에도 추가
 					// => MultipartFile 객체를 통해 실제 폴더로 이동 시킬 때 사용
 					realFileNameList.add(realFileName);
-					
 				}
 			}
 			// productVO 객체에 원본 파일명과 업로드 될 파일명 저장
@@ -350,51 +322,42 @@ public class AdminController {
 			System.out.println("업로드 될 파일명 : " + image.getImage_real_file1());
 			// ------------------ 이미지 수정 코드 끝 ------------------------
 			
-			int updateCount = service.updateProduct(0, product);
+			int updateCount = service.updateProduct(0, product, image);
 			
 			// 등록 성공/실패에 따른 포워딩 작업 수행
 			if(updateCount > 0) { // 성공시
-				System.out.println("품목 수정 완료");
-				System.out.println("이미지 수정왜안됨ㅠㅠㅠ");
 				System.out.println("idx:" + product.getProduct_idx());
-				
+				System.out.println("files : " + files);
+				System.out.println("mFiles : " + mFiles);
 				// 파일을 새로 등록한 경우
-				if(file != null) { //file 객체가 null이 아닌 경우에만 처리
-					if(!file.isEmpty()) { // 파일을 선택한 경우
-						
-				//이미지 저장
-				int updateImage = service.updateImage(product.getProduct_idx(), product, image);
-						System.out.println("image : " + image);
-						System.out.println("이미지 수정됨안됨????");
-						
-				if(updateImage > 0) { // 성공
-					try {
-						for(int i = 0; i < image.getFiles().length; i++) {
-							MultipartFile mFile = image.getFiles()[i];
-							System.out.println("MultipartFile : " + mFile.getOriginalFilename());
-							// 가져온 파일이 있을 경우에만 파일 이동 작업 수행
-							if(!mFile.getOriginalFilename().equals("")) {
-								mFile.transferTo(
-									new File(saveDir, image.getImage_real_file1().split("/")[i])
-								);
-							}
-						}
-					} catch (IllegalStateException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-					} else { // 파일을 선택하지 않은 경우
-						image_main_file = product.getImage_main_file(); // 기존 파일명으로 유지
-						System.out.println("else1111111!!");
-					}
-					
-				} else { // file 객체가 null인 경우
-					image_main_file = product.getImage_main_file(); // 기존 파일명으로 유지
-					System.out.println("else2222222!!");
-				}
+				if (files != null && !files.isEmpty()) { // 파일 선택한 경우
+					System.out.println("새로운 이미지 파일 선택");
+					 image_main_file = image.getImage_main_file();
+					System.out.println("기존파일명 image.getImage_main_file() : " +  image.getImage_main_file());
 				
+//				} else {
+					} else { // 파일을 선택하지 않은 경우
+						System.out.println("새 파일 선택 안함. 기존 파일 유지");
+						 image_main_file = image.getImage_main_file(); // 기존 파일명으로 유지
+						 System.out.println("기존파일명 image.getImage_main_file() : " +  image.getImage_main_file());
+						
+						try {
+							for(int i = 0; i < image.getFiles().length; i++) {
+								MultipartFile mFile = image.getFiles()[i];
+								System.out.println("MultipartFile : " + mFile.getOriginalFilename());
+								// 가져온 파일이 있을 경우에만 파일 이동 작업 수행
+								if(!mFile.getOriginalFilename().equals("")) {
+									mFile.transferTo(
+										new File(saveDir, image.getImage_real_file1().split("/")[i])
+									);
+								}
+							}
+						} catch (IllegalStateException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+				}		
 				// 메인페이지로 리다이렉트
 				model.addAttribute("msg", "상품 등록이 완료되었습니다.");
 				return "redirect:/ProductList.po";

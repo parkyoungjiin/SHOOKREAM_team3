@@ -18,6 +18,7 @@
 #sform {
           display: inline-block;
           text-align: center;
+          font-size: 15px;
         }
         
 </style>
@@ -61,20 +62,20 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Snas KR", sans-serif;}
   <!-- 로그인 화면 폼 -->
   <footer class="w3-padding-50 w3-small w3-center" id="footer">
     <div id = "sform">
-        <h4 style="padding-top: 30px;">비밀번호 찾기</h4>
+        <h4 style="padding-top: 25px;">비밀번호 찾기</h4>
         <form method="post" action="FindPwProAction.me">
         <p align="center"><a href="LoginMember.me">[돌아가기]</a></p>
           <table class=table>
 				<tr>
 					<th class="active">아이디</th>
-					<td width="230px"><input class="w3-input w3-border" type="text" name="member_id" id="member_id" required></td>
+					<td width="300px"><input class="w3-input w3-border" type="text" name="member_id" id="member_id" required></td>
 				</tr>
 				<tr>
 					<th class="active">이메일 주소</th>
-					<td width="230px"><input class="w3-input w3-border" type="text" name="member_email" id="member_email" required></td>
+					<td width="300px"><input class="w3-input w3-border" type="text" name="member_email" id="member_email" required></td>
 				</tr>
 			</table>
-						<input type="submit" value="임시비밀번호 전송" class="w3-button w3-block w3-black">
+					<input type="submit" value="임시비밀번호 전송" class="w3-button w3-block w3-black">
         </form>
     </div>
   </footer>

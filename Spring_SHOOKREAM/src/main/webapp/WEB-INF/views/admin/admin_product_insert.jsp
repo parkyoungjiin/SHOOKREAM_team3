@@ -19,8 +19,7 @@
 <script src="${path}/resources/admin/assets/demo/chart-bar-demo.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
 <script src="${path}/resources/admin/js/datatables-simple-demo.js"></script>
-        
- <script type="text/javascript">
+<script type="text/javascript">
 	<%
 		String sId = (String)session.getAttribute("sId");
 		String id = request.getParameter("id");
@@ -31,7 +30,8 @@
 	<% 
 		} 
 	%>
-</script>  
+</script>        
+ 
 <style type="text/css">
 	* {
 		font-family: "Noto Sans KR", sans-serif;
@@ -285,7 +285,6 @@ $(function() {
 									<option value="blue">BLUE</option>
 									<option value="gray">GRAY</option>
 							</select>
-						</td>
 					</tr>
 
 					<tr>
