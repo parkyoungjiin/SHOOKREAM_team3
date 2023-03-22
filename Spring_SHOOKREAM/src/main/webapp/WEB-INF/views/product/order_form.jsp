@@ -464,6 +464,12 @@ function CouponCheck() {
 <script>
 $(function() {
 	 $("#newaddress").hide();
+	 var amount = parseInt("${product.product_amount}");
+	 if(amount <= 0){
+			alert("재고가 없습니다");
+		 history.back();
+	 }
+	 
 });
 $("input:radio[name='address']").change(function() {
 	let location = $("input:radio[name='address']:checked").val();
