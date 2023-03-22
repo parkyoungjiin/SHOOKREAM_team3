@@ -32,8 +32,45 @@
 	
 		#border_content {
 		padding: 130px;
-	}
+		}
+		
+		#faqCategory {
+			width: 200px;
+		}
 		</style>
+		<script type="text/javascript" charset="utf-8">
+			let pageNum=1;
+		
+			function selectCategory() {
+				let category = $("#faqCategory > option:selected").val();
+		//		console.log(category);
+		//		alert(category);
+				$.ajax({
+					typt:"GET",
+					url: "FAQListJson.bo?notice_category=" + category,
+					dataType:"json"
+				})
+				.done(function(boardList) {
+					$("#faqTable > tbody").empty();
+					for(let board of boardList) {
+		//				alert("board확인" + board);
+						let result = "<tr>"
+									+ "<th scope='row' style='text-align:center'>" + board.notice_idx + "</th>"
+									+ "<td style='text-align:center'><b>" + board.notice_category + "</b></td>"
+									+ "<td>"
+										+ "<a href='BoardInfo.bo?notice_idx=" + board.notice_idx + "&pageNum=" + pageNum + "' style='text-decoration:none'>" + board.notice_subject +"</a>"
+									+ "</td>"
+									+ "<td style='text-align:center'>" + board.notice_date + "</td>"
+									+ "</tr>"
+						$("#faqTable > tbody").append(result);
+					}
+				})
+				.fail(function() {
+					$("#faqTable").before("<h5>공지사항이 없습니다.</h5>");
+				});
+			}
+			
+		</script>
 	</head>
 	<body class="w3-content" style="max-width:95%">
 	
@@ -61,8 +98,18 @@
 	  
 	  <div id="border_content">
 			<h3 style="padding: 20px;">자주묻는 질문</h3>
+			<div id="category">
+				<select id="faqCategory" name="faqCategory" class="form-select" onchange="selectCategory()">
+					<option value="" selected>전체보기</option>
+					<option value="주문/결제">주문/결제</option>
+					<option value="회원정보">회원정보</option>
+					<option value="배송">배송</option>
+					<option value="교환/반품">교환/반품</option>
+					<option value="서비스">서비스</option>
+				</select>
+			</div>
 			<hr style="border:solid 2px black;">
-			<table class="table">
+			<table class="table" id="faqTable">
 			  <c:choose>
 					<c:when test="${empty param.pageNum }">
 						<c:set var="pageNum" value="1" />
@@ -79,18 +126,18 @@
 			      <th scope="col">등록일</th>
 			    </tr>
 			  </thead>
-			 <c:forEach var="board" items="${boardList }">
 			  <tbody>
-			    <tr>
-			      <th scope="row"  style="text-align: center">${board.notice_idx }</th>
-			      <td style="text-align: center"><b>${board.notice_category }</b></td>
-			      <td>
-			      	<a href="FAQInfo.bo?notice_idx=${board.notice_idx }&pageNum=${pageNum }" style="text-decoration:none">${board.notice_subject }</a>
-				  </td>
-			      <td style="text-align: center">${board.notice_date }</td>
-			    </tr>
+				 <%-- <c:forEach var="board" items="${boardList }">
+				    <tr>
+				      <th scope="row"  style="text-align: center">${board.notice_idx }</th>
+				      <td style="text-align: center"><b>${board.notice_category }</b></td>
+				      <td>
+				      	<a href="FAQInfo.bo?notice_idx=${board.notice_idx }&pageNum=${pageNum }" style="text-decoration:none">${board.notice_subject }</a>
+					  </td>
+				      <td style="text-align: center">${board.notice_date }</td>
+				    </tr>
+				 </c:forEach> --%> 
 			  </tbody>
-			 </c:forEach> 
 			</table>
 			<c:choose>
 		    	<c:when test="${sessionScope.sId eq 'admin' }">
