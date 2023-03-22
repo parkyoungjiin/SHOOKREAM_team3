@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.shookream.vo.OrderdeliveryVo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.cartVo;
 import com.itwillbs.shookream.vo.cartVoArr;
@@ -54,4 +55,5 @@ public interface CartMapper {
 	int getCartOrderCount(cartVo vo2);
 	// 주문 수량 더하기 작업
 	void updateOrder_Amount(cartVo vo2);
+	int insertCartOrderDetail(@Param("order") cartVo vo2,@Param("delivery") OrderdeliveryVo delivery);
 }
