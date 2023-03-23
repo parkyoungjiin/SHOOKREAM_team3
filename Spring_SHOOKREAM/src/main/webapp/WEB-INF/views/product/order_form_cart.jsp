@@ -26,7 +26,7 @@
 <script type="text/javascript">
 // 쿠폰 보러가기 클릭 함수
 // function CouponCheck() {
-	
+
 
 // 	let url = "CouponListForm.po?member_idx="+${sessionScope.member_idx}+"&product_price="+${product.product_release_price };  // 테스트용 파라미터임!
 // 	let name = "Coupon List";
