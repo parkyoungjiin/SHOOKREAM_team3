@@ -72,7 +72,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 /* 	padding-bottom: 30px; */
 	font-size: x-large;
 	clear:both;
-	font-weight: bold;
+/* 	font-weight: bold; */
 }
 
 #product_brand {
@@ -464,7 +464,7 @@ localStorage.setItem("z","11");
 									<span id="product_discount_price" ><fmt:formatNumber value="${productBestList.product_discount_price }" pattern="" />%</span>
 								</c:when>
 								<c:otherwise>
-									<span><fmt:formatNumber value="${productBestList.product_price }" pattern="#,###" /></span>
+									<span id="price"><fmt:formatNumber value="${productBestList.product_price }" pattern="#,###" /></span>
 								</c:otherwise>
 							</c:choose>
 							</div>

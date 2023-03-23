@@ -150,42 +150,38 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
   </tbody>
 </table>
 <!-- 페이징 처리 -->	
-	<div class="paging" style="padding-top: 30px; padding-bottom: 60px;">
-        <c:choose>
-			<c:when test="${param.pageNum > 1}">
-				<a href="CartList.ca?pageNum=${param.pageNum - 1 }&member_idx=${member_idx }">이전</a>
-			</c:when>
-			<c:otherwise>
-				<a href="javascript:void(0)">이전</a>
-			</c:otherwise>
-		</c:choose>
+<!-- 	<div class="paging" style="padding-top: 30px; padding-bottom: 60px;"> -->
+<%--         <c:choose> --%>
+<%-- 			<c:when test="${param.pageNum > 1}"> --%>
+<%-- 				<a href="CartList.ca?pageNum=${param.pageNum - 1 }&member_idx=${member_idx }">이전</a> --%>
+<%-- 			</c:when> --%>
+<%-- 			<c:otherwise> --%>
+<!-- 				<a href="javascript:void(0)">이전</a> -->
+<%-- 			</c:otherwise> --%>
+<%-- 		</c:choose> --%>
 		
-		<c:forEach var="i" begin="${pageInfo.startPage }" end="${pageInfo.endPage }">
-			<!-- 단, 현재 페이지 번호는 링크 없이 표시 -->
-			<c:choose>
-				<c:when test="${param.pageNum eq i}">
-					${i }
-				</c:when>
-				<c:otherwise>
-					<a href="LikeList.ca?pageNum=${i }&member_idx=${member_idx }">${i }</a>
-				</c:otherwise>
-			</c:choose>
-		</c:forEach>
+<%-- 		<c:forEach var="i" begin="${pageInfo.startPage }" end="${pageInfo.endPage }"> --%>
+<!-- 			<!-- 단, 현재 페이지 번호는 링크 없이 표시 --> 
+<%-- 			<c:choose> --%>
+<%-- 				<c:when test="${param.pageNum eq i}"> --%>
+<%-- 					${i } --%>
+<%-- 				</c:when> --%>
+<%-- 				<c:otherwise> --%>
+<%-- 					<a href="LikeList.ca?pageNum=${i }&member_idx=${member_idx }">${i }</a> --%>
+<%-- 				</c:otherwise> --%>
+<%-- 			</c:choose> --%>
+<%-- 		</c:forEach> --%>
 		
-		<c:choose>
-			<c:when test="${param.pageNum < pageInfo.maxPage}">
-				<a href="LikeList.ca?pageNum=${param.pageNum + 1 }&member_idx=${member_idx }">다음</a>
-			</c:when>
-			<c:otherwise>
-				<a href="javascript:void(0)">다음</a>
-			</c:otherwise>
-		</c:choose>
-<!--         <a class="select" href="#">1</a> -->
-<!--         <a href="#">2</a> -->
-<!--         <a href="#">3</a> -->
-<!--         <a href="#">4</a> -->
-<!--         <a href="#">5</a> -->
-    </div>
+<%-- 		<c:choose> --%>
+<%-- 			<c:when test="${param.pageNum < pageInfo.maxPage}"> --%>
+<%-- 				<a href="LikeList.ca?pageNum=${param.pageNum + 1 }&member_idx=${member_idx }">다음</a> --%>
+<%-- 			</c:when> --%>
+<%-- 			<c:otherwise> --%>
+<!-- 				<a href="javascript:void(0)">다음</a> -->
+<%-- 			</c:otherwise> --%>
+<%-- 		</c:choose> --%>
+
+<!--     </div> -->
     </c:otherwise>
   </c:choose>
 

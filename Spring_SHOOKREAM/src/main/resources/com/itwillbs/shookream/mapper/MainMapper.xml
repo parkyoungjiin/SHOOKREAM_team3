@@ -54,4 +54,10 @@
 			FROM product
 				WHERE product_discount_price > 0;
 	</select>	
+	
+	<select id="getKeywordListCount" resultType="int">
+		SELECT COUNT(product_idx)
+			FROM product
+				WHERE product_brand LIKE '%${keyword}%' OR product_name LIKE '%${keyword}%';
+	</select>	
 </mapper>

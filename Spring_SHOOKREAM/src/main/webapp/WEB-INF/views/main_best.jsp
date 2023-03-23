@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
 <script src="https://kit.fontawesome.com/498a54c4c7.js"
 	crossorigin="anonymous"></script>
 <style>
@@ -273,7 +273,7 @@ function minus_wish_btn(cb){
 									<span id="product_discount_price" ><fmt:formatNumber value="${productBestList.product_discount_price }" pattern="" />%</span>
 								</c:when>
 								<c:otherwise>
-									<span><fmt:formatNumber value="${productBestList.product_price }" pattern="#,###" /></span>
+									<span id="price"><fmt:formatNumber value="${productBestList.product_price }" pattern="#,###" /></span>
 								</c:otherwise>
 							</c:choose>
 							</div>

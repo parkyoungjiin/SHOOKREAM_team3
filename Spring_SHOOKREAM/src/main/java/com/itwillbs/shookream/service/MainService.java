@@ -47,6 +47,10 @@ public class MainService {
 		return mapper.getSaleProductListCount();
 	}
 
+	public int getProductKeywordListCount(String keyword) {
+		return mapper.getKeywordListCount(keyword);
+	}
+
 
 	
 	

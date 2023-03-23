@@ -27,6 +27,8 @@ public interface MainMapper {
 	public List<ProductVo> getProductSearchList(@Param("keyword") String keyword,@Param("startRow") int startRow,@Param("listLimit") int listLimit);
 
 	public int getSaleProductListCount();
+
+	public int getKeywordListCount(String keyword);
 	
 	
 
