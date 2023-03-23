@@ -44,7 +44,7 @@
 <script type="text/javascript">
    		
     //할인 버튼에 따른 처리
-      $(function() {
+	      $(function() {
     	  
    	  	// 로딩될 때 상품가격에 ,콤마가 붙어서 출력되는데 uncomma 한 값을 hidden 값에 저장
    	  	var prod_price = $("#prod_price").val();

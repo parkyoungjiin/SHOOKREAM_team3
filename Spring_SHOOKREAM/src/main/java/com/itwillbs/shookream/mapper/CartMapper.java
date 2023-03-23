@@ -12,6 +12,8 @@ import com.itwillbs.shookream.vo.cartVoArr;
 
 @Mapper
 public interface CartMapper {
+	// member_idx에 맞는 장바구니 개수 조회
+		int selectCartCount(int member_idx);
 	//장바구니 이동 (장바구니 목록 담기)
 	List<cartVo> getCartlist(
 			@Param("member_idx") int member_idx,
@@ -57,4 +59,5 @@ public interface CartMapper {
 	// 주문 수량 더하기 작업
 	void updateOrder_Amount(cartVo vo2);
 	int insertCartOrderDetail(@Param("order") cartVo vo2,@Param("delivery") OrderdeliveryVo delivery);
+	
 }

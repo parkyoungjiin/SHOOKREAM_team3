@@ -50,7 +50,6 @@ public class CartController {
 	//장바구니 이동
 	@GetMapping(value = "CartList.ca")
 	public String cartList(
-			@RequestParam() int pageNum,
 			HttpServletResponse response,
 			HttpServletRequest request,
 			HttpSession session,
@@ -64,31 +63,31 @@ public class CartController {
 		//세션 아이디와 Member_idx 변수 선언
 		String sId = (String)session.getAttribute("sId");
 		int member_idx = (int)session.getAttribute("member_idx");
+		
+		
 		// 페이징 처리를 위한 변수 선언
 		int listLimit = 10; // 한 페이지에서 표시할 게시물 목록을 10개로 제한
-		pageNum = 1; // 현재 페이지 번호 설정(pageNum 파라미터 사용)
+		int pageNum = 1; // 현재 페이지 번호 설정(pageNum 파라미터 사용)
+		
+		if(request.getParameter("pageNum") != null) {
+			pageNum = Integer.parseInt(request.getParameter("pageNum"));
+		}
 
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행번호 계산
-		//	System.out.println("startRow = " + startRow);
-		// ---------------------------------------------------------
-		// 파라미터로 전달받은 검색어(keyword) 가져와서 변수에 저장
-
+		
+		List<cartVo> cartlist = service.getCartlist(member_idx,startRow,listLimit);
+		int cart_total_price =0;
+		int cart_order_total_price =0;
+		System.out.println(cartlist.size());
+		//반복문을 통해 cart_price합계 계산
+		for(int i=0; i<cartlist.size(); i++) {
+			cart_total_price += cartlist.get(i).getCart_price();
+			cart_order_total_price += cartlist.get(i).getCart_order_price();
+		}
 			
-			List<cartVo> cartlist = service.getCartlist(member_idx,startRow,listLimit);
-			int cart_total_price =0;
-			int cart_order_total_price =0;
-			System.out.println(cartlist.size());
-			//반복문을 통해 cart_price합계 계산
-			for(int i=0; i<cartlist.size(); i++) {
-				cart_total_price += cartlist.get(i).getCart_price();
-				cart_order_total_price += cartlist.get(i).getCart_order_price();
-			}
-			//장바구니 금액(상품금액, 총 결제금액)
-//			int cartTotalPrice = service.getCartTotalPrice(member_idx);
-//			System.out.println(cartTotalPrice);
 			// 페이징 처리
 			// 한 페이지에서 표시할 페이지 목록(번호) 갯수 계산
-			// 1. BoardListService - selectBoardListCount() 메서드를 호출하여 전체 게시물 수 조회(페이지 목록 계산에 사용)
+			// 1. CartList - getCartListCount() 메서드를 호출하여 전체 게시물 수 조회(페이지 목록 계산에 사용)
 			// => 파라미터 : 검색어   리턴타입 : int(listCount)
 			int listCount = service.getCartListCount(member_idx);
 			//	System.out.println("총 게시물 수 : " + listCount);
@@ -388,6 +387,8 @@ public class CartController {
 			}
 			
 		}//ChangeTotalPrice 끝
+		
+		
 	
 		//------구매페이지에서 다중 구매 처리 -------
 		@GetMapping(value = "CartOrderDetailPro.ca")
