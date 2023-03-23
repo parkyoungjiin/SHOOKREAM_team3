@@ -25,14 +25,18 @@
 <!-- 쿠폰 확인 -->
 <script type="text/javascript">
 // 쿠폰 보러가기 클릭 함수
-function CouponCheck() {
+// function CouponCheck() {
 	
-	let url = "CouponListForm.po";
-	let name = "Coupon List";
-	let attr = "width=900, height=600, top=200, left=510"
 
-	window.open(url, name, attr);
-}
+// 	let url = "CouponListForm.po?member_idx="+${sessionScope.member_idx}+"&product_price="+${product.product_release_price };  // 테스트용 파라미터임!
+// 	let name = "Coupon List";
+// 	let attr = "width=900, height=600, top=200, left=510";
+
+// 	window.open(url, name, attr);
+// }
+
+
+
 function total_discount_cal() {
 	
 }
@@ -388,6 +392,17 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
   </div>
 </div>
 
+
+<script type="text/javascript">
+function CouponCheck() {
+	let url = "CouponListForm.po?member_idx="+${sessionScope.member_idx}+"&product_price=" + ${cart_order_total_price };  // 테스트용 파라미터임!
+	let name = "Coupon List";
+	let attr = "width=900, height=600, top=200, left=510";
+
+	window.open(url, name, attr);
+}
+
+</script>
 
 <!-- ------------------------------------------------------------------------------------------------------------>
 <!-- 자바스크립트 부분 -->
