@@ -18,8 +18,13 @@
 #sform {
           display: inline-block;
           text-align: center;
-          
+          text-size: 15px;
         }
+        
+button, [type=button], [type=reset], [type=submit] {
+    -webkit-appearance: button;
+    font-size: 15px;
+}
 </style>
 <style>
 .w3-sidebar a {font-family: "Noto Sans KR", sans-serif}
@@ -60,7 +65,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 
   
   <!-- Footer -->
-  <footer class="w3-padding-64 w3-small w3-center" id="footer">
+  <div class="w3-padding-64 w3-small w3-center">
     <div id = "sform">
          <h4 style="padding-top: 30px;">아이디 찾기 결과</h4>
         <div style="padding-bottom: 10px;"></div>
@@ -72,12 +77,12 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 		        <h5>회원님의 아이디는 <b>${member}</b> 입니다.</h5>
 		    </c:otherwise>
 		</c:choose>
-
-        <div style="padding-bottom: 50px;"></div>
+        <div style="padding-bottom: 40px;"></div>
+		<button style="margin-bottom: 2px; width: 300px;" type="button" class="w3-button w3-block w3-black" onclick="location.href='FindMemberIdForm.me'">아이디 찾기</button>
+		<button style="margin-bottom: 2px; width: 300px;" type="button" class="w3-button w3-block w3-black" onclick="location.href='FindPwForm.me'">비밀번호 찾기</button>
 		<button style="margin-bottom: 2px; width: 300px;" type="button" class="w3-button w3-block w3-black" onclick="location.href='LoginMember.me'">로그인</button>
-		<button type="button" class="w3-button w3-block w3-black" onclick="location.href='FindPwForm.me'">비밀번호 찾기</button>
 	</div>
-  </footer>
+	</div>
   <footer>
   	<jsp:include page="../inc/footer.jsp"/>
   </footer>	

@@ -263,18 +263,18 @@ $(function() {
 						<option value="gmail.com">gmail.com</option>
 						<option value="daum.net">daum.net</option>
 						<option value="nate.com">nate.com</option>
-						</select> &nbsp;
-						<input type="button" class="btn btn-dark" id="checkEmail"  value="인증 메일 전송" onclick="alert('이메일 전송 완료!')"><br>
-						<span style="color: gray">("@"를 포함하여 이메일을 입력해주세요. ex) abcd@gmail.com)</span><br>
+						</select> &nbsp; 
+						<input type="button" class="btn btn-dark" id="checkEmail"  value="인증 메일 전송" onclick="alert('이메일 전송 완료!')"><br><br>
+<!-- 						<span style="color: gray">("@"를 포함하여 이메일을 입력해주세요. ex) abcd@gmail.com)</span><br> -->
 						
 <!-- 						<input type="text" name="email" id="email" placeholder="" required size="20px" style="line-height: 30px"> &nbsp; -->
-<!-- 						<input type="button" class="btn btn-dark" id="checkEmail"  value="인증 메일 전송" onclick="alert('이메일 전송 완료!')"><br> -->
+<!-- 						<input type="button" class="btn btn-dark" id="checkEmail"  value="인증 메일 전송" onclick="alert('이메일 전송 완료!')"> -->
 <!-- 						<span style="color: gray">("@"를 포함하여 이메일을 입력해주세요. ex) abcd@gmail.com)</span><br> -->
 						
 						
 						<div id ="authResult">
 						<input type="text" name="authCode" id="authCode" size="20px" style="line-height: 30px" required="required"> &nbsp;
-						<input type="button" class="btn btn-dark" id="checkEmail2"  value="인증 하기"><br>
+						<input type="button" class="btn btn-dark" id="checkEmail2"  value="인증하기"><br>
 						<span style="color: gray">(인증코드 6자리를 입력하세요)</span> &nbsp;
 						<span id="authEmailResult"></span>
 						</div>
