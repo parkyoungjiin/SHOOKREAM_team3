@@ -720,7 +720,7 @@ function iamport(){
         pay_method : 'card',
         merchant_uid: "order_no_"+ new Date().getTime(), // 상점에서 관리하는 주문 번호를 전달
         name : list_count,
-        amount : "100",
+        amount : price,
         buyer_email : 'iamport@siot.do',
         buyer_name : '${sessionScope.sId}',
         buyer_tel : '010-1234-5678',
