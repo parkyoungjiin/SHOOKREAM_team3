@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +26,7 @@ import com.itwillbs.shookream.vo.BoardVo;
 import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.OrderVo;
+import com.itwillbs.shookream.vo.OrderdeliveryVo;
 import com.itwillbs.shookream.vo.PageInfo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.ReviewVo;
@@ -40,6 +42,7 @@ public class ProductController {
 	@Autowired
 	private MemberService service_member;
 	
+	List<imageVo> imageList;
 	
 	// 상품 상세 정보
 	@GetMapping(value = "/ProductInfoForm.po")
@@ -81,14 +84,28 @@ public class ProductController {
 		product = service.getProduct(product_idx);
 		System.out.println("product 조회 : " + product);
 		
+		imageList = new ArrayList<imageVo>();
+		
 		image = service.getImage(product_idx);
 		System.out.println("image 조회 : " + image);
 		
-		session.setAttribute("product", product);
-		session.setAttribute("image", image);
+		if(imageList.size() < 3) {
+			imageList.add(image);
+		} else {
+			imageList.set(0, imageList.get(1));
+			imageList.set(1, imageList.get(2));
+			imageList.add(image);
+		}
+		System.out.println("imageList 조회 : " + imageList);
 		
+		session.setAttribute("product_idx", product_idx);
+		session.setAttribute("image", image);
+		session.setAttribute("imageList", imageList);
+		System.out.println("이거다"+session.getAttribute("image"));
+		model.addAttribute("product_idx", product_idx);
 		model.addAttribute("product", product);
 		model.addAttribute("image", image);
+		model.addAttribute("imageList", imageList);
 		
 		// ======================================================
 		
@@ -144,6 +161,7 @@ public class ProductController {
 		product = service.getProduct(product_idx);
 		image = service.getImage(product_idx);
 		member = service_member.getMemberInfo(sId);
+		System.out.println("member : "+member);
 		model.addAttribute("product", product);
 		model.addAttribute("member", member);
 		model.addAttribute("image", image);
@@ -160,14 +178,14 @@ public class ProductController {
 			@RequestParam(defaultValue = "0") int coupon_idx,
 			@RequestParam(defaultValue = "0") int product_idx,
 			@RequestParam(defaultValue = "0") int product_price,
-			HttpSession session) {
+			HttpSession session, OrderdeliveryVo delivery) {
 		System.out.println(order);
 		String sId = (String)session.getAttribute("sId");		
 		int member_idx = service.getMemberIdx(sId);
 //		order.setOrder_member_idx(member_idx);
 //		order.setOrder_product_idx(product_idx);
 //		order.setOrder_product_price(product_price);
-		
+		System.out.println("delivery :"+delivery);
 		// 쿠폰 임시 값 지정 (추후 수정 필요)
 		if(model.getAttribute("coupon_idx") != "") {
 			order.setOrder_coupon_idx(coupon_idx);
@@ -178,17 +196,17 @@ public class ProductController {
 		int insertOrder = service.InsertOrder(order);
 		
 		if(insertOrder > 0) {
-//			int insertOrder2 = service.InsertOrderDetail(order);
+			int insertOrder2 = service.InsertOrderDetail(order,delivery);
 			 
-//			if(insertOrder2 > 0) {
+			if(insertOrder2 > 0) {
 				service.updatePro(order);
 				service.updateMem(order);
-//			}
+			}
 			
 			return "redirect:/ProductOrderList.po?member_idx"+member_idx;
 			
 		} else {
-			
+//			
 			model.addAttribute("msg", "일시적 오류로 구매에 실패했습니다.");
 			return "fail_back";
 		}
@@ -242,11 +260,19 @@ public class ProductController {
 		}
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
 		
-		
 		System.out.println(orderList);
+		
+		
 		model.addAttribute("orderList", orderList);
 		model.addAttribute("pageInfo", pageInfo);
 		return "product/Product_orderlist";
+	}// 회원 주문 목록 끝
+	
+	@GetMapping(value = "/ProductOrderDeliveryPro.po")
+	public String OrderDelivery(Model model, HttpSession session,@RequestParam(defaultValue = "1")int pageNum) {
+		
+		
+		return "product/order_Form";
 	}// 회원 주문 목록 끝
 			
 }

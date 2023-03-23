@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri ="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri ="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -256,7 +256,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 </form>
 <!-- 배송 정보 -->
 <table class="table" id="delivery_table" style="border-collapse: separate; border-spacing: 0 13px; font-size: 18px">
-	  <thead>
+	 <thead>
 	    <tr>
 	      <th scope="col" colspan="8" style="font-size: x-large;">배송 정보</th>
 	    </tr>
@@ -267,44 +267,92 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 	    		주문 하시는 분
 	    	</th>
 	    	<td colspan="6">
-	    		주문자이름<br>
-	    		xxxxx@xxxx.com<br>
-	    		010-1111-1111<br>
+	    		${member.member_id} 님<br>
+	    		${member.member_email }<br>
+	    		${fn:substring(member.member_phone,0,3) } -  
+	    		${fn:substring(member.member_phone,3,7) } -  
+	    		${fn:substring(member.member_phone,7,12) }  
+	    		<br>
 	    	</td>
 	   </tr>
 	   <tr>
 		<th colspan="2">배송지 선택</th>
 		<td colspan="6" style="margin-left:500px;">
-			<input type="radio" value="" name=""> 기본배송지
-			<input type="radio" value="새로운 배송지" name=""> 새로운 배송지
+			<input type="radio" value="order" name="address" checked="checked" id="order"> 기본배송지
+			<input type="radio" value="new" name="address"> 새로운 배송지
 		</td>
 	   </tr>
 	   <tr>
-	    <th colspan="2">배송지명</th>
-	   	<td colspan="6" style="text-align: left;">집</td>
-	   </tr>
-	   
-	   <tr>
 	   <th colspan="2">받으시는 분</th>   
-	   <td>박영진<br>
-	 	   전화번호 : 000-0000-0000/휴대폰 번호 : 000-0000-0000 <br>
-	       주소: 주소들어가기<br>
+	   <td>
+	   	  <div id="address">
+	   	  <div class="row mb-3">
+                <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">성함</label>
+                <div class="col-md-8 col-lg-2">
+                  <input name="order_name" type="text" class="form-control" id="order_name" value="${member.member_name }">
+                </div>
+           </div>
+	 	 <div class="row mb-3">
+               <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">연락처</label>
+               <div class="col-md-8 col-lg-2">
+                 <input name="order_phone" type="text" class="form-control" id="order_phone" value="${member.member_phone }">
+               </div>
+           </div>
+	 	 <div class="row mb-3">
+                <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">주소</label>
+                <div class="col-md-8 col-lg-5">
+                  <input name="order_addr1" type="text" class="form-control" id="order_addr1" value="${fn:split(member.member_address,',')[0]}">
+                </div>
+           </div>
+	 	 <div class="row mb-3">
+              <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label"></label>
+              <div class="col-md-8 col-lg-5">
+                <input name="order_addr2" type="text" class="form-control" id="order_addr2" value="${fn:split(member.member_address,',')[1]}">
+              </div>
+           </div>
+	   </div>
+	   
+	   <div id="newaddress">
+	   	  <div class="row mb-3">
+                <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">성함</label>
+                <div class="col-md-8 col-lg-2">
+                  <input name="order_name" type="text" class="form-control" id="new_order_name">
+                </div>
+           </div>
+	 	 <div class="row mb-3">
+               <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">연락처</label>
+               <div class="col-md-8 col-lg-2">
+                 <input name="order_phone" type="text" class="form-control" id="new_order_phone">
+               </div>
+           </div>
+	 	 <div class="row mb-3">
+                <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">주소</label>
+                <div class="col-md-8 col-lg-5">
+                  <input name="order_addr1" type="text" class="form-control" id="new_order_addr1">
+                </div>
+           </div>
+	 	 <div class="row mb-3">
+              <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label"></label>
+              <div class="col-md-8 col-lg-5">
+                <div class="input-group mb-6">
+                <input name="order_addr2" type="text" class="form-control" id="new_order_addr2">
+              	<button id="address_kakao" class="btn btn-primary" style="float: right;">주소찾기</button>
+               </div>
+              </div>
+           </div>
+	   </div>
 	   </td>
 	   </tr>
 	   <tr>
 	   	<th colspan="2">배송 메세지</th>
 	   	<td>
-	   		<select class="form-select" style="width: 300px">
+	   		<select class="form-select" id="order_content" style="width: 300px">
 	   			<option>부재시 문 앞에 놓아주세요</option>
-	   			<option>경비실에 ㄱㄱ </option>
+	   			<option>경비실에 놔둬주세요. </option>
 	   			<option>전화 부탁 드립니다</option>
 	   			<option>소화전에 넣어 주세요</option>
 	   		</select>
 	   	 </td>
-	   </tr>
-	   <tr>
-	   	<th colspan="2">총 배송비</th>
-	   	<td colspan="6">0원 </td>
 	   </tr>
 	  </tbody>
 	</table>
@@ -405,9 +453,39 @@ function CouponCheck() {
 </script>
 
 <!-- ------------------------------------------------------------------------------------------------------------>
-<!-- 자바스크립트 부분 -->
-
+<!-- 카카오 주소 API -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
+window.onload = function(){
+    document.getElementById("address_kakao").addEventListener("click", function(){ //주소입력칸을 클릭하면
+        //카카오 지도 발생
+        new daum.Postcode({
+            oncomplete: function(data) { //선택시 입력값 세팅
+                document.getElementById("new_order_addr1").value = data.address; // 주소 넣기
+                document.querySelector("input[id=new_order_addr1]").focus(); //상세입력 포커싱
+            }
+        }).open();
+    });
+}
+</script>
+<!-- 자바스크립트 부분 -->
+<script src="../js/jquery-3.6.3.js"></script>
+<script>
+//---주소창 과리기!!------
+$(function() {
+	 $("#newaddress").hide();
+});
+$("input:radio[name='address']").change(function() {
+	let location = $("input:radio[name='address']:checked").val();
+	if(location == 'new'){
+		$("#newaddress").show();
+		$("#address").hide();
+	}else if(location == 'order'){
+		$("#address").show();
+		$("#newaddress").hide();
+	}
+});// 내부,외부처리
+
 // Accordion 
 function myAccFunc() {
   var x = document.getElementById("demoAcc");
@@ -562,6 +640,28 @@ function goOrder() {
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript">
 function iamport(){
+	//-----배송 처리-----
+	let order_name_value = document.getElementById("order_name").value;
+	let order_phone_value =  document.getElementById("order_phone").value; 
+	let order_addr1_value =  document.getElementById("order_addr1").value;
+	let order_addr2_value= document.getElementById("order_addr2").value;
+	let order_content = document.getElementById("order_content").value;
+	if(document.getElementById("new_order_name").value != "" || document.getElementById("new_order_name").value == null){
+		order_name_value =document.getElementById("new_order_name").value;
+	}
+	
+	if(document.getElementById("new_order_phone").value != "" || document.getElementById("new_order_phone").value == null){
+		order_phone_value =document.getElementById("new_order_phone").value;
+	}
+	
+	if(document.getElementById("new_order_addr1").value != "" || document.getElementById("new_order_addr1").value == null){
+		order_addr1_value =document.getElementById("new_order_addr1").value;
+	}
+	
+	if(document.getElementById("new_order_addr2").value != "" || document.getElementById("new_order_addr2").value == null){
+		order_addr2_value =document.getElementById("new_order_addr2").value;
+	}
+	//-----배송 처리-----
 	//----주문 외 몇건 처리---- 
 	
 	let list_count = "";
@@ -626,7 +726,6 @@ function iamport(){
 	});
 	//----cart_idx 끝----------
 	var price = document.getElementById("order_total_price").value;
-	alert(price);
 	//getter
     IMP.init('imp77718215');
 //     var money = $('input[name="cp_item"]:checked').val();
@@ -636,7 +735,7 @@ function iamport(){
         pay_method : 'card',
         merchant_uid: "order_no_"+ new Date().getTime(), // 상점에서 관리하는 주문 번호를 전달
         name : list_count,
-        amount : "100",
+        amount : price,
         buyer_email : 'iamport@siot.do',
         buyer_name : '${sessionScope.sId}',
         buyer_tel : '010-1234-5678',
@@ -657,7 +756,12 @@ function iamport(){
 					"cart_sizeArr":cart_size_arr,
 					"cart_colorArr":cart_color_arr,
 					"cart_product_nameArr":cart_product_name_arr,
-					"cart_idxArr":cart_idx_arr
+					"cart_idxArr":cart_idx_arr,
+					"order_name":order_name_value,
+					"order_phone":order_phone_value,
+					"order_addr1":order_addr1_value,
+					"order_addr2":order_addr2_value,
+					"order_content":order_content
 				},
 			})
 			.done(function(whlist) { // 요청 성공 시

@@ -291,14 +291,18 @@ display: block;
 		var cart_color_val = ($("#cart_color_id").val()).toUpperCase();
 		var cart_prod_name = $("#cart_product_name_id").val();
 		var cart_product_release_price = parseInt($("#cart_product_release_price").val());
+		var cart_product_price = parseInt($("#cart_product_price").val());
+
 // 		var cart_count = parseInt($("#cart_count_id").val());
-		var comma_price = cart_product_release_price.toLocaleString("en-US");
+		
+		var comma_price = cart_product_price.toLocaleString("en-US");
+		var comma_release_price = cart_product_release_price.toLocaleString("en-US");
 	  	const element = document.getElementById('price_result_area');
 
-// 		alert(cart_prod_name);
-// 		alert(cart_color_val);
 		
-		if(cart_size_val != "" && cart_color_val != ""){
+		if(cart_size_val != "" && cart_color_val != "" ){
+			if(cart_product_release_price > 0 ){
+
 			element.innerHTML += 
 // 			'<span style="font-weight: bold; font-size: 20px">'+ cart_prod_name + '</span><br>' 
 			'<div style="margin-bottom: 12px"><span style="font-weight: bold; font-size: 19px;">사이즈 : ' + cart_size_val + ' / 색상 : ' + cart_color_val + '</span></div>'
@@ -307,12 +311,26 @@ display: block;
 			+ '<input type="text" class="form-control" id="cart_count_id" name="cart_count" value="1" required="required" readonly="readonly" style="width: 40px; text-align: center; display: inline-block;">'
 			+ '<button class="btn btn-outline-dark btn-sm" onclick="amount_adjust(' + "'plus'" + ')" style ="width: 30px; height: 35px; font-size: 15px;">+</button>'
 			+ '</span>'
-			+ '<span id ="total_price_area" style="font-weight: bold; font-size: 20px;">' + '총 금액 : ' + '</span>' 
-			+ '<span id ="total_price_areas" style="font-weight: bold; font-size: 18px; color:red;">' + comma_price + '</span>'
+			+ '<span id ="total_price_area" style="font-weight: bold; font-size: 20px;">' + '총 금액 : ' + '</span>'
+			+ '<span id ="total_price_areas" style="font-weight: bold; font-size: 18px; color:red;">' + comma_release_price + '</span>'
 			+ '<span style="font-weight: bold; font-size: 18px;">원</span>'
-			
 			+ '<hr>';
+			}else{
+			element.innerHTML += 
+//	 			'<span style="font-weight: bold; font-size: 20px">'+ cart_prod_name + '</span><br>' 
+				'<div style="margin-bottom: 12px"><span style="font-weight: bold; font-size: 19px;">사이즈 : ' + cart_size_val + ' / 색상 : ' + cart_color_val + '</span></div>'
+				+ '<span style="margin-right: 20px">' 
+				+ '<button class="btn btn-outline-dark btn-sm" onclick="amount_adjust(' + "'minus'" + ')" style ="width: 30px; height: 35px; font-size: 15px;">-</button>'
+				+ '<input type="text" class="form-control" id="cart_count_id" name="cart_count" value="1" required="required" readonly="readonly" style="width: 40px; text-align: center; display: inline-block;">'
+				+ '<button class="btn btn-outline-dark btn-sm" onclick="amount_adjust(' + "'plus'" + ')" style ="width: 30px; height: 35px; font-size: 15px;">+</button>'
+				+ '</span>'
+				+ '<span id ="total_price_area" style="font-weight: bold; font-size: 20px;">' + '총 금액 : ' + '</span>'
+				+ '<span id ="total_price_areas" style="font-weight: bold; font-size: 18px; color:red;">' + comma_price + '</span>'
+				+ '<span style="font-weight: bold; font-size: 18px;">원</span>'
+				+ '<hr>';
+			}
 		}
+		
 	}//changeCheck 끝
 	
 	//---------상세 페이지에서 수량 +, - 버튼에 따른 수량 변동 작업 --------
@@ -320,18 +338,31 @@ display: block;
 // 		alert("클릭");
 	 	var cart_count = parseInt($("#cart_count_id").val());
 		var cart_product_release_price = parseInt($("#cart_product_release_price").val());
+		var cart_product_price = parseInt($("#cart_product_price").val());
 
 		if(type =="plus"){
 			// 최대 개수 미설정(재고 수량을 가져와서 재고수량보다 적게 + 되도록 설정 필요)
-			cart_count = cart_count + 1;
-			total_comma_price = (cart_product_release_price * cart_count).toLocaleString("en-US");
-			$("#cart_count_id").val(cart_count);
-			$("#total_price_areas").text(total_comma_price);
+			if(cart_product_release_price > 0 ){
+				cart_count = cart_count + 1;
+				total_comma_price = (cart_product_release_price * cart_count).toLocaleString("en-US");
+				$("#cart_count_id").val(cart_count);
+				$("#total_price_areas").text(total_comma_price);
+			}else{
+				cart_count = cart_count + 1;
+				total_comma_price = (cart_product_price * cart_count).toLocaleString("en-US");
+				$("#cart_count_id").val(cart_count);
+				$("#total_price_areas").text(total_comma_price);
+			}
 		}else if(type ="minus"){
 			// 개수가 1미만이 되지 않도록 설정
-			if(cart_count > 1){
+			if(cart_product_release_price > 0 ){
 				cart_count = cart_count - 1;
 				total_comma_price = (cart_product_release_price * cart_count).toLocaleString("en-US");
+				$("#cart_count_id").val(cart_count);
+				$("#total_price_areas").text(total_comma_price);
+			}else{
+				cart_count = cart_count - 1;
+				total_comma_price = (cart_product_price * cart_count).toLocaleString("en-US");
 				$("#cart_count_id").val(cart_count);
 				$("#total_price_areas").text(total_comma_price);
 			}

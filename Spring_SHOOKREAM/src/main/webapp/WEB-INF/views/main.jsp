@@ -418,7 +418,7 @@ localStorage.setItem("z","11");
 			<div class="w3-col l3 s6">
 				<div class="w3-container" style="padding-top: 100px;">
 							<div class="w3-display-container">
-								<img src="${path}/resources/upload/${productBestList.product_img }" onError="this.onerror=null; this.src='resources/images/noImg.JPG';" alt="..." style="width: 100%" >
+								<img src="${path}/resources/upload/${productBestList.image_main_file }" onError="this.onerror=null; this.src='resources/images/noImg.JPG';" alt="..." style="width: 100%" >
 								<div class="w3-display-middle w3-display-hover">
 <%-- 									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productBestList.product_idx }&member_idx=${sessionScope.member_idx }'"> --%>
 									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productBestList.product_idx }'">
@@ -493,7 +493,7 @@ localStorage.setItem("z","11");
    <div class="w3-col l3 s6" style="z-index:1;">
       <div class="w3-container" style="padding-top: 100px;">
         <div class="w3-display-container">
-          <img src="${path}/resources/upload/${productNewList.product_img }" onError="this.onerror=null; this.src='resources/images/noImg.JPG';"  alt="..." style="width:100%">
+          <img src="${path}/resources/upload/${productNewList.image_main_file }" onError="this.onerror=null; this.src='resources/images/noImg.JPG';"  alt="..." style="width:100%">
           		<div class="w3-display-middle w3-display-hover">
 <%-- 									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productNewList.product_idx }&member_idx=${sessionScope.member_idx }'"> --%>
 								<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productNewList.product_idx }'">
