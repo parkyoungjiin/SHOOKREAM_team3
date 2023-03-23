@@ -25,6 +25,10 @@
           text-align: center;
           font-size: 15px;
         }
+        
+tbody, td, tfoot, th, thead, tr {
+    padding: 3px;
+}
 </style>
 <style>
 .w3-sidebar a {font-family: "Noto Sans KR", sans-serif}
