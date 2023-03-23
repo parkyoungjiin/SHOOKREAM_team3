@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
  <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>    
+ <c:set var="path" value="${pageContext.request.contextPath }"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -222,7 +223,7 @@ function minus_wish_btn(cb){
    <div class="w3-col l3 s6">
       <div class="w3-container" style="padding-top: 100px;">
         <div class="w3-display-container">
-          <img src="./upload/${productSaleList.product_img }" onError="this.onerror=null; this.src='resources/images/noImg.JPG';"  alt="..." style="width: 100%">
+          <img src="${path}/resources/upload/${productSaleList.image_main_file }" onError="this.onerror=null; this.src='resources/images/noImg.JPG';"  alt="..." style="width: 100%">
          <div class="w3-display-middle w3-display-hover">
 <%-- 									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productSaleList.product_idx }&member_idx=${sessionScope.member_idx }'"> --%>
 									<button class="w3-button w3-black" onclick="location.href='ProductInfoForm.po?product_idx=${productSaleList.product_idx }'">	

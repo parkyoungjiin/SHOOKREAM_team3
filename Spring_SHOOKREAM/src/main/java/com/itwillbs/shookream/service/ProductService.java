@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.shookream.mapper.ProductMapper;
 import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.OrderVo;
+import com.itwillbs.shookream.vo.OrderdeliveryVo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.ReviewVo;
 import com.itwillbs.shookream.vo.WishVo;
@@ -60,8 +61,8 @@ public class ProductService {
 		return mapper.insertOrder(order);
 	}
 
-	public int InsertOrderDetail(OrderVo order) {
-		return mapper.insertOrderDetail(order);
+	public int InsertOrderDetail(OrderVo order, OrderdeliveryVo delivery) {
+		return mapper.insertOrderDetail(order,delivery);
 	}
 
 	public void updatePro(OrderVo order) {

@@ -73,8 +73,11 @@ pageContext.setAttribute("cn", "\n");
 			<hr>
 			<div id="no_content">${fn:replace(board.notice_content, cn, br) }</div><br><br>	
 			<button onclick="history.back()" class="btn btn-dark btn-sm">뒤로가기</button>
+			<c:if test="${sId eq 'admin' }">
+			
 			<button onclick="location.href='BoardModifyForm.bo?notice_idx=${board.notice_idx}&pageNum=${param.pageNum }'" class="btn btn-dark btn-sm">수정하기</button>
 			<button type="button" class="btn btn-sm btn-dark" onclick="location.href='FAQDeletePro.bo?notice_idx=${board.notice_idx}&pageNum=${param.pageNum }'">삭제하기</button>
+			</c:if>
 			<br><br>
 <%-- 			<a href="FAQList.bo?pageNum=${param.pageNum }"><button id="listBtn" class="btn btn-outline-secondary btn-sm">목록으로</button></a> <br><br> --%>
 

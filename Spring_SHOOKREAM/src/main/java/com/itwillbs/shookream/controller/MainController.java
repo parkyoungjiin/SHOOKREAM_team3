@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.itwillbs.shookream.service.AdminService;
 import com.itwillbs.shookream.service.MainService;
 import com.itwillbs.shookream.service.MemberService;
 import com.itwillbs.shookream.service.ProductService;
 import com.itwillbs.shookream.vo.PageInfo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.WishVo;
+import com.itwillbs.shookream.vo.imageVo;
 
 /**
  * Handles requests for the application home page.
@@ -34,6 +36,8 @@ public class MainController {
 	private MemberService service_member;
 	@Autowired 
 	private ProductService service_product;
+	@Autowired 
+	private AdminService service_admin;
 
 	//-----------------------메인 페이지--------------------------------
 	@RequestMapping(value = "/main.ma", method = RequestMethod.GET)
@@ -51,9 +55,33 @@ public class MainController {
 		List<ProductVo> productBestList = service.getProductBestList(startRow, listLimit);
 		model.addAttribute("productBestList", productBestList);
 		
+		for(ProductVo product1 : productBestList) {
+	        // 일치하는 상품을 찾았을 때 해당 상품에 대한 이미지를 조회
+	        List<imageVo> imageList = service_admin.getImgList(product1.getProduct_idx());
+	        String fileNames = imageList.get(0).getImage_main_file();
+	        String[] splitFileNames = fileNames.split("/");
+	        String firstFileName = splitFileNames[0]; // 맨 앞 파일명
+	        System.out.println("fileNames :: " + firstFileName);
+	        
+	        product1.setImage_main_file(firstFileName);
+	    }
+		
+		
 		// 최근 등록 상품 가져오기
 		List<ProductVo> productNewList = service.getProductNewList(startRow, listLimit);
 		model.addAttribute("productNewList", productNewList);
+		
+		for(ProductVo product2 : productNewList) {
+	        // 일치하는 상품을 찾았을 때 해당 상품에 대한 이미지를 조회
+	        List<imageVo> imageList = service_admin.getImgList(product2.getProduct_idx());
+	        String fileNames = imageList.get(0).getImage_main_file();
+	        String[] splitFileNames = fileNames.split("/");
+	        String firstFileName = splitFileNames[0]; // 맨 앞 파일명
+	        System.out.println("fileNames :: " + firstFileName);
+	        
+	        product2.setImage_main_file(firstFileName);
+	    }
+		
 		
 		String sId = (String)session.getAttribute("sId");
 //		String sId = "admin";
@@ -75,7 +103,7 @@ public class MainController {
 	}//main 끝
 	
 	//---------------------Best 페이지--------------------------
-	@GetMapping(value = "Best.ma")
+	@RequestMapping(value = "Best.ma", method = RequestMethod.GET)
 	public String best(Model model, HttpServletRequest request, HttpSession session,ProductVo product) {
 		// 페이징 처리를 위한 변수 선언
 		int listLimit = 16; // 한 페이지에서 표시할 게시물 목록을 10개로 제한
@@ -90,6 +118,16 @@ public class MainController {
 		List<ProductVo> productBestList = service.getProductBestList(startRow, listLimit);
 		model.addAttribute("productBestList", productBestList);
 		
+		for(ProductVo product1 : productBestList) {
+	        // 일치하는 상품을 찾았을 때 해당 상품에 대한 이미지를 조회
+	        List<imageVo> imageList = service_admin.getImgList(product1.getProduct_idx());
+	        String fileNames = imageList.get(0).getImage_main_file();
+	        String[] splitFileNames = fileNames.split("/");
+	        String firstFileName = splitFileNames[0]; // 맨 앞 파일명
+	        System.out.println("fileNames :: " + firstFileName);
+	        
+	        product1.setImage_main_file(firstFileName);
+	    }
 
 		String sId = (String)session.getAttribute("sId");
 //		String sId = "admin";
@@ -157,6 +195,16 @@ public class MainController {
 				List<ProductVo> productNewList = service.getProductNewList(startRow, listLimit);
 				model.addAttribute("productNewList", productNewList);
 				
+				for(ProductVo product2 : productNewList) {
+			        // 일치하는 상품을 찾았을 때 해당 상품에 대한 이미지를 조회
+			        List<imageVo> imageList = service_admin.getImgList(product2.getProduct_idx());
+			        String fileNames = imageList.get(0).getImage_main_file();
+			        String[] splitFileNames = fileNames.split("/");
+			        String firstFileName = splitFileNames[0]; // 맨 앞 파일명
+			        System.out.println("fileNames :: " + firstFileName);
+			        
+			        product2.setImage_main_file(firstFileName);
+			    }
 
 				String sId = (String)session.getAttribute("sId");
 //				String sId = "admin";
@@ -223,6 +271,16 @@ public class MainController {
 		List<ProductVo> productSaleList = service.getProductSaleList(startRow, listLimit);
 		model.addAttribute("productSaleList", productSaleList);
 		
+		for(ProductVo product2 : productSaleList) {
+	        // 일치하는 상품을 찾았을 때 해당 상품에 대한 이미지를 조회
+	        List<imageVo> imageList = service_admin.getImgList(product2.getProduct_idx());
+	        String fileNames = imageList.get(0).getImage_main_file();
+	        String[] splitFileNames = fileNames.split("/");
+	        String firstFileName = splitFileNames[0]; // 맨 앞 파일명
+	        System.out.println("fileNames :: " + firstFileName);
+	        
+	        product2.setImage_main_file(firstFileName);
+	    }
 
 		String sId = (String)session.getAttribute("sId");
 //		String sId = "admin";
@@ -244,7 +302,7 @@ public class MainController {
 		// ------------------페이징 처리----------------------
 		// => 파라미터 : x   리턴타입 : int(listCount)
 		//1. 목록 개수
-		int listCount = service.getProductListCount();
+		int listCount = service.getSaleProductListCount();
 	
 		// 2. 한 페이지에서 표시할 페이지 목록 갯수 설정
 		int pageListLimit = 10; // 한 페이지에서 표시할 페이지 목록을 3개로 제한
@@ -291,6 +349,16 @@ public class MainController {
 				List<ProductVo> productList = service.getProductCGList(cg, startRow, listLimit);
 				model.addAttribute("productList", productList);
 				
+				for(ProductVo product2 : productList) {
+			        // 일치하는 상품을 찾았을 때 해당 상품에 대한 이미지를 조회
+			        List<imageVo> imageList = service_admin.getImgList(product2.getProduct_idx());
+			        String fileNames = imageList.get(0).getImage_main_file();
+			        String[] splitFileNames = fileNames.split("/");
+			        String firstFileName = splitFileNames[0]; // 맨 앞 파일명
+			        System.out.println("fileNames :: " + firstFileName);
+			        
+			        product2.setImage_main_file(firstFileName);
+			    }
 
 				String sId = (String)session.getAttribute("sId");
 //				String sId = "admin";
@@ -347,6 +415,18 @@ public class MainController {
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행번호 계산
 		
 		List<ProductVo> productList = service.getProductSearchList(keyword, startRow, listLimit);
+		
+		for(ProductVo product2 : productList) {
+	        // 일치하는 상품을 찾았을 때 해당 상품에 대한 이미지를 조회
+	        List<imageVo> imageList = service_admin.getImgList(product2.getProduct_idx());
+	        String fileNames = imageList.get(0).getImage_main_file();
+	        String[] splitFileNames = fileNames.split("/");
+	        String firstFileName = splitFileNames[0]; // 맨 앞 파일명
+	        System.out.println("fileNames :: " + firstFileName);
+	        
+	        product2.setImage_main_file(firstFileName);
+	    }
+		
 		model.addAttribute("productList", productList);
 		
 

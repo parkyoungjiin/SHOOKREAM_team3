@@ -108,7 +108,7 @@ public class MemberController {
 		String member_email = email1 + "@" + email2;
 		member.setMember_email(member_email);
 		// 주소 결합
-		String member_address = address1 + " " + address2;
+		String member_address = address1 + "," + address2;
 		member.setMember_address(member_address);
 //		System.out.println("파라미터 확인 : " + member);
 		// 폼파라미터로 전송된 정보들을 해당되는 VO 객체에 바인딩 시키기 위해서는 뷰페이지내의 name 속성이 vo객체의 변수명과 일치해야 함!
@@ -120,9 +120,10 @@ public class MemberController {
 		// 회원번호 기존 최대번호 + 1
 		member.setMember_idx(new_member_idx);
 //		System.out.println("멤버인덱스 확인 : " + member.getMember_idx());
-		boolean joinMember = service.joinMember(member);
+		int joinMember = service.joinMember(member);
 		
-		if(joinMember) {
+
+		if(joinMember > 0) {
 			
 			// ======= 회원가입 쿠폰 지급 =========
 			
