@@ -36,7 +36,7 @@ font-size: 70%;
 		<c:when test="${not empty sessionScope.sId }">
 			<div id="logintvar" style="padding-right: 35px;">
 			<i class="fa-solid fa-heart fa-sm" onclick="location.href='LikeList.ca?id=${sessionScope.sId}&member_idx=${member_idx }&pageNum=1'" style="cursor: pointer;"></i>
-			<i class="fa-solid fa-cart-shopping fa-sm" onclick="location.href='CartList.ca?pageNum=1'" style="margin: 10px; cursor: pointer;"></i>
+			<i class="fa-solid fa-cart-shopping fa-sm" onclick="location.href='CartList.ca?'" style="margin: 10px; cursor: pointer;"></i>
 		 <div class="w3-dropdown-click" id="logintvar">
 		 <i class="fa-solid fa-user fa-sm" onmouseover="myFunction()" onclick="location.href='MemberMyPage.me?id=${sessionScope.sId }&member_idx=${member_idx }'" style="margin: 10px;"></i>
 		  <div id="Demo" class="w3-dropdown-content w3-bar-block w3-border">
