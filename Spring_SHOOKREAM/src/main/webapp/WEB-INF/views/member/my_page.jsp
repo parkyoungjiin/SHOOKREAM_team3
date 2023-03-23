@@ -102,6 +102,12 @@
 	body,h1,h2,h3,h4,h5,h6,.w3-wide {
 		font-family: "Noto Sans KR", sans-serif;
 	}
+	
+	#reviewTable {
+		width: 90%;
+		text-align:cetner;
+	}
+	
 </style>
 </head>
 <body class="w3-content" style="max-width:95%">
@@ -131,7 +137,7 @@
 	
 <div class="myOrderState">
 	<h4>Delivery</h4><br><br>
-	<nav class="myPageNav">
+<%-- 	<nav class="myPageNav">
 		<ul>
 			<li><i class='fas fa-money-check'><br><br>입금 확인중</i></li>
 			<li><i class='fas fa-angle-right'></i></li>
@@ -154,7 +160,21 @@
 			<li></li>
 			<li>${orderCount }</li>
 		</ul>
-	</nav>
+	</nav> --%>
+	<table id="reviewTable">
+		<tr>
+			<td><i class='fas fa-money-check'><br><br>입금 확인중</i><br><br>0</td>
+			<td><i class='fas fa-angle-right'></i></td>
+			<td><i class='fas fa-clipboard-check'><br><br>결제완료</i><br><br>0</td>
+			<td><i class='fas fa-angle-right'></i></td>
+			<td><i class='fas fa-box'><br><br>상품 준비중</i><br><br>0</td>
+			<td><i class='fas fa-angle-right'></i></td>
+			<td><i class='fas fa-truck'><br><br>배송중</i><br><br>0</td>
+			<td><i class='fas fa-angle-right'></i></td>
+			<td><i class='fas fa-home'><br><br>배송 완료</i><br><br>${orderCount }</td>
+
+		</tr>
+	</table>
 
 <hr>
 	<div id="myPageList">

@@ -53,7 +53,7 @@ public class BoardController {
 		return "redirect:/FAQList.bo?notice_idx="+board.getNotice_idx();
 	}// 게시판 등록 작업 끝
 	
-	//-------------공지 목록 : 삭제? -----------
+	//-------------공지 목록 -----------
 	@GetMapping("/BoardList.bo")
 	public String list(@ModelAttribute BoardVo board,@RequestParam(defaultValue = "1") int pageNum, String keyword, Model model ) {
 		

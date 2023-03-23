@@ -99,8 +99,8 @@
 		<hr>
 		<div >
 		&nbsp; 구매 옵션<br>
-			사이즈 : <input type="text" value="${param.product_size }" name="product_size">
-			색상 : <input type="text" value="${param.product_color }" name="product_color">
+			사이즈 : <input type="text" value="${param.product_size }" name="product_size" readonly>
+			색상 : <input type="text" value="${param.product_color }" name="product_color" readonly>
 		</div>
 		<textarea placeholder="욕설 및 관련없는 내용은 관리자에 의해 삭제될 수 있습니다." name="review_content"></textarea><br>
 		<div id="reviewBtn">
