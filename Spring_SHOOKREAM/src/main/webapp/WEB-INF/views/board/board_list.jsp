@@ -121,10 +121,10 @@
 				</c:choose>
 			  <thead>
 			    <tr style="text-align: center">
-			      <th scope="col">번호</th>
-			      <th scope="col">구분</th>
-			      <th scope="col">제목</th>
-			      <th scope="col">등록일</th>
+			      <th scope="col" style="width:10%">번호</th>
+			      <th scope="col" style="width:15%">구분</th>
+			      <th scope="col" style="width:50%">제목</th>
+			      <th scope="col" style="width:25%">등록일</th>
 			    </tr>
 			  </thead>
 			  <tbody>

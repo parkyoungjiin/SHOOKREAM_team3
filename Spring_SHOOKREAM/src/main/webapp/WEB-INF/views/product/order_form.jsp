@@ -148,14 +148,13 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
  
 	 
 	 // 쿠폰 보러가기 클릭 함수
-	function CouponCheck() {
-		
-		let url = "CouponListForm.po";
-		let name = "Coupon List";
-		let attr = "width=900, height=600, top=200, left=510"
+// 	function CouponCheck() {
+// 		let url = "CouponListForm.po";
+// 		let name = "Coupon List";
+// 		let attr = "width=900, height=600, top=200, left=510"
 	
-		window.open(url, name, attr);
-	}
+// 		window.open(url, name, attr);
+// 	}
 	function total_discount_cal() {
 		
 	}
@@ -464,6 +463,12 @@ function CouponCheck() {
 <script>
 $(function() {
 	 $("#newaddress").hide();
+	 var amount = parseInt("${product.product_amount}");
+	 if(amount <= 0){
+			alert("재고가 없습니다");
+		 history.back();
+	 }
+	 
 });
 $("input:radio[name='address']").change(function() {
 	let location = $("input:radio[name='address']:checked").val();

@@ -73,6 +73,7 @@
 <!-- </nav> -->
 <!-- 세션 최근 본 상품 뿌리기 -->
  <div style="height:300px; margin-right:100px;" id="floatMenu" >
+ <h5>최근 본 상품</h5>
 <%-- ${fn:split(image.image_main_file,'/')[0]} --%>
 ${fn:split(imageList[0].image_main_file,'/')[0]}
 ${fn:split(imageList[1].image_main_file,'/')[0]}

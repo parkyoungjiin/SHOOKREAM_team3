@@ -142,6 +142,8 @@
 				,#{coupon.coupon_benefit}
 				,#{coupon.coupon_benefit_price}
 				,#{coupon.coupon_benefit_unit}
+				,#{coupon.coupon_min_price}
+				,#{coupon.coupon_max_discount}
 				,0
 				,#{coupon.coupon_start}
 				,date_add(now(),interval 30 day)

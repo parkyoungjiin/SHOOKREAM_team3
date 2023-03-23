@@ -25,6 +25,10 @@ public interface MainMapper {
 	public int getProductCGListCount(@Param("cg") String cg);
 	//키워드 별 목록 (검색창)
 	public List<ProductVo> getProductSearchList(@Param("keyword") String keyword,@Param("startRow") int startRow,@Param("listLimit") int listLimit);
+
+	public int getSaleProductListCount();
+
+	public int getKeywordListCount(String keyword);
 	
 	
 
