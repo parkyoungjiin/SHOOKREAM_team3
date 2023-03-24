@@ -43,6 +43,7 @@ public interface CartMapper {
 	cartVo getCartOrderList(
 			@Param("cart_idx") String cart_idx,
 			@Param("member_idx") int member_idx);
+	//장바구니 수량,금액 조정
 	int getAmountAdjust(
 			@Param("cart_idx") int cart_idx,
 			@Param("type") String type,

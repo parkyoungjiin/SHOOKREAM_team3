@@ -243,7 +243,7 @@
 							<input class="form-check-input" type="radio" name="saleRadio" id="saleRadio2"  checked="checked" style="display: inline-block;"> 
 							<label class="form-check-label" for="saleRadio2" style="margin-right: 15px">할인 선택</label>
 							<!-- 할인율 입력칸 -->
-							<input type="text" class="form-control" id="testRate" name ="product_discount" value ="${product.product_discount_price }" onchange="inputOnlyNumberFormats(this)" style="width:50px; display: inline-block; text-align: center;" > <!-- 할인율 입력칸 -->
+							<input type="text" class="form-control" id="testRate" name ="product_discount_price" value ="${product.product_discount_price }" onchange="inputOnlyNumberFormats(this)" style="width:50px; display: inline-block; text-align: center;" > <!-- 할인율 입력칸 -->
 							<span>%</span>
 						</div>
 						</td>

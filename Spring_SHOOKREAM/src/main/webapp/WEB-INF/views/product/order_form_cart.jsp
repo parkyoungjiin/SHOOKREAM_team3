@@ -25,14 +25,17 @@
 <!-- 쿠폰 확인 -->
 <script type="text/javascript">
 // 쿠폰 보러가기 클릭 함수
-function CouponCheck() {
-	
-	let url = "CouponListForm.po?member_idx="+${sessionScope.member_idx}+"&product_price="+${product.product_release_price };  // 테스트용 파라미터임!
-	let name = "Coupon List";
-	let attr = "width=900, height=600, top=200, left=510";
+// function CouponCheck() {
 
-	window.open(url, name, attr);
-}
+// 	let url = "CouponListForm.po?member_idx="+${sessionScope.member_idx}+"&product_price="+${product.product_release_price };  // 테스트용 파라미터임!
+// 	let name = "Coupon List";
+// 	let attr = "width=900, height=600, top=200, left=510";
+
+// 	window.open(url, name, attr);
+// }
+
+
+
 function total_discount_cal() {
 	
 }
@@ -437,6 +440,17 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 </div>
 
 
+<script type="text/javascript">
+function CouponCheck() {
+	let url = "CouponListForm.po?member_idx="+${sessionScope.member_idx}+"&product_price=" + ${cart_order_total_price };  // 테스트용 파라미터임!
+	let name = "Coupon List";
+	let attr = "width=900, height=600, top=200, left=510";
+
+	window.open(url, name, attr);
+}
+
+</script>
+
 <!-- ------------------------------------------------------------------------------------------------------------>
 <!-- 카카오 주소 API -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -720,7 +734,7 @@ function iamport(){
         pay_method : 'card',
         merchant_uid: "order_no_"+ new Date().getTime(), // 상점에서 관리하는 주문 번호를 전달
         name : list_count,
-        amount : "100",
+        amount : price,
         buyer_email : 'iamport@siot.do',
         buyer_name : '${sessionScope.sId}',
         buyer_tel : '010-1234-5678',
