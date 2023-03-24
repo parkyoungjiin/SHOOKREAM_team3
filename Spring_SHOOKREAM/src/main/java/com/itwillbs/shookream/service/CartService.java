@@ -42,6 +42,9 @@ public class CartService {
 	public int getCartDelete(int cart_idx, int member_idx) {
 		return mapper.getCartDelete(cart_idx, member_idx);
 	}
+	public int getCartDeleteArr(int[] cart_idxArr, int member_idx) {
+		return mapper.getCartDeleteArr(cart_idxArr, member_idx);
+	}
 	//이미 담긴 상품이 있는 경우 CART_count 만큼의 수량을 증가
 	public int getUpdateCart(int product_idx, int member_idx, int cart_count) {
 		return mapper.getUpdateCart(product_idx, member_idx, cart_count);
@@ -77,6 +80,7 @@ public class CartService {
 	public int InsertOrderDetail(cartVo vo2, OrderdeliveryVo delivery) {
 		return mapper.insertCartOrderDetail(vo2,delivery);
 	}
+	
 	
 
 }

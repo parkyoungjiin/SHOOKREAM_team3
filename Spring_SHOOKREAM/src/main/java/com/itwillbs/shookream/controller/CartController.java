@@ -36,6 +36,7 @@ import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.OrderdeliveryVo;
 import com.itwillbs.shookream.vo.PageInfo;
 import com.itwillbs.shookream.vo.ProductVo;
+import com.itwillbs.shookream.vo.cartViewVo;
 import com.itwillbs.shookream.vo.cartVo;
 import com.itwillbs.shookream.vo.cartVoArr;
 
@@ -78,7 +79,6 @@ public class CartController {
 		List<cartVo> cartlist = service.getCartlist(member_idx,startRow,listLimit);
 		int cart_total_price =0;
 		int cart_order_total_price =0;
-		System.out.println(cartlist.size());
 		//반복문을 통해 cart_price합계 계산
 		for(int i=0; i<cartlist.size(); i++) {
 			cart_total_price += cartlist.get(i).getCart_price();
@@ -110,6 +110,13 @@ public class CartController {
 			if(endPage > maxPage) {
 				endPage = maxPage;
 			}
+		for (cartVo cart : cartlist) {
+//			System.out.println("카트 이름 : " + cart.getCart_product_image());
+			String[] cart_preview_img = cart.getCart_product_image().split("/");
+			String preview_img = cart_preview_img[0];
+//			System.out.println("preview 이미지 :"  + preview_img);
+			cart.setCart_product_image(preview_img);
+		}
 				
 				// PageInfo 객체 생성 후 페이징 처리 정보 저장
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
@@ -189,23 +196,41 @@ public class CartController {
 	//------장바구니 삭제-------
 	@GetMapping(value = "CartDeletePro.ca")
 	public String cartDelete(
-			@RequestParam("cart_idx") int cart_idx,
+			@RequestParam(value = "cart_idx", required = false, defaultValue = "0") int cart_idx,
+			@RequestParam("cart_idxArr") int[] cart_idxArr,
 			HttpSession session,
 			Model model) {
 		int member_idx = (int)session.getAttribute("member_idx");
-		
-		int deleteCount = service.getCartDelete(cart_idx, member_idx);
-		if(deleteCount > 0) {
-			//작업 성공 후 reload_cart.jsp로 이동하여 msg, url 값에 맞게 alert창 출력 후 url에 저장된 주소로 location.href을 통해 이동
-			model.addAttribute("msg", "장바구니에서 삭제되었습니다.");
-			model.addAttribute("url", "CartList.ca?pageNum=1");
-			return "reload_cart";
+		if(cart_idxArr.length > 0) {
+			int deleteCount = service.getCartDeleteArr(cart_idxArr, member_idx);
+			if(deleteCount > 0) {
+				//작업 성공 후 reload_cart.jsp로 이동하여 msg, url 값에 맞게 alert창 출력 후 url에 저장된 주소로 location.href을 통해 이동
+				model.addAttribute("msg", "장바구니에서 삭제되었습니다.");
+				model.addAttribute("url", "CartList.ca?pageNum=1");
+				return "reload_cart";
+			}else {
+				//작업 실패 시 reload_cart.jsp로 이동하여 msg, url 값에 맞게 alert창 출력 후 url에 저장된 주소로 location.href을 통해 이동
+				model.addAttribute("msg", "장바구니 삭제 실패.");
+				model.addAttribute("url", "CartList.ca?pageNum=1");
+				return "reload_cart";
+				
+			}
+
 		}else {
-			//작업 실패 시 reload_cart.jsp로 이동하여 msg, url 값에 맞게 alert창 출력 후 url에 저장된 주소로 location.href을 통해 이동
-			model.addAttribute("msg", "장바구니 삭제 실패.");
-			model.addAttribute("url", "CartList.ca?pageNum=1");
-			return "reload_cart";
-			
+			int deleteCount = service.getCartDelete(cart_idx, member_idx);
+			if(deleteCount > 0) {
+				//작업 성공 후 reload_cart.jsp로 이동하여 msg, url 값에 맞게 alert창 출력 후 url에 저장된 주소로 location.href을 통해 이동
+				model.addAttribute("msg", "장바구니에서 삭제되었습니다.");
+				model.addAttribute("url", "CartList.ca?pageNum=1");
+				return "reload_cart";
+			}else {
+				//작업 실패 시 reload_cart.jsp로 이동하여 msg, url 값에 맞게 alert창 출력 후 url에 저장된 주소로 location.href을 통해 이동
+				model.addAttribute("msg", "장바구니 삭제 실패.");
+				model.addAttribute("url", "CartList.ca?pageNum=1");
+				return "reload_cart";
+				
+			}
+
 		}
 	}//cartDelete 
 	

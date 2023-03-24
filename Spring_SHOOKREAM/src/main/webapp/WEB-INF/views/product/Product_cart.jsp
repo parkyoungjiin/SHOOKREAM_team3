@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri ="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri ="http://java.sun.com/jsp/jstl/fmt" %>
+ <c:set var="path" value="${pageContext.request.contextPath }"/>   
 
 <!DOCTYPE html>
 <html>
@@ -256,6 +257,20 @@ $(document).ready(function() {
 		}
 
 	}
+	
+	
+	function selected_delete() {
+		var selectedArr = new Array();
+		$("input[name=cartCheckBox]:checked").each(function(i) {
+			selectedArr.push($(this).val());
+		})
+// 		alert(selectedArr.length)
+		var confirmDelete = confirm("선택한 상품을 장바구니에서 삭제 하시겠습니까? ")
+		if(confirmDelete){
+			location.href='CartDeletePro.ca?cart_idxArr=' + selectedArr
+		}
+		
+	}
 </script>
 <style type="text/css">
 #sform {
@@ -433,7 +448,7 @@ font-size: 70%;
 	      <th scope="col"  class ="th_cart">주문금액</th>
 	      <th scope="col"  class ="th_cart">수량</th>
 	      <th scope="col"  class ="th_cart">배송정보</th>
-	      <th scope="col"  class ="th_cart">삭제</th>
+	      <th scope="col"  class ="th_cart"><button type="button" class="btn btn-light" style="font-weight: bold;" onclick="selected_delete()">선택 삭제</button></th>
 	    </tr>
 	  </thead>
 	  <tbody>
