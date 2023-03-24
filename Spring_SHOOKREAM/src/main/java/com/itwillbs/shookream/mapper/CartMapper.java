@@ -32,6 +32,11 @@ public interface CartMapper {
 	int getCartDelete(
 			@Param("cart_idx") int cart_idx,
 			@Param("member_idx") int member_idx);
+	//장바구니 삭제(배열)
+	int getCartDeleteArr(
+			@Param("cart_idxArr") int[] cart_idxArr,
+			@Param("member_idx") int member_idx);
+
 	//장바구니 등록 전 확인
 	cartVo getCartSelect(
 			@Param("product_idx") int product_idx, 
@@ -59,5 +64,6 @@ public interface CartMapper {
 	// 주문 수량 더하기 작업
 	void updateOrder_Amount(cartVo vo2);
 	int insertCartOrderDetail(@Param("order") cartVo vo2,@Param("delivery") OrderdeliveryVo delivery);
+	
 	
 }
