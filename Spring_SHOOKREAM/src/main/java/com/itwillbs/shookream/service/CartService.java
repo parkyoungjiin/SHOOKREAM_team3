@@ -24,7 +24,7 @@ public class CartService {
 	// 1. BoardListService - selectBoardListCount() 메서드를 호출하여 전체 게시물 수 조회(페이지 목록 계산에 사용)
 	// => 파라미터 : 검색어   리턴타입 : int(listCount)
 	public int getCartListCount(int member_idx) {
-		return 0;
+		return mapper.selectCartCount(member_idx);
 	}
 	//장바구니 담기
 	public int getInsertCart(int product_idx, int member_idx, int cart_count, ProductVo product) {
