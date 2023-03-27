@@ -20,6 +20,15 @@
           text-align: center;
           font-size: 15px;
         }
+.table > :not(caption) > * > *, .dataTable-table > :not(caption) > * > * {
+		  vertical-align: middle;
+		  padding: 3px;
+		}
+
+thead, tbody, tfoot, tr, td, th {
+  border-style: none;
+}
+
         
 </style>
 <style>
@@ -60,11 +69,11 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Snas KR", sans-serif;}
    
   <!-- Footer -->
   <!-- 로그인 화면 폼 -->
-  <footer class="w3-padding-50 w3-small w3-center" id="footer">
+  <div class="w3-padding-64 w3-small w3-center">
     <div id = "sform">
-        <h4 style="padding-top: 25px;">비밀번호 찾기</h4>
+        <h4 style="padding-top: 30px; font-style: normal;">비밀번호 찾기</h4>
         <form method="post" action="FindPwProAction.me">
-        <p align="center"><a href="LoginMember.me">[돌아가기]</a></p>
+        <p align="center"><a href="LoginMember.me">[로그인]</a></p>
           <table class=table>
 				<tr>
 					<th class="active">아이디</th>
@@ -78,13 +87,13 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Snas KR", sans-serif;}
 					<input type="submit" value="임시비밀번호 전송" class="w3-button w3-block w3-black">
         </form>
     </div>
-  </footer>
  </div>	
   
   
-<!--   <footer> -->
+  <footer>
   	<jsp:include page="../inc/footer.jsp"/>
-<!--   </footer> -->
+  </footer>
+  </div>
  
 <!--   <div class="w3-black w3-center w3-padding-24">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></div> -->
 <!-- 아이디/비번찾기 화면 폼 -->

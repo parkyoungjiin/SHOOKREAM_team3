@@ -2,12 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <!-- mapper 태그 내에 namespace 속성 지정 후 Mapper 인터페이스 위치 지정 -->
 <mapper namespace="com.itwillbs.shookream.mapper.CartMapper">
+<!-- -->
+	<select id="selectCartCount" resultType="int">
+	SELECT COUNT(*)
+		FROM cartlist_view
+			WHERE member_idx = #{member_idx}
+	</select>
   <!--장바구니 목록 -->
 	<select id="getCartlist" resultType="com.itwillbs.shookream.vo.cartVo">
 	SELECT * 
 		FROM cartlist_view	
 			 WHERE member_idx=#{member_idx}
-			 	LIMIT #{startRow},#{listLimit}
+		 		ORDER BY cart_idx DESC
+			 		LIMIT #{startRow},#{listLimit}
 	</select>
 	<!--장바구니 추가 전 product_idx 에 맞는 상품 정보 가져오기(image 테이블과 조인한 product_view 조회) -->
 	<select id="getProduct" resultType="com.itwillbs.shookream.vo.ProductVo">
@@ -64,6 +71,15 @@
 	<delete id="getCartDelete">
 		DELETE FROM cart 
 			WHERE cart_idx=#{cart_idx } AND member_idx=#{member_idx}
+	</delete>
+	<!-- 장바구니 삭제(배열)  -->
+	<delete id="getCartDeleteArr">
+		DELETE FROM cart 
+			WHERE cart_idx IN 
+			<foreach collection="cart_idxArr" item="cart_idx" separator="," open="(" close=")"> 
+			#{cart_idx }
+			</foreach>
+			 AND member_idx=#{member_idx}
 	</delete>
 	<!-- 장바구니 -> 구매페이지 -->
 	<select id="getCartOrderList" resultType="com.itwillbs.shookream.vo.cartVo">

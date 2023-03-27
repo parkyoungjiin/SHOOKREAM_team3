@@ -24,7 +24,7 @@ public class CartService {
 	// 1. BoardListService - selectBoardListCount() 메서드를 호출하여 전체 게시물 수 조회(페이지 목록 계산에 사용)
 	// => 파라미터 : 검색어   리턴타입 : int(listCount)
 	public int getCartListCount(int member_idx) {
-		return 0;
+		return mapper.selectCartCount(member_idx);
 	}
 	//장바구니 담기
 	public int getInsertCart(int product_idx, int member_idx, int cart_count, ProductVo product) {
@@ -41,6 +41,9 @@ public class CartService {
 	//장바구니 삭제
 	public int getCartDelete(int cart_idx, int member_idx) {
 		return mapper.getCartDelete(cart_idx, member_idx);
+	}
+	public int getCartDeleteArr(int[] cart_idxArr, int member_idx) {
+		return mapper.getCartDeleteArr(cart_idxArr, member_idx);
 	}
 	//이미 담긴 상품이 있는 경우 CART_count 만큼의 수량을 증가
 	public int getUpdateCart(int product_idx, int member_idx, int cart_count) {
@@ -77,6 +80,7 @@ public class CartService {
 	public int InsertOrderDetail(cartVo vo2, OrderdeliveryVo delivery) {
 		return mapper.insertCartOrderDetail(vo2,delivery);
 	}
+	
 	
 
 }

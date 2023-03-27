@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri ="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri ="http://java.sun.com/jsp/jstl/fmt" %>
+ <c:set var="path" value="${pageContext.request.contextPath }"/>   
 
 <!DOCTYPE html>
 <html>
@@ -97,100 +98,179 @@ function amount_adjust_minus(type) {
 				
 }//amount_adjust_minus 끝
 
-function check_function(cb) {
-	//-------변수 선언------------
-	var idx = cb.id.replace("cartCheckBox", "");
-	var cart_idx = $("#cartCheckBox" + idx).val();
-	//체크박스 상태 판별 (해제했을 경우 합계 금액에서 제외 )
-	var checked = $('#cartCheckBox' + idx).is(':checked');
-	//상품금액(금액의 경우 , 가 붙어있기에 정규표현식을 사용하여 ,가 붙은 항목들을 "" 처리 한 뒤 정수형으로 변환)
-	var total_price = parseInt($("#total_product_area").text().replace(/,/g, ""));
-	//총 결제금액(금액의 경우 , 가 붙어있기에 정규표현식을 사용하여 ,가 붙은 항목들을 "" 처리 한 뒤 정수형으로 변환)
-	var total_order_price = parseInt($("#total_order_area").text().replace(/,/g, ""));
-	
-	//--------체크박스 상태에 따른 처리---------	
-	if(!checked){
-		//checked 해제에 따른 처리로 minus 타입을 넘김
-		$.ajax({
-				type: "get",
-				url: "ChangeTotalPrice.ca",
-				data: {
-					cart_idx: cart_idx,
-					type: "minus",
-					total_price: total_price,
-					total_order_price: total_order_price
-				},
-				dataType: "json",
-				success: function(data) {
-					//총 주문금액 
-					total_price = data.cart_total_price.toLocaleString("en-US");
-					
-					//총 할인금액 
-					total_discount_price = (data.cart_total_price-data.cart_order_total_price).toLocaleString("en-US");
-					
-					//총 상품금액
-					total_order_price = data.cart_order_total_price.toLocaleString("en-US");
-
-					//주문, 할인, 상품 금액 넣기
-					$("#total_product_area").text(total_price);
-					$("#discount_area").text(total_discount_price);
-					$("#total_order_area").text(total_order_price);
-						
-	 			}//success 끝
- 		});//ajax 끝
-	}else{
-		//checked 됐을경우에 따른 처리로 plus 타입을 넘김
-		$.ajax({
-				type: "get",
-				url: "ChangeTotalPrice.ca",
-				data: {
-					cart_idx: cart_idx,
-					type: "plus",
-					total_price: total_price,
-					total_order_price: total_order_price
-				},
-				dataType: "json",
-				success: function(data) {
-					//총 주문금액 
-					total_price = data.cart_total_price.toLocaleString("en-US");
-					
-					//총 할인금액 
-					total_discount_price = (data.cart_total_price-data.cart_order_total_price).toLocaleString("en-US");
-					
-					//총 상품금액
-					total_order_price = data.cart_order_total_price.toLocaleString("en-US");
-
-					//주문, 할인, 상품 금액 넣기
-					$("#total_product_area").text(total_price);
-					$("#discount_area").text(total_discount_price);
-					$("#total_order_area").text(total_order_price);
-						
-	 			}//success 끝
- 		});//ajax 끝
+//체크박스 선택 jQuery
+$(document).ready(function() {
+	$("#chkAll").click(function() {
+		if($("#chkAll").is(":checked")){
+			//전체 체크박스 활성화
+			$("input[name=cartCheckBox]").prop("checked", true);
+			//cart_idx의 값들을 배열로 저장하기 위해 선언
+			var cart_idxArr = new Array();
+			
+			var cart_price_sum = 0
+			var cart_discount_sum = 0
+			var cart_order_price_sum = 0
+			
+			$("input[name=cart_price]").each(function() {
+				cart_price_sum += parseInt(this.value);
+			});
+			
+			$("input[name=cart_order_price]").each(function() {
+				cart_order_price_sum += parseInt(this.value);
+			});
+			//할인 금액 계산
+			cart_discount_sum = parseInt(cart_price_sum-cart_order_price_sum)
+			
+			//, 붙여주기
+			cart_price_sum = cart_price_sum.toLocaleString("en-US")
+			cart_order_price_sum = cart_order_price_sum.toLocaleString("en-US")
+			cart_discount_sum = cart_discount_sum.toLocaleString("en-US")
+			
 		
-	}
+// 			alert("총 상품 금액 : " + cart_price_sum)
+// 			alert("총 할인 금액 : " + cart_discount_sum)
+// 			alert("총 주문 금액 : " + cart_order_price_sum)
 	
-	
-}//check_function 끝
+			$("#total_product_area").text(cart_price_sum);
+			$("#discount_area").text(cart_discount_sum);
+			$("#total_order_area").text(cart_order_price_sum);
 
-// 체크된 cart_idx 값을 넘기는 작업
-function goOrder() {
+				//전체 금액 계산
+			} else {
+				//전체 체크박스 비활성화 
+				$("input[name=cartCheckBox]").prop("checked", false);
+
+				$("#total_product_area").text(0);
+				$("#discount_area").text(0);
+				$("#total_order_area").text(0); 
+			}
+
+		});
+
+	});
+
+	function check_function(cb) {
+		//-------변수 선언------------
+		var idx = cb.id.replace("cartCheckBox", "");
+		var cart_idx = $("#cartCheckBox" + idx).val();
+		//체크박스 상태 판별 (해제했을 경우 합계 금액에서 제외 )
+		var checked = $('#cartCheckBox' + idx).is(':checked');
+		//상품금액(금액의 경우 , 가 붙어있기에 정규표현식을 사용하여 ,가 붙은 항목들을 "" 처리 한 뒤 정수형으로 변환)
+		var total_price = parseInt($("#total_product_area").text().replace(
+				/,/g, ""));
+		//총 결제금액(금액의 경우 , 가 붙어있기에 정규표현식을 사용하여 ,가 붙은 항목들을 "" 처리 한 뒤 정수형으로 변환)
+		var total_order_price = parseInt($("#total_order_area").text().replace(
+				/,/g, ""));
+
+		var total = $("input[name=cartCheckBox]").length;
+		var checked_length = $("input[name=cartCheckBox]:checked").length;
+
+		if (total != checked_length)
+			$("#chkAll").prop("checked", false);
+		else
+			$("#chkAll").prop("checked", true);
+		//--------체크박스 상태에 따른 처리---------	
+		if (!checked) {
+			//checked 해제에 따른 처리로 minus 타입을 넘김
+			$
+					.ajax({
+						type : "get",
+						url : "ChangeTotalPrice.ca",
+						data : {
+							cart_idx : cart_idx,
+							type : "minus",
+							total_price : total_price,
+							total_order_price : total_order_price
+						},
+						dataType : "json",
+						success : function(data) {
+							//총 주문금액 
+							total_price = data.cart_total_price
+									.toLocaleString("en-US");
+
+							//총 할인금액 
+							total_discount_price = (data.cart_total_price - data.cart_order_total_price)
+									.toLocaleString("en-US");
+
+							//총 상품금액
+							total_order_price = data.cart_order_total_price
+									.toLocaleString("en-US");
+
+							//주문, 할인, 상품 금액 넣기
+							$("#total_product_area").text(total_price);
+							$("#discount_area").text(total_discount_price);
+							$("#total_order_area").text(total_order_price);
+
+						}//success 끝
+					});//ajax 끝
+		} else {
+			//checked 됐을경우에 따른 처리로 plus 타입을 넘김
+			$
+					.ajax({
+						type : "get",
+						url : "ChangeTotalPrice.ca",
+						data : {
+							cart_idx : cart_idx,
+							type : "plus",
+							total_price : total_price,
+							total_order_price : total_order_price
+						},
+						dataType : "json",
+						success : function(data) {
+							//총 주문금액 
+							total_price = data.cart_total_price
+									.toLocaleString("en-US");
+
+							//총 할인금액 
+							total_discount_price = (data.cart_total_price - data.cart_order_total_price)
+									.toLocaleString("en-US");
+
+							//총 상품금액
+							total_order_price = data.cart_order_total_price
+									.toLocaleString("en-US");
+
+							//주문, 할인, 상품 금액 넣기
+							$("#total_product_area").text(total_price);
+							$("#discount_area").text(total_discount_price);
+							$("#total_order_area").text(total_order_price);
+
+						}//success 끝
+					});//ajax 끝
+
+		}
+
+	}//check_function 끝
+
+	// 체크된 cart_idx 값을 넘기는 작업
+	function goOrder() {
 		var check = $('input[name=cartCheckBox]:checked');
 		let chk_arr = new Array();
 		$('input[name=cartCheckBox]:checked').each(function(i) {
 			chk_arr.push($(this).val());
 		});
-		if(chk_arr.length > 0){
+		if (chk_arr.length > 0) {
 			alert("구매페이지로 이동합니다.");
 			location.href = "CartOrderDetail.ca?cart_idx=" + chk_arr;
-			
-		}else{
+
+		} else {
 			alert("선택된 상품이 없습니다. 구매하실 상품을 선택하세요.")
 		}
-	
-	
-}
 
+	}
+	
+	
+	function selected_delete() {
+		var selectedArr = new Array();
+		$("input[name=cartCheckBox]:checked").each(function(i) {
+			selectedArr.push($(this).val());
+		})
+// 		alert(selectedArr.length)
+		var confirmDelete = confirm("선택한 상품을 장바구니에서 삭제 하시겠습니까? ")
+		if(confirmDelete){
+			location.href='CartDeletePro.ca?cart_idxArr=' + selectedArr
+		}
+		
+	}
 </script>
 <style type="text/css">
 #sform {
@@ -360,7 +440,7 @@ font-size: 70%;
 	   </thead>
 	  <thead  class="table-primary" >
 	    <tr>
-	      <th scope="col" class ="th_cart">선택</th>
+	      <th scope="col" class ="th_cart"><input type="checkbox" class ="form-check-input"  id="chkAll" checked="checked"></th>
 	      <th scope="col" class ="th_cart"colspan="2">상품명</th>
 	<!--       <th scope="col">상품명</th> -->	
 	      <th scope="col"  class ="th_cart">상품금액</th>
@@ -368,7 +448,7 @@ font-size: 70%;
 	      <th scope="col"  class ="th_cart">주문금액</th>
 	      <th scope="col"  class ="th_cart">수량</th>
 	      <th scope="col"  class ="th_cart">배송정보</th>
-	      <th scope="col"  class ="th_cart">삭제</th>
+	      <th scope="col"  class ="th_cart"><button type="button" class="btn btn-light" style="font-weight: bold;" onclick="selected_delete()">선택 삭제</button></th>
 	    </tr>
 	  </thead>
 	  <tbody>
@@ -386,14 +466,21 @@ font-size: 70%;
 		      <!-- 체크박스 -->
 		      <input type="hidden" id="cart_idx_hidden${status.index }" value="${cart.cart_idx }">
 			  <td class ="td_cart"><input type="checkbox" class ="form-check-input" id="cartCheckBox${status.index }" name ="cartCheckBox" checked="checked" value="${cart.cart_idx }" onclick="check_function(this)"></td> 
-		      <td><a href="ProductInfoForm.po?product_idx=${cart.product_idx }"><img src="upload/${cart.cart_product_image }"  alt="없음!" class="img-thumbnail" width="150" height="150" ></a></td>
+		      <td>
+			      <a href="ProductInfoForm.po?product_idx=${cart.product_idx }">
+			      <img src="${path}/resources/upload/${cart.cart_product_image }"  onError="this.onerror=null; this.src='resources/images/noImg.JPG';"  alt="..." class="img-thumbnail" width="150" height="150" >
+<%-- 			      <img src="${path}/resources/upload/${productBestList.image_main_file }" onError="this.onerror=null; this.src='resources/images/noImg.JPG';"  alt="..." style="width: 100%"> --%>
+			      </a>
+		      </td>
 		      <td class ="td_cart" style="text-align:left;">
 		      <span style="font-size: 20px; font-weight: bold;"> ${cart.cart_product_name }<br></span>
 		      <span style="color: #91949A;">색상 : ${cart.cart_color } / 사이즈 : ${cart.cart_size }</span>
 		      </td>
-			  <td class ="td_cart" id="cart_price"><fmt:formatNumber value="${cart.cart_price }" pattern="#,###원"></fmt:formatNumber></td>
+			  <td class ="td_cart" id="cart_price${status.index }"><fmt:formatNumber value="${cart.cart_price }" pattern="#,###원"></fmt:formatNumber></td>
+			  <input type="hidden" name="cart_price" value="${cart.cart_price }">
+			  <input type="hidden" name="cart_order_price" value="${cart.cart_order_price }">
 		      <td class ="td_cart" id="cart_discount_price"><fmt:formatNumber value="${cart.cart_price * (cart.cart_discount / 100)}" pattern="#,###원"></fmt:formatNumber></td>
-		      <td class ="td_cart" id="cart_order_price" ><fmt:formatNumber value="${cart.cart_order_price}" pattern="#,###원"></fmt:formatNumber></td> 
+		      <td class ="td_cart" id="cart_order_price${status.index }" ><fmt:formatNumber value="${cart.cart_order_price}" pattern="#,###원"></fmt:formatNumber></td> 
 		      <td class ="td_cart" style="vertical-align: middle;">
 		      <button id="minus_btn${status.index }" class="btn btn-outline-dark btn-sm" onclick="amount_adjust_minus(this)"  style ="width: 30px; height: 35px; font-size: 15px;">-</button>
 			  <input type="text" class="form-control" id="cart_count_id${status.index }" name="cart_count" value="${cart.cart_count }" required="required" readonly="readonly" style="width: 40px; text-align: center; display: inline-block;">

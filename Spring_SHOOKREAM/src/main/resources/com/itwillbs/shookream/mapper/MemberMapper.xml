@@ -82,7 +82,7 @@
   				<if test='addr neq null and addr neq ""'>  				
   					member_address = #{addr},
   				</if>
-  				member_phone = #{member.phone} 
+  				member_phone = #{member.member_phone} 
   			WHERE member_id = #{id}
   	</update>
   	
