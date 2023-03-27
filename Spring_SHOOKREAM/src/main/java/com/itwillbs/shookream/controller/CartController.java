@@ -202,6 +202,7 @@ public class CartController {
 			Model model) {
 		int member_idx = (int)session.getAttribute("member_idx");
 		// 체크박스 선택 한 상태
+
 		if(cart_idxArr != null && cart_idxArr[0] != 0) {
 			System.out.println("!!!!!!!!!이 작업 하면안돼");
 			System.out.println(cart_idxArr[0]);
@@ -211,6 +212,7 @@ public class CartController {
 				cart_idx = cart_idxArr[0];
 			}
 			//삭제 작업
+
 			int deleteCount = service.getCartDeleteArr(cart_idxArr, member_idx);
 			if(deleteCount > 0) {
 				//작업 성공 후 reload_cart.jsp로 이동하여 msg, url 값에 맞게 alert창 출력 후 url에 저장된 주소로 location.href을 통해 이동
@@ -226,7 +228,7 @@ public class CartController {
 			}
 
 		}else {
-			//삭제 작업 
+
 			int deleteCount = service.getCartDelete(cart_idx, member_idx);
 			if(deleteCount > 0) {
 				//작업 성공 후 reload_cart.jsp로 이동하여 msg, url 값에 맞게 alert창 출력 후 url에 저장된 주소로 location.href을 통해 이동
