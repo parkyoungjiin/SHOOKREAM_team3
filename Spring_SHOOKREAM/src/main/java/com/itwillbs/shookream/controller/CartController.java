@@ -201,7 +201,8 @@ public class CartController {
 			HttpSession session,
 			Model model) {
 		int member_idx = (int)session.getAttribute("member_idx");
-		if(cart_idxArr.length > 0) {
+		// 체크박스 선택 한 상태
+		if(cart_idxArr.length > 1) {
 			int deleteCount = service.getCartDeleteArr(cart_idxArr, member_idx);
 			if(deleteCount > 0) {
 				//작업 성공 후 reload_cart.jsp로 이동하여 msg, url 값에 맞게 alert창 출력 후 url에 저장된 주소로 location.href을 통해 이동
@@ -217,6 +218,8 @@ public class CartController {
 			}
 
 		}else {
+			//만약 1개만 체크한 상태에서 삭제 작업을 했을 경우, 0번지에 있는 값을 cart_idx 에 넣어줌 !
+			cart_idx = cart_idxArr[0];
 			int deleteCount = service.getCartDelete(cart_idx, member_idx);
 			if(deleteCount > 0) {
 				//작업 성공 후 reload_cart.jsp로 이동하여 msg, url 값에 맞게 alert창 출력 후 url에 저장된 주소로 location.href을 통해 이동
