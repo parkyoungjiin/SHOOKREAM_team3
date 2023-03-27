@@ -268,11 +268,13 @@ public class ProductController {
 		return "product/Product_orderlist";
 	}// 회원 주문 목록 끝
 	
+	
+	//주문내역 상세 정보(팝업창)
 	@GetMapping(value = "/ProductOrderDeliveryPro.po")
 	public String OrderDelivery(Model model, HttpSession session,@RequestParam(defaultValue = "1")int pageNum) {
 		
 		
-		return "product/order_Form";
+		return "product/deliveryDetailForm";
 	}// 회원 주문 목록 끝
 			
 }

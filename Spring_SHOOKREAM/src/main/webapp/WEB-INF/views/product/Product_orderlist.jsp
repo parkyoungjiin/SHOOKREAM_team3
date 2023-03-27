@@ -242,6 +242,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 			      <td class ="td_cart">${order.order_progress }</td>
 			      <td class ="td_cart">
 			    <input type="button" value="리뷰 작성하기" class="btn btn-primary" onclick="reviewForm(${order.product_idx },'${order.product_size }','${order.product_color }','${order.product_name }')">
+			    <input type="button" value="배송 상세정보" class="btn btn-primary" onclick="deliveryDetail()">
 			      </td>
 			    </tr>
 		    </c:forEach>
@@ -288,6 +289,21 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 
 <!-- ------------------------------------------------------------------------------------------------------------>
 <!-- 자바스크립트 부분 -->
+
+
+<script type="text/javascript">
+function deliveryDetail() {
+	alert("감지");
+	let url = "ProductOrderDeliveryPro.po";  // 테스트용 파라미터임!
+	let name = "주문내역 상세정보";
+	let attr = "width=1000, height=1000, top=500, left=510"
+	
+	window.open(url, name, attr);
+}
+
+
+</script>
+
 
 <script>
 //드롭다운 기능

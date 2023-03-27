@@ -526,6 +526,18 @@ public class AdminController {
 		
 	} // =========== 주문 관리 ===============
 	
+	// =========== 환불 관리 ==============
+	@GetMapping("AdminProductCancleList.ad")
+	public String CancleList(Model model) {
+		
+		List<OrderVo> Adminorderlist = service.getOrderList();
+		
+		model.addAttribute("Adminorderlist",Adminorderlist);
+		
+		return "admin/admin_cancle_list";
+		
+	} // ===========환불 관리 ===============
+	
 	
 	
 	// =========== 주문 관리 - 삭제 ===============
