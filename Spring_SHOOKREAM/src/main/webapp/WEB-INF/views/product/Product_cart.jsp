@@ -58,6 +58,7 @@ function amount_adjust_plus(type) {
 				 if(data == "성공"){
 					 alert("수량이 변경되었습니다.")
 					 $("#form_area").load(window.location.href + " #form_area");
+					
 				 }else if(data == "실패"){
 					 alert("수량변경에 실패했습니다.")
 				 }
@@ -172,8 +173,7 @@ $(document).ready(function() {
 		//--------체크박스 상태에 따른 처리---------	
 		if (!checked) {
 			//checked 해제에 따른 처리로 minus 타입을 넘김
-			$
-					.ajax({
+			$.ajax({
 						type : "get",
 						url : "ChangeTotalPrice.ca",
 						data : {

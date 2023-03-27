@@ -42,6 +42,7 @@ public class CartService {
 	public int getCartDelete(int cart_idx, int member_idx) {
 		return mapper.getCartDelete(cart_idx, member_idx);
 	}
+	//장바구니 삭제(배열)
 	public int getCartDeleteArr(int[] cart_idxArr, int member_idx) {
 		return mapper.getCartDeleteArr(cart_idxArr, member_idx);
 	}
@@ -53,7 +54,7 @@ public class CartService {
 	public cartVo getCartOrderlist(String cart_idx, int member_idx) {
 		return mapper.getCartOrderList(cart_idx, member_idx);
 	}
-	
+	//장바구니 수량 조정
 	public int getAmountAdjust(int cart_idx, String type, int member_idx) {
 		return mapper.getAmountAdjust(cart_idx, type, member_idx);
 	}

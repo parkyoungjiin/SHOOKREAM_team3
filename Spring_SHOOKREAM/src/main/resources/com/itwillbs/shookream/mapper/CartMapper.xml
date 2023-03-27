@@ -122,10 +122,10 @@
 				=> release_price(할인 적용금액) 0인 경우 product_price로 금액을 증감작업 ! 
 				=> release_price(할인 적용금액) 0이 아닌 경우, release_price(할인 적용금액)으로 증감작업 !  
 				-->
-				<if test="cart.product_release_price == 0">
+				<if test="cart.cart_discount == 0">
 				cart_order_price = cart_order_price + (product_price * 1)
 				</if>
-				<if test="cart.product_release_price > 0">
+				<if test="cart.cart_discount > 0">
 				cart_order_price = cart_order_price + (product_release_price * 1)
 				</if>
 			</if>
@@ -136,11 +136,11 @@
 				=> release_price(할인 적용금액) 0인 경우 product_price로 금액을 증감작업 ! 
 				=> release_price(할인 적용금액) 0이 아닌 경우, release_price(할인 적용금액)으로 증감작업 !  
 				-->
-				<if test="cart.product_release_price == 0">
+				<if test="cart.cart_discount == 0">
 				cart_order_price = cart_order_price - (product_price * 1)
 				</if>
 				
-				<if test="cart.product_release_price > 0">
+				<if test="cart.cart_discount > 0">
 				cart_order_price = cart_order_price - (product_release_price * 1)
 				</if>
 			</if>
