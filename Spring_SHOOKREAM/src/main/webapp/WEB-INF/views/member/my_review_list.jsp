@@ -53,8 +53,13 @@
     </style>
 
 <style>
-.w3-sidebar a {font-family: "Noto Sans KR", sans-serif}
-body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
+	.w3-sidebar a {
+		font-family: "Noto Sans KR", sans-serif
+	}
+	
+	body,h1,h2,h3,h4,h5,h6,.w3-wide {
+		font-family: "Noto Sans KR", sans-serif;
+	}
 </style>
 </head>
 <body class="w3-content" style="max-width:95%">
@@ -84,13 +89,8 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 <div style="padding: 80px;">
   <header class="w3-container w3-xlarge">
     <p class="w3-left">리뷰 관리</p>
-    <p class="w3-right">
-<!--       <i class="fa fa-shopping-cart w3-margin-right"></i> -->
-<!--       <i class="fa fa-search"></i> -->
-    </p>
-</header>
+  </header>
    
-  <!-- Footer -->
   <div class="w3-padding-64 w3-small w3-center">
   <c:choose>
   	<c:when test="${reviewList eq null or empty reviewList}">
@@ -102,11 +102,11 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 
   	</c:when>
   	<c:otherwise>
-  <table class="table">
-  <thead  class="table-dark" >
+  <table class="table" style="height: 50px; padding: 40px; margin-top:20px; font-weight: bold;">
+  <thead class="table-primary">
     <tr>
-      <th scope="col">#</th>
       <th scope="col">상품</th>
+      <th scope="col">구매일</th>
       <th scope="col">구매 상세</th>
       <th scope="col">리뷰 작성일</th>
       <th scope="col">관리</th>
@@ -116,12 +116,12 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 	   
     <c:forEach var="review" items="${reviewList }">
     <tr>
-      <th scope="row">${review.review_idx }</th>
+      <th scope="row">${review.re_product_name }</th>
+      <td>구매일자 적기</td>
 <%--       <td><a href="ProductInfoForm.po?product_idx=${review.product_idx }"><img src="upload/${.product_img }"  alt="없음!" class="img-thumbnail" width="150" height="150"></a></td> --%>
-      <td>${review.re_product_name }</td>
       <td>${review.re_order_detail }</td>
       <td>${review.review_date }</td>
-      <td><button type="button" class="btn btn-dark" onclick="location.href='ReviewDeletePro.po?product_idx=${review.product_idx }&member_idx=${sessionScope.member_idx }&review_idx=${review.review_idx}'">삭제</button></td>
+      <td><button type="button" class="btn btn-primary" onclick="location.href='ReviewDeletePro.po?product_idx=${review.product_idx }&member_idx=${sessionScope.member_idx }&review_idx=${review.review_idx}'">삭제</button></td>
     </tr>
     </c:forEach>
   </tbody>
@@ -157,11 +157,6 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 				<a href="javascript:void(0)">다음</a>
 			</c:otherwise>
 		</c:choose>
-<!--         <a class="select" href="#">1</a> -->
-<!--         <a href="#">2</a> -->
-<!--         <a href="#">3</a> -->
-<!--         <a href="#">4</a> -->
-<!--         <a href="#">5</a> -->
     </div>
     </c:otherwise>
   </c:choose>

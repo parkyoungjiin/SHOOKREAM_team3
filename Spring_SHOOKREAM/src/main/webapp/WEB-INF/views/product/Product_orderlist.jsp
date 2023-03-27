@@ -210,7 +210,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 		      <th scope="col"  class ="th_cart">주문금액</th>
 		      <th scope="col"  class ="th_cart">수량</th>
 		      <th scope="col"  class ="th_cart">배송정보</th>
-		      <th scope="col"  class ="th_cart"></th>
+		      <th scope="col"  class ="th_cart">리뷰작성</th>
 		    </tr>
 		  </thead>
 		  <tbody>
@@ -241,7 +241,9 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 			      </td>
 			      <td class ="td_cart">${order.order_progress }</td>
 			      <td class ="td_cart">
-			    <input type="button" value="리뷰 작성하기" class="btn btn-primary" onclick="reviewForm(${order.product_idx },'${order.product_size }','${order.product_color }','${order.product_name }')">
+			      <c:if test="${review eq 0 }">
+			    	<input type="button" value="리뷰 작성하기" class="btn btn-primary" onclick="reviewForm(${order.product_idx },'${order.product_size }','${order.product_color }','${order.product_name }')">
+			     </c:if> 
 			      </td>
 			    </tr>
 		    </c:forEach>

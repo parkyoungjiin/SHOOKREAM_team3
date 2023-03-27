@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.shookream.service.MemberService;
 import com.itwillbs.shookream.service.ProductService;
+import com.itwillbs.shookream.service.ReviewService;
 import com.itwillbs.shookream.vo.BoardVo;
 import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.MemberVo;
@@ -41,6 +42,9 @@ public class ProductController {
 	
 	@Autowired
 	private MemberService service_member;
+	
+	@Autowired
+	private ReviewService reviewServ;
 	
 	List<imageVo> imageList;
 	
@@ -236,7 +240,7 @@ public class ProductController {
 	
 	// 회원 주문 목록
 	@GetMapping(value = "/ProductOrderList.po")
-	public String OrderList(Model model, HttpSession session,@RequestParam(defaultValue = "1")int pageNum) {
+	public String OrderList(Model model, HttpSession session,@RequestParam(defaultValue = "1")int pageNum, @ModelAttribute ReviewVo review) {
 		
 		String sId = (String)session.getAttribute("sId");		
 		int member_idx = service.getMemberIdx(sId);
@@ -262,7 +266,14 @@ public class ProductController {
 		
 		System.out.println(orderList);
 		
+		int reviewExist = reviewServ.isReviewExist(review);
+		System.out.println("reviewExist : "+reviewExist);
 		
+		model.addAttribute("review", reviewExist);
+//		if(reviewExist > 0) { // 실패 시reviewExist
+//			 model.addAttribute("review", review);
+//		}
+
 		model.addAttribute("orderList", orderList);
 		model.addAttribute("pageInfo", pageInfo);
 		return "product/Product_orderlist";
