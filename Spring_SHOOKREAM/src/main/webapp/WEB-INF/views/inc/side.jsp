@@ -1,29 +1,55 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+   <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+   <c:set var="path" value="${pageContext.request.contextPath }"/>
 <head>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<style>
+    #test_obj {
+        position: absolute;
+        width: 70px;
+        height: 150px;
+        right: 50px;
+        border-radius: 70px;
+        top: 250px;
+        border: 1px solid #dddddd;
+        z-index: 1;
+    }
+</style>
+ <!-- 플로팅배너 마우스 스크롤 -->
+<script>
+    $(document).ready(function () {
+        var tmp = parseInt($("#test_obj").css('top'));
+ 
+        $(window).scroll(function () {
+            var scrollTop = $(window).scrollTop();
+            var obj_position = scrollTop + tmp + "px";
+ 
+            $("#test_obj").stop().animate({
+                "top": obj_position
+            }, 500);
+ 
+        }).scroll();
+    });
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-<style type="text/css">
-#floatMenu {
-	position: fixed;
-	width: 100px;
-	height: 200px;
-	right: 0px;
-	top: 10px;
-	background-color: #606060;
-	color: #fff;
-	margin:100px 0 150px;
-	
-}
-</style>
 </head>    
+
+<div id="test_obj">
+	<img width="150" src="<%=request.getScheme()+"://"+request.getServerName() + ":" + request.getServerPort() +"/"+request.getContextPath()%>/resources/upload/${fn:split(imageList[0].image_main_file,'/')[0]}"
+        class="img-thumbnail" onError="this.onerror=null; this.src='resources/images/noImg.JPG';" alt="..." style="width:100px; height:100px;"  
+        onclick="location.href='ProductInfoForm.po?product_idx=${product_idx}'"/>
+        
+ <div id= "gotopbtn"  style="cursor:pointer; height:50px;  font-weight: bold; " class="back-to-top d-flex align-items-center justify-content-center active" onclick="window.scrollTo(0,0);">TOP</div>
+</div>
 
 <nav class="w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style="z-index:3;width:250px" id="mySidebar" >
 
   <div class="w3-container w3-display-container w3-padding-16">
     <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
-    <h3 class="w3-wide" onclick="location.href='./'" style="cursor: pointer; font-family: 'Bebas Neue', cursive; font-size: 45px;"><b>SHOOKREAM</b></h3>
+    <h3 class="w3-wide" onclick="location.href='./'" style="cursor: pointer; font-family: 'Bebas Neue', cursive; font-size: 45px; "><b>SHOOKREAM</b></h3>
   </div>
   
   <!-- 검색창 -->
@@ -63,24 +89,8 @@
   </div>
   
 <%--     <input type="button" class ="reportbtn" value="신고하기" onclick="location.href='./ReportFormAction.me?member_idx=${member_idx}&member_id=${sessionScope.sId }'"> --%>
-<!--   <div id = "gotopbtn"  style="cursor:pointer; height:50px ; " class="back-to-top d-flex align-items-center justify-content-center active" onclick="window.scrollTo(0,0);">TOP</div>  -->
-
-<!--  <div style="height:300px; margin-right:100px;" id="floatMenu" > -->
  
 
-<!--  <h5>최근 본 상품</h5> -->
-<!--   </div> -->
-<!-- </nav> -->
-<!-- 세션 최근 본 상품 뿌리기 -->
- <div style="height:300px; margin-right:100px;" id="floatMenu" >
- <h5>최근 본 상품</h5>
-<%-- ${fn:split(image.image_main_file,'/')[0]} --%>
-${fn:split(imageList[0].image_main_file,'/')[0]}
-${fn:split(imageList[1].image_main_file,'/')[0]}
-${fn:split(imageList[2].image_main_file,'/')[0]}
-<img src="${path}/resources/upload/${product.image_main_file }" class="img-thumbnail" onError="this.onerror=null; this.src='resources/images/noImg.JPG';" alt="..." style="width:100px; height:100px;">
-
-</div>
 
 
  </nav>

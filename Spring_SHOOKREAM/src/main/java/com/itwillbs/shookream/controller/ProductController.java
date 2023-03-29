@@ -83,24 +83,30 @@ public class ProductController {
 		// ================= 상품 정보 조회 =====================
 		product = service.getProduct(product_idx);
 		System.out.println("product 조회 : " + product);
-		
 		imageList = new ArrayList<imageVo>();
 		
 		image = service.getImage(product_idx);
 		System.out.println("image 조회 : " + image);
-		
-		if(imageList.size() < 3) {
+		System.out.println(image);
+		if(imageList != null) {
 			imageList.add(image);
+			session.setAttribute("imageList", imageList);
 		} else {
 			imageList.set(0, imageList.get(1));
 			imageList.set(1, imageList.get(2));
 			imageList.add(image);
 		}
-		System.out.println("imageList 조회 : " + imageList);
+		
+		
+		
+		System.out.println("fileNames : "+ imageList);
+		System.out.println("imageListSize 조회 : " + imageList.size());
 		
 		session.setAttribute("product_idx", product_idx);
-		session.setAttribute("image", image);
-		session.setAttribute("imageList", imageList);
+		
+		System.out.println("session : "+session.getAttribute("image"));
+		
+		
 		System.out.println("이거다"+session.getAttribute("image"));
 		model.addAttribute("product_idx", product_idx);
 		model.addAttribute("product", product);
