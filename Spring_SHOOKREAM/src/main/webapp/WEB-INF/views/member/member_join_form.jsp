@@ -55,6 +55,11 @@ table.type03 td {
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
 }
+
+input, select {
+	border-radius: 5px;
+	border-color: #dcdcdc;
+}
 </style>
 <style>
 .w3-sidebar a {font-family: "Noto Sans KR", sans-serif}
