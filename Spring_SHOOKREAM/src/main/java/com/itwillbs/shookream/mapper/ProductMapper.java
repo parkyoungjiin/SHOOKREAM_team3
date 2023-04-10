@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.shookream.vo.CancelVo;
 import com.itwillbs.shookream.vo.CouponVo;
+import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.OrderVo;
 import com.itwillbs.shookream.vo.OrderdeliveryVo;
 import com.itwillbs.shookream.vo.ProductVo;
@@ -46,7 +48,22 @@ public interface ProductMapper {
 	public List<OrderVo> selectOrderList(@Param("member_idx")int member_idx,@Param("listLimit") int listLimit,@Param("startRow") int startRow);
 
 	public int getListCount(int member_idx);
-	
+
+	public OrderVo getOrderInfo(int order_idx);
+
+	public OrderdeliveryVo getOrderDelivery(int order_idx);
+
+	public MemberVo getOrderMemberInfo(int member_idx);
+
+	public CouponVo getCouponInfo(String coupon_idx);
+
+	public int insertCancel(CancelVo cancle);
+
+	public void ModifyOrderprogress(int order_idx);
 	// ====================채휘 끝 =======================================
+
+	public CancelVo getCancelInfo(int order_idx);
+
+	public int getCancelCount(int order_idx);
 
 }

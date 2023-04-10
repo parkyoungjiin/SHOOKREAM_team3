@@ -87,28 +87,28 @@
 		  </thead>
 		  <tbody>
 		  	<!-- 카트 리스트가 없을 때 처리 -->
-		    <c:if test="${product eq null or empty product}">
+		    <c:if test="${order eq null or empty order}">
 					<tr>
 						<td colspan="8" style="text-align: center;"><b>주문내역이 없습니다.</b></td>
 					</tr>
 			</c:if>
 			<!-- 카트 리스트가 있을 때 처리 -->
-			<c:if test="${product ne null and not empty product}">
+			<c:if test="${order ne null and not empty order}">
 			<!-- 카트 목록(foreach로 처리) -->
 			    <tr>
-			      <td><a href="ProductInfoForm.po?product_idx=${product.product_idx }"><img src="upload/${product.image_main_file }"  alt="없음!" class="img-thumbnail" width="150" height="150" ></a></td>
+			      <td><a href="ProductInfoForm.po?product_idx=${order.product_idx }"><img src="upload/${product.image_main_file }"  alt="없음!" class="img-thumbnail" width="150" height="150" ></a></td>
 			      <td class ="td_cart" style="text-align:left;">
-			      <span style="font-size: 20px; font-weight: bold;"> ${product.product_name }<br></span>
-			      <span style="color: #91949A;">색상 : ${product.product_color } / 사이즈 : ${product.product_size }</span>
+			      <span style="font-size: 20px; font-weight: bold;"> ${order.order_product_name }<br></span>
+			      <span style="color: #91949A;">색상 : ${order.order_color } / 사이즈 : ${order.order_size }</span>
 			      </td>
 				  <td class ="td_cart" id="cart_price"><fmt:formatNumber value="${product.product_price }" pattern="#,###원"></fmt:formatNumber></td>
 			      <td class ="td_cart" id="cart_discount_price"><fmt:formatNumber value="${product.product_price * (product.product_discount_price / 100)}" pattern="#,###원"></fmt:formatNumber></td>
-			      <td class ="td_cart" id="cart_order_price" ><fmt:formatNumber value="${product.product_price - product.product_price * (product.product_discount_price / 100)}" pattern="#,###원"></fmt:formatNumber></td> 
+			      <td class ="td_cart" id="cart_order_price" ><fmt:formatNumber value="${order.order_price - product.product_price * (product.product_discount_price / 100)}" pattern="#,###원"></fmt:formatNumber></td> 
 			      <td class ="td_cart" style="vertical-align: middle;">
 <%-- 			      <button id="minus_btn${status.index }" class="btn btn-outline-dark btn-sm" onclick="amount_adjust_minus(this)"  style ="width: 30px; height: 35px; font-size: 15px;">-</button> --%>
 <%-- 				  <input type="text" class="form-control" id="cart_count_id${status.index }" name="cart_count" value="${param.order_count }" required="required" readonly="readonly" style="width: 40px; text-align: center; display: inline-block;"> --%>
 <%-- 			      <button id="plus_btn${status.index }"class="btn btn-outline-dark btn-sm" onclick="amount_adjust_plus(this)"  style ="width: 30px; height: 35px; font-size: 15px;">+</button> --%>
-			       		${param.order_count } 개
+			       		${order.order_count } 개
 			      </td>
 			      <td class ="td_cart">무료배송</td>
 			    </tr>
@@ -143,70 +143,36 @@
 	   	  <div id="address">
 	   	  <div class="row mb-3">
                 <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">성함</label>
-                <div class="col-md-8 col-lg-2">
-                  <input name="order_name" type="text" class="form-control" id="order_name" value="${member.member_name }">
+                <div class="col-md-8 col-lg-3">
+                  <input name="order_name" type="text" class="form-control" id="order_name" value="${order_detail.order_name}">
                 </div>
            </div>
 	 	 <div class="row mb-3">
                <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">연락처</label>
-               <div class="col-md-8 col-lg-2">
-                 <input name="order_phone" type="text" class="form-control" id="order_phone" value="${member.member_phone }">
+               <div class="col-md-8 col-lg-4">
+                 <input name="order_phone" type="text" class="form-control" id="order_phone" value="${order_detail.order_phone }">
                </div>
            </div>
 	 	 <div class="row mb-3">
                 <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">주소</label>
                 <div class="col-md-8 col-lg-5">
-                  <input name="order_addr1" type="text" class="form-control" id="order_addr1" value="${fn:split(member.member_address,',')[0]}">
+                  <input name="order_addr1" type="text" class="form-control" id="order_addr1" value="${fn:split(order_detail.order_address,',')[0]}">
                 </div>
            </div>
 	 	 <div class="row mb-3">
               <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label"></label>
               <div class="col-md-8 col-lg-5">
-                <input name="order_addr2" type="text" class="form-control" id="order_addr2" value="${fn:split(member.member_address,',')[1]}">
+                <input name="order_addr2" type="text" class="form-control" id="order_addr2" value="${fn:split(order_detail.order_address,',')[1]}">
               </div>
            </div>
 	   </div>
-	   
-	   <div id="newaddress">
-	   	  <div class="row mb-3">
-                <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">성함</label>
-                <div class="col-md-8 col-lg-2">
-                  <input name="order_name" type="text" class="form-control" id="new_order_name">
-                </div>
-           </div>
-	 	 <div class="row mb-3">
-               <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">연락처</label>
-               <div class="col-md-8 col-lg-2">
-                 <input name="order_phone" type="text" class="form-control" id="new_order_phone">
-               </div>
-           </div>
-	 	 <div class="row mb-3">
-                <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label">주소</label>
-                <div class="col-md-8 col-lg-5">
-                  <input name="order_addr1" type="text" class="form-control" id="new_order_addr1">
-                </div>
-           </div>
-	 	 <div class="row mb-3">
-              <label for="th" id="title_label" class="col-md-2 col-lg-2 col-form-label"></label>
-              <div class="col-md-8 col-lg-5">
-                <div class="input-group mb-6">
-                <input name="order_addr2" type="text" class="form-control" id="new_order_addr2">
-              	<button id="address_kakao" class="btn btn-primary" style="float: right;">주소찾기</button>
-               </div>
-              </div>
-           </div>
-	   </div>
+	 
 	   </td>
 	   </tr>
 	   <tr>
 	   	<th colspan="2">배송 메세지</th>
 	   	<td>
-	   		<select class="form-select" id="order_content" style="width: 300px">
-	   			<option>부재시 문 앞에 놓아주세요</option>
-	   			<option>경비실에 놔둬주세요. </option>
-	   			<option>전화 부탁 드립니다</option>
-	   			<option>소화전에 넣어 주세요</option>
-	   		</select>
+	   		${order_detail.order_content }
 	   	 </td>
 	   </tr>
 	  </tbody>
@@ -225,14 +191,22 @@
 	  <tbody>
 	   <tr>
 		<th colspan="2">즉시 할인금액</th>
-			<td><input type="text" class="form-control" readonly="readonly" value="<fmt:formatNumber value='${product.product_price * (product.product_discount_price / 100)}'></fmt:formatNumber>" style="width: 100px; display: inline-block; text-align: right; font-size: 18px ">원 할인 
+			<td colspan="4"><input type="text" class="form-control" readonly="readonly" value="<fmt:formatNumber value='${product.product_price * (product.product_discount_price / 100)}'></fmt:formatNumber>" style="width: 100px; display: inline-block; text-align: right; font-size: 18px ">원 할인 
 	   		</td>
 	   </tr>
 	   <tr>
+		 <c:if test="${coupon eq null or empty coupon}">
+					<tr>
+						<th colspan="2">사용된 쿠폰</th>`
+						<td colspan="8" style="text-align:left;"><b>사용된 쿠폰이 없습니다.</b></td>
+					</tr>
+		</c:if>
+		<c:if test="${coupon ne null or not empty coupon}">
 		<th colspan="2">사용된 쿠폰</th>
-			<td>쿠폰명</td>
-			<td><input type="text" class="form-control" id="priceValue" readonly="readonly" value="0" style="width: 100px; display: inline-block; font-size: 18px">원 할인 
-	   		</td>
+			<td>${coupon.coupon_name }</td>
+			<td colspan="8"><input type="text" class="form-control" id="priceValue" readonly="readonly" value="${coupon.coupon_benefit_price }" style="width: 100px; display: inline-block; font-size: 18px">원 할인 
+	   	</td>
+	   </c:if>
 	   </tr>
 	   </tbody>
  </table>
@@ -261,7 +235,7 @@
 					
 					<span style="margin-right: 12px">총 결제금액</span> 
 					<span style="font-size: 27px; color: blue;" id="order_total_area">
-						<fmt:formatNumber pattern="#,###" value="${product.product_price - product.product_price * (product.product_discount_price / 100)}"></fmt:formatNumber>
+						<fmt:formatNumber pattern="#,###" value="${order.order_price }"></fmt:formatNumber>
 					</span>
 					<span style="font-size: 27px; margin-right: 25px;">원</span>
 					
@@ -270,7 +244,7 @@
 		      	<input type="hidden" id="order_total_price" value="${product.product_price - product.product_price * (product.product_discount_price / 100)}">
 				</div>	    
 				<input type="button" value="주문 취소"class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDialogScrollable_pGroup" onclick="order_cancel()">		    
-		    	<button type="button" class="btn btn-primary" onclick="history.back()">취소</button>
+		    	<button type="button" class="btn btn-primary" onclick="window.close()">취소</button>
 		    </div>
 		  </div>
 	    </div>
@@ -305,7 +279,7 @@
 			              <label for="th" id="title_label" class="col-md-3 col-lg-3 col-form-label">상품</label>
 			              	<div class="col-md-8 col-lg-5">
 			                	<div class="input-group mb-6">
-			                	<input name="order_addr2" type="text" class="form-control" id="new_order_addr2">
+			                	<input name="order_addr2" type="text" id="cancle_product_name" class="form-control" value="${order.order_product_name }" id="new_order_addr2">
 			             	  </div>
 			             	 </div>
 				        </div>
@@ -315,7 +289,7 @@
 			              	<div class="col-md-8 col-lg-7">
 			                	<div class="input-group mb-6">
 				                	<select class="form-select" id="cancle_content">
-							   			<option va>직접입력</option>
+							   			<option>직접입력</option>
 							   			<option>사이즈가 안맞음 </option>
 							   			<option>전화 부탁 드립니다</option>
 							   			<option>소화전에 넣어 주세요</option>
@@ -334,7 +308,7 @@
 				        </div>
 				       
 			   		</div>
-						<input type="button" class="btn btn-secondary" value="환불신청" style="width: 300px; margin-left: 170px; ">			        	 
+						<input type="button" class="btn btn-secondary" value="환불신청" onclick="cancle_register()" style="width: 300px; margin-left: 170px; ">			        	 
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-primary" data-bs-dismiss="modal" style="float: right;">Close</button>
@@ -367,16 +341,12 @@ window.onload = function(){
 </script>
 <script src="../js/jquery-3.6.3.js"></script>
 <script type="text/javascript">
-	function order_cancel() {
-		alert("모달");
-	}
 	
 	function is_checked() {
 		  // 1. checkbox element를 찾습니다.
 		  const checkbox = document.getElementById('my_checkbox');
 		  // 2. checked 속성을 체크합니다.
 		  const is_checked = checkbox.checked;
-		  alert(is_checked);
 		  
 		  if(is_checked == true){
 		  	document.getElementById('cancle_reason').readOnly = false; // readonly 활성화
@@ -387,6 +357,39 @@ window.onload = function(){
 			
 		  }
 }
+
+	function cancle_register() {
+		var cancel_content = $("#cancle_content").val();
+		var cancel_reason = $("#cancle_reason").val();
+		var cancel_product_name = $ ("#cancle_product_name").val();
+		var cancel_price = "${order.order_price }";
+		var check = confirm("간변결제는 부분 취소가 불가합니다. 진행하시겠습니까?");
+		
+		if(check){
+		$.ajax({
+			type: "GET",
+			url: "ProductOrderCancel.po?order_idx="+${order.order_idx},
+			data : {
+				"cancel_content" : cancel_content,
+				"cancel_reason" : cancel_reason,
+				"cancel_product_name" : cancel_product_name,
+				"cancel_price" : cancel_price,
+				"imp_uid":"${order.imp_uid}",
+				"order_idx" : "${order.order_idx}"
+			}
+		})
+		.done(function(count) { // 요청 성공 시
+			if(count == '0'){
+				alert("주문취소 신청이 완료 되었습니다");
+				var id = '${sessionScope.sId}';
+				window.close();
+				opener.location.reload();
+			}else {
+				alert("이미 환불 신청이 완료 되었습니다!");
+			}
+		})
+	}
+}	
 </script>
 
 
@@ -405,26 +408,6 @@ function CouponCheck() {
 
 </script>
 <script>
-$(function() {
-	 $("#newaddress").hide();
-	 var amount = parseInt("${product.product_amount}");
-	 if(amount <= 0){
-			alert("재고가 없습니다");
-		 history.back();
-	 }
-	 
-});
-$("input:radio[name='address']").change(function() {
-	let location = $("input:radio[name='address']:checked").val();
-	if(location == 'new'){
-		$("#newaddress").show();
-		$("#address").hide();
-	}else if(location == 'order'){
-		$("#address").show();
-		$("#newaddress").hide();
-	}
-});// 내부,외부처리
-
 
 // Accordion 
 function myAccFunc() {
@@ -501,83 +484,7 @@ function w3_close() {
     "pluginKey": "552ea0bb-d4a5-4c70-8ba7-463b7682c434"
   });
 </script>
-<!-- 주문하기 -->
-<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
-<script type="text/javascript">
-function iamport(){
-	let order_name_value = document.getElementById("order_name").value;
-	let order_phone_value =  document.getElementById("order_phone").value; 
-	let order_addr1_value =  document.getElementById("order_addr1").value;
-	let order_addr2_value= document.getElementById("order_addr2").value;
-	let order_content = document.getElementById("order_content").value;
-	if(document.getElementById("new_order_name").value != "" || document.getElementById("new_order_name").value == null){
-		order_name_value =document.getElementById("new_order_name").value;
-	}
-	
-	if(document.getElementById("new_order_phone").value != "" || document.getElementById("new_order_phone").value == null){
-		order_phone_value =document.getElementById("new_order_phone").value;
-	}
-	
-	if(document.getElementById("new_order_addr1").value != "" || document.getElementById("new_order_addr1").value == null){
-		order_addr1_value =document.getElementById("new_order_addr1").value;
-	}
-	
-	if(document.getElementById("new_order_addr2").value != "" || document.getElementById("new_order_addr2").value == null){
-		order_addr2_value =document.getElementById("new_order_addr2").value;
-	}
-	
-	var price = parseInt(document.getElementById("order_total_price").value);
-	//getter
-    IMP.init('imp77718215');
-//     var money = $('input[name="cp_item"]:checked').val();
-//     console.log(money);
-    IMP.request_pay({
-        pg: 'html5_inicis',
-        pay_method : 'card',
-        merchant_uid: "order_no_"+ new Date().getTime(), // 상점에서 관리하는 주문 번호를 전달
-        name : '${product.product_name}',
-        amount : price,
-        buyer_email : 'iamport@siot.do',
-        buyer_name : '${sessionScope.sId}',
-        buyer_tel : '010-1234-5678',
-        buyer_addr : '서울특별시 강남구 삼성동',
-        buyer_postcode : '123-456',
-    }, function(rsp) { // callback 로직
-    	console.log(rsp);
-	    if ( rsp.success ) {
-	    	var msg = '결제가 완료되었습니다.';
-	    	$.ajax({
-				type: "GET",
-				url: "ProductOrderPro.po",
-				data : {
-					"order_price":price,
-					"member_idx":${sessionScope.member_idx},
-					"product_idx":${param.product_idx},
-					"order_product_name":"${product.product_name}",
-					"order_count":${param.order_count},
-					"order_size":"${product.product_size}",
-					"order_color":"${product.product_color}",
-					"order_name":order_name_value,
-					"order_phone":order_phone_value,
-					"order_addr1":order_addr1_value,
-					"order_addr2":order_addr2_value,
-					"order_content":order_content
-				}
-			})
-			.done(function(whlist) { // 요청 성공 시
-				alert(msg);
-				var id = '${sessionScope.sId}';
-				location.href="./ProductOrderList.po?id="+id+"&member_idx="+${sessionScope.member_idx}+"&pageNum="+1;
-			})
-	    } else {
-	    	 var msg = '결제에 실패하였습니다.';
-// 	         msg += '에러내용 : ' + rsp.error_msg;
-// 	         window.history.back();
-	    }
-    });
-	}
-</script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>
 </html>

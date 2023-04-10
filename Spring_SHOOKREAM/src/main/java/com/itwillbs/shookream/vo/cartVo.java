@@ -15,13 +15,24 @@ public class cartVo {
 	private String cart_product_name; //hidden
 	private String cart_product_image; //hidden
 	private int cart_order_idx;
-	
+	private String coupon_idx;
+	private String imp_uid;
 	//-------setter, getter--------
-	
-	
 	
 	public int getMember_idx() {
 		return member_idx;
+	}
+	public String getCoupon_idx() {
+		return coupon_idx;
+	}
+	public void setCoupon_idx(String coupon_idx) {
+		this.coupon_idx = coupon_idx;
+	}
+	public String getImp_uid() {
+		return imp_uid;
+	}
+	public void setImp_uid(String imp_uid) {
+		this.imp_uid = imp_uid;
 	}
 	public void setMember_idx(int member_idx) {
 		this.member_idx = member_idx;
@@ -100,7 +111,6 @@ public class cartVo {
 				+ ", cart_price=" + cart_price + ", cart_discount=" + cart_discount + ", cart_order_price="
 				+ cart_order_price + ", cart_count=" + cart_count + ", cart_size=" + cart_size + ", cart_color="
 				+ cart_color + ", cart_product_name=" + cart_product_name + ", cart_product_image=" + cart_product_image
-				+ ", cart_order_idx=" + cart_order_idx + "]";
+				+ ", cart_order_idx=" + cart_order_idx + ", coupon_idx=" + coupon_idx + ", imp_uid=" + imp_uid + "]";
 	}
-
 }

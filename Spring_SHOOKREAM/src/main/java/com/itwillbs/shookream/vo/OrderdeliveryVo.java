@@ -5,9 +5,17 @@ private String order_name;
 private String order_phone;
 private String order_addr1;
 private String order_addr2;
+private String order_address;
 private String order_content;
 
 
+
+public String getOrder_address() {
+	return order_address;
+}
+public void setOrder_address(String order_address) {
+	this.order_address = order_address;
+}
 public String getOrder_content() {
 	return order_content;
 }
@@ -41,6 +49,7 @@ public void setOrder_addr2(String order_addr2) {
 @Override
 public String toString() {
 	return "OrderdeliveryVo [order_name=" + order_name + ", order_phone=" + order_phone + ", order_addr1=" + order_addr1
-			+ ", order_addr2=" + order_addr2 + ", order_content=" + order_content + "]";
+			+ ", order_addr2=" + order_addr2 + ", order_address=" + order_address + ", order_content=" + order_content
+			+ "]";
 }
 }

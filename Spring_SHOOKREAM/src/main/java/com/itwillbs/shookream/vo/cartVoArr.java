@@ -15,9 +15,21 @@ public class cartVoArr {
 	private String[] cart_colorArr; //select
 	private String[] cart_product_nameArr; //hidden
 	private String[] cart_product_imageArr; //hidden
-	
-	
+	private String coupon_idx;
+	private String imp_uid;
 	//-------setter, getter-------
+	public String getCoupon_idx() {
+		return coupon_idx;
+	}
+	public void setCoupon_idx(String coupon_idx) {
+		this.coupon_idx = coupon_idx;
+	}
+	public String getImp_uid() {
+		return imp_uid;
+	}
+	public void setImp_uid(String imp_uid) {
+		this.imp_uid = imp_uid;
+	}
 	public int[] getMember_idxArr() {
 		return member_idxArr;
 	}
@@ -126,7 +138,6 @@ public class cartVoArr {
 	public void setCart_product_imageArr(String[] cart_product_imageArr) {
 		this.cart_product_imageArr = cart_product_imageArr;
 	}
-	// -------toString--------------
 	@Override
 	public String toString() {
 		return "cartVoArr [member_idxArr=" + Arrays.toString(member_idxArr) + ", product_idxArr="
@@ -136,10 +147,6 @@ public class cartVoArr {
 				+ Arrays.toString(cart_countArr) + ", cart_sizeArr=" + Arrays.toString(cart_sizeArr)
 				+ ", cart_colorArr=" + Arrays.toString(cart_colorArr) + ", cart_product_nameArr="
 				+ Arrays.toString(cart_product_nameArr) + ", cart_product_imageArr="
-				+ Arrays.toString(cart_product_imageArr) + "]";
+				+ Arrays.toString(cart_product_imageArr) + ", coupon_idx=" + coupon_idx + ", imp_uid=" + imp_uid + "]";
 	}
-	
-	
-	
-	
 }

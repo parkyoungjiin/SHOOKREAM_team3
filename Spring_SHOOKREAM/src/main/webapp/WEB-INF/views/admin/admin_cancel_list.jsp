@@ -70,11 +70,10 @@
                                         <tr>
                                             <th>번호</th>
                                             <th>이미지</th>
-                                            <th>주문ID</th>
+                                            <th>환불 상품</th>
                                             <th>가격</th>
-                                            <th>주문상태</th>
-                                            <th>배송상태</th>
-                                            <th>주문일자</th>
+                                            <th>사유</th>
+                                            <th>상세내용</th>
                                             <th>수정</th>
                                         </tr>
                                     </thead>
@@ -89,18 +88,17 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                      <c:forEach var="orderlist" items="${Adminorderlist }">
+                                      <c:forEach var="cancelList" items="${CancelList }">
 										<tr>
-										<td>${orderlist.order_idx }</td>
-										 <td><img src="upload/${orderlist.image_main_file }"  alt="없음!" class="img-thumbnail" width="150" height="150"></td>
-									      <td>${orderlist.member_id }</td>
-									      <td><fmt:formatNumber value="${orderlist.product_price }" pattern="#,###원"></fmt:formatNumber></td>
-									      <td>${orderlist.order_category }</td>
-									      <td>${orderlist.order_progress }</td>
-									      <td><fmt:formatDate value="${orderlist.order_date }" pattern ="yyyy-MM-dd"/></td>
+										<td>${cancelList.cancel_idx }</td>
+										 <td><img src="${path}/resources/upload/${cancelList.cancel_img}"  onError="this.onerror=null; this.src='resources/images/noImg.JPG';"  alt="..." class="img-thumbnail" width="150" height="150" ></td>
+									      <td>${cancelList.cancel_product_name}</td>
+									      <td><fmt:formatNumber value="${cancelList.cancel_price }" pattern="#,###원"></fmt:formatNumber></td>
+									      <td>${cancelList.cancel_reason }</td>
+									      <td>${cancelList.cancel_content }</td>
 										<td>
 <!-- 										<button type="button" class="btn btn-light" onclick="location.href=''">수정</button> -->
-										<button type="button" class="btn btn-light" onclick="location.href='AdminProductOrderListDelete.ad?order_idx=${orderlist.order_idx}'">삭제</button>
+										<button type="button" class="btn btn-light" onclick="cancelPay(${cancelList.cancel_idx},${cancelList.order_idx })">승인</button>
 										</td>
 										</tr> 
 										</c:forEach>  
@@ -128,5 +126,26 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="${path}/resources/js/datatables-simple-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    </body>
+    
+ 		<!-- 주문하기 -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script src="../js/jquery-3.6.3.js"></script>  
+<script>
+  function cancelPay(idx,order_idx) {
+	 alert("승인 완료");
+	 $.ajax({
+			type: "POST",
+			url: "confrimPay.ad?cancel_idx="+idx+"&order_idx="+order_idx
+	 })
+	.done(function() { // 요청 성공 시
+		location.href="AdminProductCancelList.ad";
+	})
+  }
+</script>
+ </body>
 </html>

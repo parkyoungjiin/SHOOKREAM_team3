@@ -34,8 +34,28 @@ private int product_idx;
 private String member_id;
 private int product_price;
 private int product_discount_price;
+private String coupon_idx;
+
+//결제 api 주문번호
+private String imp_uid;
 
 
+
+public String getImp_uid() {
+	return imp_uid;
+}
+
+public void setImp_uid(String imp_uid) {
+	this.imp_uid = imp_uid;
+}
+
+public String getCoupon_idx() {
+	return coupon_idx;
+}
+
+public void setCoupon_idx(String coupon_idx) {
+	this.coupon_idx = coupon_idx;
+}
 
 public int getOrder_member_idx() {
 	return order_member_idx;
@@ -282,7 +302,7 @@ public String toString() {
 			+ order_member_idx + ", product_name=" + product_name + ", product_size=" + product_size
 			+ ", image_main_file=" + image_main_file + ", product_color=" + product_color + ", order_price="
 			+ order_price + ", product_idx=" + product_idx + ", member_id=" + member_id + ", product_price="
-			+ product_price + ", product_discount_price=" + product_discount_price + "]";
+			+ product_price + ", product_discount_price=" + product_discount_price + ", coupon_idx=" + coupon_idx + "]";
 }
 
 

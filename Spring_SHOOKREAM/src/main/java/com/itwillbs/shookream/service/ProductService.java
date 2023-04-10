@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.shookream.mapper.ProductMapper;
+import com.itwillbs.shookream.vo.CancelVo;
 import com.itwillbs.shookream.vo.CouponVo;
+import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.OrderVo;
 import com.itwillbs.shookream.vo.OrderdeliveryVo;
 import com.itwillbs.shookream.vo.ProductVo;
@@ -90,5 +92,32 @@ public class ProductService {
 		return mapper.getListCount(member_idx);
 	}
 
+	public OrderVo getOrderInfo(int order_idx) {
+		return mapper.getOrderInfo(order_idx);
+	}
+
+	public OrderdeliveryVo getOrderDelivery(int order_idx) {
+		return mapper.getOrderDelivery(order_idx);
+	}
+
+	public MemberVo getMemberInfo(int member_idx) {
+		return mapper.getOrderMemberInfo(member_idx);
+	}
+
+	public CouponVo getCouponInfo(String coupon_idx) {
+		return mapper.getCouponInfo(coupon_idx);
+	}
+
+	public int insertCancel(CancelVo cancel) {
+		 return mapper.insertCancel(cancel);
+	}
 	// ================== 채휘 끝 ====================
+
+	public void ModifyOrderprogress(int order_idx) {
+		mapper.ModifyOrderprogress(order_idx);
+	}
+
+	public int getCancelCount(int order_idx) {
+		return mapper.getCancelCount(order_idx);
+	}
 }

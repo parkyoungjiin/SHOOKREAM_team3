@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.shookream.service.AdminService;
 import com.itwillbs.shookream.service.MemberService;
 import com.itwillbs.shookream.service.ProductService;
 import com.itwillbs.shookream.vo.BoardVo;
+import com.itwillbs.shookream.vo.CancelVo;
 import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.OrderVo;
@@ -44,6 +48,8 @@ public class ProductController {
 	
 	List<imageVo> imageList;
 	
+	@Autowired
+	private AdminService service2;
 	// 상품 상세 정보
 	@GetMapping(value = "/ProductInfoForm.po")
 	public String productInfo(
@@ -261,7 +267,16 @@ public class ProductController {
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
 		
 		System.out.println(orderList);
-		
+		for(OrderVo order : orderList) {
+	        // 일치하는 상품을 찾았을 때 해당 상품에 대한 이미지를 조회
+	        List<imageVo> imageList = service2.getImgList(order.getProduct_idx());
+	        String fileNames = imageList.get(0).getImage_main_file();
+	        String[] splitFileNames = fileNames.split("/");
+	        String firstFileName = splitFileNames[0]; // 맨 앞 파일명
+	        System.out.println("fileNames :: " + fileNames);
+	        
+	        order.setImage_main_file(firstFileName);
+	    }
 		
 		model.addAttribute("orderList", orderList);
 		model.addAttribute("pageInfo", pageInfo);
@@ -271,10 +286,48 @@ public class ProductController {
 	
 	//주문내역 상세 정보(팝업창)
 	@GetMapping(value = "/ProductOrderDeliveryPro.po")
-	public String OrderDelivery(Model model, HttpSession session,@RequestParam(defaultValue = "1")int pageNum) {
-		
-		
+	public String OrderDelivery(Model model, HttpSession session,@RequestParam(defaultValue = "1")int pageNum,
+								@RequestParam(defaultValue = "1")int order_idx,
+								@RequestParam(defaultValue = "1")int member_idx) {
+		OrderVo order = service.getOrderInfo(order_idx);
+		System.out.println("product_idx : "+ order.getProduct_idx());
+		System.out.println("coupon_idx : "+order.getCoupon_idx());
+		OrderdeliveryVo order_delivery = service.getOrderDelivery(order_idx);
+		ProductVo product = service.getProduct(order.getProduct_idx());
+		MemberVo member = service.getMemberInfo(member_idx);
+		CouponVo coupon = service.getCouponInfo(order.getCoupon_idx());
+		System.out.println(coupon);
+		model.addAttribute("coupon",coupon);
+		model.addAttribute("order",order);
+		model.addAttribute("order_detail",order_delivery);
+		model.addAttribute("product",product);
+		model.addAttribute("member", member);
 		return "product/deliveryDetailForm";
 	}// 회원 주문 목록 끝
-			
+	
+	@ResponseBody
+	@GetMapping(value = "/ProductOrderCancel.po")
+	public void OrderCancel(@ModelAttribute CancelVo cancel,
+							@RequestParam(defaultValue = "1")int order_idx,
+							Model model,
+							HttpServletResponse response) {
+		System.out.println("cancle : "+ cancel);
+		int ListCount =  service.getCancelCount(order_idx);
+		
+		if(ListCount == 0) {
+			int insertCount = service.insertCancel(cancel);
+			if(insertCount > 0) {
+				service.ModifyOrderprogress(order_idx);
+			}
+		}
+		
+		try {
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().print(ListCount);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }

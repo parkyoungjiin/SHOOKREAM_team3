@@ -282,6 +282,15 @@ public class CartController {
 		String sId = (String)session.getAttribute("sId");
 		MemberVo member = service_member.getMemberInfo(sId);
 		
+		
+		for (cartVo cart : cartOrderList) {
+			System.out.println("카트 이름 : " + cart.getCart_product_image());
+			String[] cart_preview_img = cart.getCart_product_image().split("/");
+			System.out.println();
+			String preview_img = cart_preview_img[0];
+			System.out.println("preview 이미지 :"  + preview_img);
+			cart.setCart_product_image(preview_img);
+		}
 		model.addAttribute("member", member);
 		model.addAttribute("cartOrderList", cartOrderList);
 		model.addAttribute("cart_total_price", cart_total_price);
@@ -435,7 +444,7 @@ public class CartController {
 				model.addAttribute("url", "LoginMember.me");
 				return "reload_cart";
 			}
-			
+			System.out.println(vo.getImp_uid());
 			//cartArrvo를 단일 cartVO에 풀기 
 			for(int i=0;i<vo.getProduct_idxArr().length;i++) {
 				cartVo vo2 = new cartVo();
@@ -447,6 +456,8 @@ public class CartController {
 				vo2.setCart_size(vo.getCart_sizeArr()[i]);
 				vo2.setCart_product_name(vo.getCart_product_nameArr()[i]);
 				vo2.setCart_idx(vo.getCart_idxArr()[i]);
+				vo2.setCoupon_idx(vo.getCoupon_idx());
+				vo2.setImp_uid(vo.getImp_uid());
 				int orderSelectCount = service.getCartOrderCount(vo2);// db에 이미 주문 한 상품 있는지 확인
 				
 				if(orderSelectCount > 0) { //이미 주문한 상품이 있을 시

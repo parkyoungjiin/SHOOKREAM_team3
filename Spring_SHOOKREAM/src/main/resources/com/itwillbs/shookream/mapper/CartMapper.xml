@@ -174,7 +174,9 @@
 				#{cart_product_name},
 				#{cart_count},
 				#{cart_size},
-				#{cart_color}
+				#{cart_color},
+				#{coupon_idx},
+				#{imp_uid}
 			)
 	</insert>
 	<!-- 상품 수량 빼기 작업 -->

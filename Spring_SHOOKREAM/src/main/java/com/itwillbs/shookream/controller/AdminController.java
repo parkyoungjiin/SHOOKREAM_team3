@@ -1,7 +1,17 @@
 package com.itwillbs.shookream.controller;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.http.HttpHeaders;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,8 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,13 +30,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.JsonObject;
 import com.itwillbs.shookream.service.AdminService;
 import com.itwillbs.shookream.service.BoardService;
 import com.itwillbs.shookream.service.MemberService;
 import com.itwillbs.shookream.vo.BoardVo;
+import com.itwillbs.shookream.vo.CancelVo;
 import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.OrderVo;
@@ -519,32 +536,104 @@ public class AdminController {
 	public String OrderList(Model model) {
 		
 		List<OrderVo> Adminorderlist = service.getOrderList();
-		
+	
+		for(OrderVo order : Adminorderlist) {
+	        // 일치하는 상품을 찾았을 때 해당 상품에 대한 이미지를 조회
+	        List<imageVo> imageList = service.getImgList(order.getProduct_idx());
+	        String fileNames = imageList.get(0).getImage_main_file();
+	        String[] splitFileNames = fileNames.split("/");
+	        String firstFileName = splitFileNames[0]; // 맨 앞 파일명
+	        System.out.println("fileNames :: " + fileNames);
+	        
+	        order.setImage_main_file(firstFileName);
+	    }
 		model.addAttribute("Adminorderlist",Adminorderlist);
-		
 		return "admin/admin_order_list";
 		
 	} // =========== 주문 관리 ===============
 	
 	// =========== 환불 관리 ==============
-	@GetMapping("AdminProductCancleList.ad")
-	public String CancleList(Model model) {
+	@GetMapping("AdminProductCancelList.ad")
+	public String CancelList(Model model) {
 		
-		List<OrderVo> Adminorderlist = service.getOrderList();
+		List<CancelVo> CancelList = service.getCancelList();
+		for(CancelVo cancel : CancelList) {
+			int product_idx = service.getProduct_idx(cancel.getOrder_idx());
+			// 일치하는 상품을 찾았을 때 해당 상품에 대한 이미지를 조회
+	        List<imageVo> imageList = service.getImgList(product_idx);
+	        String fileNames = imageList.get(0).getImage_main_file();
+	        String[] splitFileNames = fileNames.split("/");
+	        String firstFileName = splitFileNames[0]; // 맨 앞 파일명
+	        System.out.println("fileNames :: " + fileNames);
+	        cancel.setCancel_img(firstFileName);
+	    }
 		
-		model.addAttribute("Adminorderlist",Adminorderlist);
+		model.addAttribute("CancelList",CancelList);
+		return "admin/admin_cancel_list";
 		
-		return "admin/admin_cancle_list";
+	}
+	@ResponseBody
+	@PostMapping("confrimPay.ad")
+	public void getToken(@ModelAttribute CancelVo cancel) {
+		try {
+			System.out.println("결제 취소");
+			
+			CancelVo vo = service.getCancelInfo(cancel.getcancel_idx());
+			
+			
+			HttpsURLConnection conn = null;
+			URL url = new URL("https://api.iamport.kr/payments/cancel");
+ 
+			conn = (HttpsURLConnection) url.openConnection();
+ 
+			conn.setRequestMethod("POST");
+ 
+			conn.setRequestProperty("Content-type", "application/json");
+			conn.setRequestProperty("Accept", "application/json");
+			conn.setRequestProperty("Authorization", service.getToken());
+			conn.setDoOutput(true);
+			
+			JsonObject json = new JsonObject();
+			json.addProperty("merchant_uid", vo.getImp_uid());
+			json.addProperty("amount", vo.getcancel_price());
+			json.addProperty("extra", "admin");
+			
+ 
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+ 
+			bw.write(json.toString());
+			bw.flush();
+			bw.close();
+			
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+ 
+			br.close();
+			conn.disconnect();
+			
+			service.Canceldelete(cancel.getcancel_idx());
+			service.OrderListProgressModify(cancel.getOrder_idx());
+		} catch (MalformedURLException e) {
+			System.out.println("실패!");
+			e.printStackTrace();
+		} catch (ProtocolException e) {
+			System.out.println("실패!");
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			System.out.println("실패!");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("실패!");
+			e.printStackTrace();
+		}
 		
-	} // ===========환불 관리 ===============
+	}
+	// ===========환불 관리 ===============
 	
 	
 	
 	// =========== 주문 관리 - 삭제 ===============
 	@GetMapping("AdminProductOrderListDelete.ad")
 	public String OrderDelete(@RequestParam(defaultValue = "0") int order_idx, Model model) {
-		
-		
 		int deleteCount = service.deleteOrder(order_idx);
 		
 		if(deleteCount > 0) {
@@ -553,9 +642,9 @@ public class AdminController {
 			model.addAttribute("msg", "삭제 실패!");
 			return "fail_back";
 		}
-		
-		
 	} // =========== 주문 관리 - 삭제 ===============
+	
+	
 	
 }//AdminController
 

@@ -1,12 +1,23 @@
 package com.itwillbs.shookream.service;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
 import java.util.List;
+import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.itwillbs.shookream.mapper.AdminMapper;
-import com.itwillbs.shookream.vo.CouponVo;
+import com.itwillbs.shookream.vo.CancelVo;
 import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.OrderVo;
 import com.itwillbs.shookream.vo.ProductVo;
@@ -78,6 +89,63 @@ public class AdminService {
 			return mapper.delectOrder(order_idx);
 		}
 
-		
+		public List<CancelVo> getCancelList() {
+			return mapper.getCancelList();
+		}
+
+		public String getToken() throws IOException {
+
+		    HttpsURLConnection conn = null;
+
+		    URL url = new URL("https://api.iamport.kr/users/getToken");
+
+		    conn = (HttpsURLConnection) url.openConnection();
+
+		    conn.setRequestMethod("POST");
+		    conn.setRequestProperty("Content-type", "application/json");
+		    conn.setRequestProperty("Accept", "application/json");
+		    conn.setDoOutput(true);
+		    JsonObject json = new JsonObject();
+
+		    json.addProperty("imp_key", "4725107137406238");
+		    json.addProperty("imp_secret", "X7yLcUDDEoAn5pi1ev41t1NiAVnKDNoAYtaYNeSxLBJZ3VyqnRM0eO62PRHA9ERWOdFMK1uqM6T8dugx");
+
+		    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+
+		    bw.write(json.toString());
+		    bw.flush();
+		    bw.close();
+
+		    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+
+		    Gson gson = new Gson();
+
+		    String response = gson.fromJson(br.readLine(), Map.class).get("response").toString();
+
+		    System.out.println("response : " + response);
+
+		    String token = gson.fromJson(response, Map.class).get("access_token").toString();
+
+		    br.close();
+		    conn.disconnect();
+
+		    return token;
+		}
+
+		public CancelVo getCancelInfo(int cancel_idx) {
+			return mapper.getCancelInfo(cancel_idx);
+		}
+
+		public void Canceldelete(int cancel_idx) {
+			mapper.Canceldelete(cancel_idx);
+		}
+
+		public void OrderListProgressModify(int order_idx) {
+			mapper.OrderListProgressModify(order_idx);
+		}
+
+		public int getProduct_idx(int order_idx) {
+			return mapper.getProduct_idx(order_idx);
+		}	
 	
 }

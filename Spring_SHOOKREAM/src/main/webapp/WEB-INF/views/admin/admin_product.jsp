@@ -77,7 +77,7 @@
                                 <div class="card text-white mb-4" style="background-color: #787878">
                                     <div class="card-body">환불 관리</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="AdminProductOrderList.ad">View Details</a>
+                                        <a class="small text-white stretched-link" href="AdminProductCancelList.ad">View Details</a>
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                     </div>
                                 </div>

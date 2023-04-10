@@ -105,7 +105,7 @@
   		
       <c:choose>
   		<c:when test="${couponList.coupon_max_discount eq null}">
-	      <td class ="td_cart"><button type="button" class="btn btn-dark" id="useCoupon" value="${couponList.coupon_benefit_price}" onclick="useCoupon(${couponList.coupon_benefit_price},'${couponList.coupon_benefit_unit }',${couponList.coupon_idx})">사용하기</button></td>
+	      <td class ="td_cart"><button type="button" class="btn btn-dark" id="useCoupon" value="${couponList.coupon_benefit_price}" onclick="useCoupon(${couponList.coupon_benefit_price},'${couponList.coupon_benefit_unit }','',${couponList.coupon_idx})">사용하기</button></td>
   		</c:when>
   		<c:otherwise>
 	      <td class ="td_cart"><button type="button" class="btn btn-dark" id="useCoupon" value="${couponList.coupon_benefit_price}" onclick="useCoupon(${couponList.coupon_benefit_price},'${couponList.coupon_benefit_unit }',${couponList.coupon_max_discount },${couponList.coupon_idx})">사용하기</button></td>

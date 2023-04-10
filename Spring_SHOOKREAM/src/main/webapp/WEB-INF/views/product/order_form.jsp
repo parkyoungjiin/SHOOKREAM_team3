@@ -397,6 +397,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 					
 					<span style="margin-right: 12px">총 결제금액</span> 
 					<span style="font-size: 27px; color: blue;" id="order_total_area">
+<%-- 						<fmt:formatNumber pattern="#,###" value="${product.product_price - product.product_price * (product.product_discount_price / 100)}"></fmt:formatNumber> --%>
 						<fmt:formatNumber pattern="#,###" value="${product.product_price - product.product_price * (product.product_discount_price / 100)}"></fmt:formatNumber>
 					</span>
 					<span style="font-size: 27px; margin-right: 25px;">원</span>
@@ -593,7 +594,7 @@ function iamport(){
         pay_method : 'card',
         merchant_uid: "order_no_"+ new Date().getTime(), // 상점에서 관리하는 주문 번호를 전달
         name : '${product.product_name}',
-        amount : price,
+        amount : "500",
         buyer_email : 'iamport@siot.do',
         buyer_name : '${sessionScope.sId}',
         buyer_tel : '010-1234-5678',
@@ -618,7 +619,9 @@ function iamport(){
 					"order_phone":order_phone_value,
 					"order_addr1":order_addr1_value,
 					"order_addr2":order_addr2_value,
-					"order_content":order_content
+					"order_content":order_content,
+					"coupon_idx": document.getElementById( "coupon_idx" ).value,
+					"imp_uid":rsp.merchant_uid
 				}
 			})
 			.done(function(whlist) { // 요청 성공 시
@@ -632,7 +635,7 @@ function iamport(){
 // 	         window.history.back();
 	    }
     });
-	}
+}
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>

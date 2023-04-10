@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.shookream.vo.CancelVo;
 import com.itwillbs.shookream.vo.CouponVo;
 import com.itwillbs.shookream.vo.MemberVo;
 import com.itwillbs.shookream.vo.OrderVo;
@@ -56,8 +57,15 @@ public interface AdminMapper {
 	// 주문목록 삭제
 	public int delectOrder(int order_idx);
 
-	
-	
+	public List<CancelVo> getCancelList();
+
+	public CancelVo getCancelInfo(int cancel_idx);
+
+	public void Canceldelete(int cancel_idx);
+
+	public void OrderListProgressModify(int order_idx);
+
+	public int getProduct_idx(int order_idx);
 
 	
 }

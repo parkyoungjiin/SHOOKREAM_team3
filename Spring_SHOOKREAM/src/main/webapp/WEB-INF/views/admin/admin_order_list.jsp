@@ -92,7 +92,7 @@
                                       <c:forEach var="orderlist" items="${Adminorderlist }">
 										<tr>
 										<td>${orderlist.order_idx }</td>
-										 <td><img src="upload/${orderlist.image_main_file }"  alt="없음!" class="img-thumbnail" width="150" height="150"></td>
+										 <td><img src="${path}/resources/upload/${orderlist.image_main_file}"  onError="this.onerror=null; this.src='resources/images/noImg.JPG';"  alt="..." class="img-thumbnail" width="150" height="150" ></td>
 									      <td>${orderlist.member_id }</td>
 									      <td><fmt:formatNumber value="${orderlist.product_price }" pattern="#,###원"></fmt:formatNumber></td>
 									      <td>${orderlist.order_category }</td>
