@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri ="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri ="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="path" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -225,7 +226,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 			<c:if test="${product ne null and not empty product}">
 			<!-- 카트 목록(foreach로 처리) -->
 			    <tr>
-			      <td><a href="ProductInfoForm.po?product_idx=${product.product_idx }"><img src="upload/${product.image_main_file }"  alt="없음!" class="img-thumbnail" width="150" height="150" ></a></td>
+			      <td><a href="ProductInfoForm.po?product_idx=${product.product_idx }"><img src="${path}/resources/upload/${product.image_main_file}"  onError="this.onerror=null; this.src='resources/images/noImg.JPG';"  alt="..." class="img-thumbnail" width="150" height="150" ></a></td>
 			      <td class ="td_cart" style="text-align:left;">
 			      <span style="font-size: 20px; font-weight: bold;"> ${product.product_name }<br></span>
 			      <span style="color: #91949A;">색상 : ${product.product_color } / 사이즈 : ${product.product_size }</span>

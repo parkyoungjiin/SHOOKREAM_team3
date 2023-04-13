@@ -519,7 +519,13 @@ public class AdminController {
 	public String OrderList(Model model) {
 		
 		List<OrderVo> Adminorderlist = service.getOrderList();
-		
+		for (OrderVo order : Adminorderlist) {
+//			System.out.println("카트 이름 : " + cart.getCart_product_image());
+			String[] cart_preview_img = order.getImage_main_file().split("/");
+			String preview_img = cart_preview_img[0];
+//			System.out.println("preview 이미지 :"  + preview_img);
+			order.setImage_main_file(preview_img);
+		}
 		model.addAttribute("Adminorderlist",Adminorderlist);
 		
 		return "admin/admin_order_list";

@@ -281,6 +281,14 @@ public class CartController {
 		System.out.println(cartOrderList);
 		String sId = (String)session.getAttribute("sId");
 		MemberVo member = service_member.getMemberInfo(sId);
+		for (cartVo cart : cartOrderList) {
+//			System.out.println("카트 이름 : " + cart.getCart_product_image());
+			String[] cart_preview_img = cart.getCart_product_image().split("/");
+			String preview_img = cart_preview_img[0];
+//			System.out.println("preview 이미지 :"  + preview_img);
+			cart.setCart_product_image(preview_img);
+		}
+		
 		
 		model.addAttribute("member", member);
 		model.addAttribute("cartOrderList", cartOrderList);

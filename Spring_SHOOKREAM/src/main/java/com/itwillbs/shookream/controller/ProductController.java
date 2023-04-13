@@ -31,6 +31,7 @@ import com.itwillbs.shookream.vo.PageInfo;
 import com.itwillbs.shookream.vo.ProductVo;
 import com.itwillbs.shookream.vo.ReviewVo;
 import com.itwillbs.shookream.vo.WishVo;
+import com.itwillbs.shookream.vo.cartVo;
 import com.itwillbs.shookream.vo.imageVo;
 
 @Controller
@@ -167,6 +168,12 @@ public class ProductController {
 		product = service.getProduct(product_idx);
 		image = service.getImage(product_idx);
 		member = service_member.getMemberInfo(sId);
+//			System.out.println("카트 이름 : " + cart.getCart_product_image());
+			String[] cart_preview_img = image.getImage_main_file().split("/");
+			String preview_img = cart_preview_img[0];
+//			System.out.println("preview 이미지 :"  + preview_img);
+			product.setImage_main_file(preview_img);
+		
 		System.out.println("member : "+member);
 		model.addAttribute("product", product);
 		model.addAttribute("member", member);
@@ -267,7 +274,13 @@ public class ProductController {
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
 		
 		System.out.println(orderList);
-		
+		for (OrderVo order : orderList) {
+//			System.out.println("카트 이름 : " + cart.getCart_product_image());
+			String[] cart_preview_img = order.getImage_main_file().split("/");
+			String preview_img = cart_preview_img[0];
+//			System.out.println("preview 이미지 :"  + preview_img);
+			order.setImage_main_file(preview_img);
+		}
 		
 		model.addAttribute("orderList", orderList);
 		model.addAttribute("pageInfo", pageInfo);
