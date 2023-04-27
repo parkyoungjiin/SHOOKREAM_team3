@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri ="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri ="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="path" value="${pageContext.request.contextPath }"/>   
 <!DOCTYPE html>
 <html>
 <head>
@@ -238,7 +239,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
     <input type="hidden" value="${cart.cart_product_name }" name="cart_product_name">
     <input type="hidden" value="${cart.cart_idx }" name="cart_idx">
     <tr>
-	 <td><a href="ProductInfoForm.po?product_idx=${cart.product_idx }"><img src="upload/${cart.cart_product_image }"  alt="없음!" class="img-thumbnail" width="150" height="150" ></a></td>
+	 <td><a href="ProductInfoForm.po?product_idx=${cart.product_idx }"><img src="${path}/resources/upload/${cart.cart_product_image }"  onError="this.onerror=null; this.src='resources/images/noImg.JPG';"  alt="..." class="img-thumbnail" width="150" height="150" ></a></td>
       <td class ="td_cart">${cart.cart_product_name }<br><span style="color: #91949A;">색상 : ${cart.cart_color }</span></td>
 	  <td class ="td_cart" id="cart_price"><fmt:formatNumber value="${cart.cart_price }" pattern="#,###원"></fmt:formatNumber></td>
       <td class ="td_cart" id="cart_discount_price"><fmt:formatNumber value="${cart.cart_price * (cart.cart_discount / 100)}" pattern="#,###원"></fmt:formatNumber></td>

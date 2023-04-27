@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri ="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri ="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="path" value="${pageContext.request.contextPath }"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -225,7 +226,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 			<!-- 카트 목록(foreach로 처리) -->
 		    <c:forEach var="order" items="${orderList }" varStatus="status">
 			    <tr>
-			      <td><a href="ProductInfoForm.po?product_idx=${order.product_idx }"><img src="upload/${order.image_main_file }"  alt="없음!" class="img-thumbnail" width="150" height="150" ></a></td>
+			      <td><a href="ProductInfoForm.po?product_idx=${order.product_idx }">  <img src="${path}/resources/upload/${order.image_main_file }"  onError="this.onerror=null; this.src='resources/images/noImg.JPG';"  alt="..." class="img-thumbnail" width="150" height="150" ></a></td>
 			      <td class ="td_cart" style="text-align:left;">
 			      <span style="font-size: 20px; font-weight: bold;"> ${order.order_product_name }<br></span>
 			      <span style="color: #91949A;">색상 : ${order.product_color } / 사이즈 : ${order.product_size }</span>
@@ -242,7 +243,6 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Noto Sans KR", sans-serif;}
 			      <td class ="td_cart">${order.order_progress }</td>
 			      <td class ="td_cart">
 			    <input type="button" value="리뷰 작성하기" class="btn btn-primary" onclick="reviewForm(${order.product_idx },'${order.product_size }','${order.product_color }','${order.product_name }')">
-			    <input type="button" value="배송 상세정보" class="btn btn-primary" onclick="deliveryDetail()">
 			      </td>
 			    </tr>
 		    </c:forEach>
